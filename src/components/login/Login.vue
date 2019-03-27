@@ -61,7 +61,7 @@ export default {
                 if (valid) {
                 this.btnTxt = '登陆中...'
                 this.disable = true;
-                const res = await this.$http.post('login', this.user);
+                const res = await this.$http.post('user/login', this.user);
                 this.$message({
                     message: '登录成功',
                     type: 'success',

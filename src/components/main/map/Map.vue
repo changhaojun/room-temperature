@@ -8,22 +8,14 @@
                 <span class="label">温度区间选择</span>
                  <!-- <div class="user-bar unonline-bar"></div>  -->
                 <div class="user-bar online-bar">
-                    <div class="bar" :style="{width:tempDistribute.cool+ '%',background:'#33ABF1'}" @click="selectLow($event)">
-                        <span v-if="tempDistribute.cool">{{tempDistribute.cool}}</span>
-                    </div>
-                    <div class="bar" :style="{width:tempDistribute.normal+ '%',background:'#FFA509'}" @click="selectNormal($event)">
-                        <span v-if="tempDistribute.normal">{{tempDistribute.normal}}</span>
-                    </div>
-                    <div class="bar" :style="{width:tempDistribute.hot + '%',background:'#FF716A'}" @click="selectHigh($event)">
-                        <span v-if="tempDistribute.hot">{{tempDistribute.hot}}</span>
+                    <div class="bar" :class="[activeIndex===index?'clickBar':'']" v-for="(item,index) in tempSelect" :key="index+'m'" :style="{width:item.value/communityCount*100+ '%',background:item.name==='cool'?'#33ABF1':item.name==='normal'?'#FFA509':'#FF716A'}" @click="selectTemp(index)">
+                        <span>{{item.value}}</span>
                     </div>
                 </div>
-               
             </div>
             <div>
                 <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
             </div>
-            
         </div>
        <el-amap vid="amap-demo"  class="amap-demo" :center="center"  :zoom="zoom">
            <el-amap-marker v-for="(marker,index) in markers" :key="index+'a'"  :position="marker.center" :template="marker.template"></el-amap-marker>
@@ -37,62 +29,20 @@
     export default {
         data() {
             return {
+                activeIndex:-1,
                 allActive:true,
                 search:'',
-                zoom: 11,
+                zoom: 12,
                 center: [108.939621,34.343147], 
                 markers:[], 
-                // marker: [
-                //     {
-                //         center: [108.939621,34.342347],
-                //         fillColor: 'rgba(255,165,9,1)',
-                //         index:21,
-                //         text:"零壹广场",
-                //         events: {
-                //             click: () => {
-                //             alert('click');
-                //             }
-                //         }
-                //     },
-                //     {
-                //         center: [108.943621,34.344547],
-                //         fillColor: 'rgba(255,113,106,1)',
-                //         index:22,
-                //         text:"旺座现代",
-                //         events: {
-                //             click: () => {
-                //             alert('click');
-                //             }
-                //         }
-                //     },{
-                //         center: [108.929621,34.342378],
-                //         fillColor: 'rgba(51,171,241,1)',
-                //         index:23,
-                //         text:"西安软件",
-                //         events: {
-                //             click: () => {
-                //             alert('click');
-                //             }
-                //         }
-                //     }
-                // ],
+                communityCount:0,
                 searchOption: {
                     city: '陕西',
                     citylimit: true
                 },
+                copyMarkers:[],
                 tempSelect:[
-                    {
-                        value:20,
-                        color:'#33ABF1'
-                    },
-                    {
-                        value:45,
-                        color:'#33ABF1'
-                    },
-                    {
-                        value:23,
-                        color:'#FF716A'
-                    }
+
                 ]
             };
         },
@@ -107,20 +57,17 @@
             },
             async getcommunityDistribute(){
                 const {result} = await this.$http('community/communityDistribute');
-                this.tempDistribute = result;
+                this.tempSelect =[{name:'cool',value:result.cool},{name:'normal',value:result.normal},{name:'hot',value:result.hot}]
             },
             selectAll(){
                 this.allActive = true;
+                this.activeIndex = -1;
                 this.getAllCommunity();
             },
-            selectLow(event){
+            selectTemp(index){
                 this.allActive = false;
-            },
-            selectNormal(event){
-                this.allActive = false;
-            },
-            selectHigh(){
-                this.allActive = false;
+                this.activeIndex = index;
+                this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)})
             },
             //搜索小区
             onSearchResult(pois) {
@@ -142,10 +89,11 @@
             //获取全部小区
             async getAllCommunity(){
                 this.markers = [];
-                const {result:{rows}} = await this.$http(`community/getCommunity`)
+                const {result:{rows,total}} = await this.$http(`community/getCommunity`)
                 this.analysisData(rows)
+                this.communityCount = total;
             },
-            //分析小区数据
+            //分析小区数据 1:低温 2：常温 3：高温
             analysisData(data){
                 const markers =[];
                 const location = [];
@@ -155,10 +103,12 @@
                         template: `<div class="marker-box" @click="dialogShow()">
                                         <div class="circle-box" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${i}</div>
                                         <div class="marker-text">${data[i].community_name}</div>
-                                    </div>`
+                                    </div>`,
+                        status:data[i].data_value<16?1:data[i].data_value>25?3:2
                     }); 
                 }
                 this.markers = markers
+                this.copyMarkers = markers;
             },
             dialogShow(){
                 console.log(1111)
@@ -171,7 +121,6 @@
            }
            this.getAllCommunity();
            this.getcommunityDistribute();
-           console.log(this.markers)
         }
     };
 </script>
