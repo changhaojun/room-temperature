@@ -27,6 +27,8 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
+      '$styles': resolve('src/assets/styles'),
+      '@charts': resolve('src/public')
     }
   },
   module: {
@@ -78,5 +80,8 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
+  },
+  externals: {
+    'AMap': 'AMap'
   }
 }
