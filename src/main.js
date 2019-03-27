@@ -9,6 +9,9 @@ import httpClient from './public/server';
 import 'muse-ui/lib/styles/base.less';
 import { Button, Select, Helpers, TextField,Checkbox,Radio,Switch,theme,DateInput,Picker,Form, AppBar,List, Menu,Icon} from 'muse-ui';
 import 'muse-ui/lib/styles/theme.less';
+import echarts from 'echarts';
+
+Vue.prototype.$echarts = echarts 
 
 Vue.use(Button);
 Vue.use(Select);
