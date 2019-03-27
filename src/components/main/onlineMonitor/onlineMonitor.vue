@@ -21,7 +21,8 @@
                 </div>
             </div>
             <div class="main-table">
-                <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;">
+                <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;"
+                    @row-click='details'>
                     <el-table-column prop="community_name" label="小区名称" width="180"></el-table-column>
                     <el-table-column prop="result.avg_data" label="平均温度(℃)" ></el-table-column>
                     <el-table-column prop="result.min_data" label="室外温度(℃)" ></el-table-column>
@@ -41,7 +42,7 @@
                         <el-table-column prop="result.avg_data" label="边" ></el-table-column>
                     </el-table-column>
                 </el-table>
-                <el-pagination
+                <el-pagination v-if="initData.datas.length > 0"
                     layout="prev, pager, next, jumper"
                     @current-change='pageChange'
                     prev-click='pageChange' 
@@ -56,7 +57,9 @@
 </template>
 
 <script>
+import CommunityDetails from './communityDetails.vue';
 export default {
+    components: {CommunityDetails},
     data() {
         return {
             conditions: {
@@ -113,6 +116,17 @@ export default {
                 }
             } 
         },
+        // 小区详情
+        details(row) {
+            console.log(row);
+            this.$router.push({
+                name: 'CommunityDetails',
+                query: {
+                    community_id: row.community_id,
+                    community_name: row.community_name
+                }
+            })
+        }
     },
     created() {
         this.getCommunityList();
