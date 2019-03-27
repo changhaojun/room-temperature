@@ -1,5 +1,23 @@
+
 @mixin baseShadow {
     background:rgba(255,255,255,1);
-    box-shadow:0px 0px 16px 0px rgba(59,65,114,0.36);
+    box-shadow:0px 0px 16px 0px rgba(59,65,114,0.22);
     border-radius:6px;
+}
+
+@mixin fourBlockLayout($paddW: 30px, $paddH: 30px) {
+    width: 100%;
+    height: 100%;
+    >li{
+        width: calc((100% - #{$paddW}) / 2);
+        height: calc((100% - #{$paddH}) / 2);
+        float: left;
+        @include baseShadow();
+        &:nth-child(2n){
+            margin-left: $paddW;
+        }
+        &:nth-child(n+3){
+            margin-top: $paddH;
+        }
+    }
 }

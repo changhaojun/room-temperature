@@ -15,10 +15,11 @@
 
             <div id="user-menu">
                 <el-dropdown placement="top-start">
-                    <div class="user-config"><i class="iconfont iconuserbg"></i><span>设置</span></div>
+                    <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
                     <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item>配置告警</el-dropdown-item>
                         <el-dropdown-item>修改密码</el-dropdown-item>
-                        <el-dropdown-item>退出</el-dropdown-item>
+                        <el-dropdown-item>退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -29,7 +30,7 @@
         </div>
 
         <footer>
-            <p>背景智信远景软件技术有限公司</p>
+            <p>北京智信远景软件技术有限公司</p>
         </footer>
     </div>
 </template>
@@ -42,6 +43,7 @@ import OnlineMonitor from './onlineMonitor/onlineMonitor';
 import RoomMap from './map/Map';
 import WarnRecord from './warnRecord/warnRecord';
 import Analysis from './analysis/Analysis';
+import WarnConfig from './warnConfig/warnConfig';
 export default {
     children: [
         {
@@ -83,22 +85,23 @@ export default {
         width: 100%;
         height: 100%;
         >header{
-            box-shadow:0px 4px 16px 0px rgba(56,59,69,0.25);
             height: 60px;
             line-height: 60px;
+            font-size: 16px;
+            background:rgba(255,255,255,1);
+            box-shadow:0px 4px 16px 0px rgba(56,59,69,0.25);
             >h3{
                 float: left;
                 height: 60px;
-                background: yellow;
+                background: url('./../../assets/images/logo.png') no-repeat center;
                 width: 15%;
             }
             >nav{
                 float: left;
                 height: 60px;
-                width: 60%;
+                width: 45%;
                 display: flex;
                 flex-direction: row;
-                overflow: hidden;
                 >.router-nav{
                     display: block;
                     color: #000;
@@ -106,9 +109,12 @@ export default {
                     margin-top: 15px;
                     line-height: 30px;
                     flex: 1;
-                    margin-left: 20px;
+                    margin-left:30px;
                     text-align: center;
                     color:rgba(80,80,80,0.78);
+                    &:hover{
+                        opacity: 0.78;
+                    }
                     &.active-router{
                         background:rgba(255,165,9,1);
                         box-shadow:0px 5px 10px 0px rgba(255,165,9,0.71);
@@ -125,7 +131,11 @@ export default {
                 text-align: center;
                 margin-top: 15px;
                 line-height: 30px;
+                &:hover{
+                    opacity: 0.78;
+                }
                 .user-config{
+                    font-size: 16px;
                     cursor: pointer;
                     i{
                         margin-right: 3px;
@@ -137,8 +147,10 @@ export default {
 
         >#main_content{
             width: 100%;
-            height: calc(100% - 100px);
+            height: calc(100% - 110px);
             background: rgb(245,245,245);
+            overflow: hidden;
+            margin-top: 10px;
         }
 
         >footer{
