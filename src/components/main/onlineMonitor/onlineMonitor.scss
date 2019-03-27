@@ -1,0 +1,129 @@
+.online-monitor {
+    height: 100%;
+    padding: 20px 40px;
+    .montior-title {
+        color:rgba(70,76,91,1);
+        font-weight:bold;
+        font-size:18px;
+        font-family:SourceHanSansCN-Bold;
+        height: 40px;
+    }
+    .montior-main {
+        background:rgba(255,255,255,1);
+        box-shadow:0px 0px 16px 0px rgba(59,65,114,0.36);
+        border-radius:6px;
+        height: calc(100% - 40px);
+        overflow-y: auto;
+        .main-tool {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .tool-buttons {
+                button {
+                    width:87px;
+                    height:29px;
+                    border-radius:15px;
+                    margin-right: 32px;
+                    font-family:SourceHanSansCN-Normal;
+                    font-weight:400;
+                }
+                .all {
+                    background:rgba(255,165,9,1);
+                    box-shadow:0px 5px 10px 0px rgba(255,165,9,0.71);
+                }
+                .warn {
+                    background:rgba(255,165,9,0);
+                    border:1px solid rgba(148, 148, 148, 1);
+                    color:rgba(148,148,148,1);
+                }
+            }
+            .refresh {
+                color:rgba(148,148,148,1);
+                margin-right: 108px;
+                span {
+                    margin-right: 6px;
+                }
+            }
+            .tool-search {
+                position: relative;
+                .el-input__inner {
+                    width:201px;
+                    height:34px;
+                    background:rgba(237,239,242,1);
+                    border-radius:17px;
+                    padding-right: 30px;
+                }
+                input::-webkit-input-placeholder {
+                    font-size:14px;
+                    font-family:SourceHanSansCN-Regular;
+                    font-weight:bold;
+                    color:rgba(114,114,114,1);
+                    opacity:0.6;
+                }
+                .icon {
+                    position: absolute;
+                    top: 7px;
+                    right: 10px;
+                    color:rgba(0,0,0,1);
+                    opacity:0.4;
+                    font-size: 14px;
+                    cursor: pointer;
+                }
+            }
+        }
+        .main-table {
+            padding: 0 40px 0 20px;
+            .el-table .cell {
+                text-align: center;
+                font-size: 14px;
+                font-family: MicrosoftYaHei;
+                font-weight: 400;
+            }
+            .el-table thead.is-group th {
+                background: rgba(248,248,249,1);
+            }
+            .el-table th>.cell {
+                color: rgba(118,118,118,1);
+            }
+            .el-table .el-table_1_column_1>.cell {
+                text-align: left;
+            }
+            .el-table td div {
+                color:rgba(70,76,91,1);
+            }
+            .el-table td, .el-table th {
+                height: 60px;
+            }
+            .el-table th {
+                height: 40px;
+                padding: 0;
+            }
+            .el-pager li {
+                font-weight: 400;
+                color: rgba(70,76,91,1);
+            }
+            .el-pager li.active {
+                color: #409eff;
+            }
+            .el-pagination .btn-prev {
+                padding: 0;
+                margin-right: 6px;
+            }
+            .el-pagination .btn-next {
+                padding: 0; 
+                margin-left: 6px;
+            }
+            .el-pagination__jump {
+                float: right;
+            }
+            .el-pagination {
+                padding: 0;
+            }
+            .el-pagination button, .el-pagination span:not([class*=suffix]) {
+                min-width: 0;
+            }
+        }
+    }
+    
+}
