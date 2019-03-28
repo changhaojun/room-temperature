@@ -143,7 +143,7 @@
                 let res = '';
                 if (this.typeOfID == 1) {
                     res = await this.$http.get(
-                        'http://121.42.253.149:18859/app/mock/31/GET//v1/building/getBuildingInfo', {
+                        'building/getBuildingInfo', {
                             data: {
                                 building_id: this.ID,
                                 house_count: 1,
@@ -156,7 +156,7 @@
                         });
                 } else {
                     res = await this.$http.get(
-                        'http://121.42.253.149:18859/app/mock/31/GET//v1/community/getCommunityInfo', {
+                        'community/getCommunityInfo', {
                             data: {
                                 community_id: this.ID,
                                 house_count: 1,
@@ -168,24 +168,18 @@
                             }
                         });
                 }
-                if (res.code == 200) {
-                    this.info = res.result;
-                    let sum = this.info.room_tempera.normal + this.info.room_tempera.cool + this
-                        .info.room_tempera.hot;
-                    this.normalPerc = Number(this.info.room_tempera.normal / sum * 100).toFixed(
-                        2) + '%';
-                    this.coolPerc = Number(this.info.room_tempera.cool / sum * 100).toFixed(2) +
-                        '%';
-                    this.hotPerc = Number(this.info.room_tempera.hot / sum * 100).toFixed(2) +
-                        '%';
-                    this.drawLine();
-                } else {
-                    this.$message({
-                        message: '网络请求失败',
-                        type: 'error',
-                        duration: 1000
-                    });
-                }
+
+                this.info = res.result;
+                let sum = this.info.room_tempera.normal + this.info.room_tempera.cool + this
+                    .info.room_tempera.hot;
+                this.normalPerc = Number(this.info.room_tempera.normal / sum * 100).toFixed(
+                    2) + '%';
+                this.coolPerc = Number(this.info.room_tempera.cool / sum * 100).toFixed(2) +
+                    '%';
+                this.hotPerc = Number(this.info.room_tempera.hot / sum * 100).toFixed(2) +
+                    '%';
+                this.drawLine();
+
 
             },
             drawLine() {
