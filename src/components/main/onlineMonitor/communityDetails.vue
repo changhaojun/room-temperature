@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' :pageNumber='conditions.page_number' @page-change='pageChange'></table-page>
+                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' @page-change='pageChange'></table-page>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@ export default {
             conditions: {
                 community_id: null,
                 user_number: null,
-                page_size: 8,
+                page_size: 6,
                 page_number: 1
             },
             communityName: '',
@@ -48,27 +48,27 @@ export default {
                 },
                 {
                     label: "户主名称",
-                    prop: "user_house_id"
+                    prop: ""
                 },
                 {
                     label: "位置",
-                    prop: "building_name"
+                    prop: "position"
                 },
                 {
                     label: "分段",
-                    prop: "building_id"
+                    prop: "distance"
                 },
                 {
                     label: "室外温度(℃)",
-                    prop: "building_id"
+                    prop: ""
                 },
                 {
                     label: "室内温度(℃)",
-                    prop: "building_id"
+                    prop: "data_value"
                 },
                 {
                     label: "时间",
-                    prop: "building_id"
+                    prop: "data_time"
                 },
             ]
         }
@@ -86,6 +86,10 @@ export default {
             }
             console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('build/getHouse', {data: this.conditions});
+            for (const row of rows) {
+                row.distance  = row.distance === 1 ? '近' : row.distance === 2 ? '中' : row.distance === 3 ? '远' : '';
+                row.position  = row.position === 1 ? '顶' : row.position === 2 ? '底' : row.position === 3 ? '边' : '';
+            }
             this.initData.datas = rows;
             this.initData.total = total;
             console.log(this.initData);
@@ -97,17 +101,24 @@ export default {
         },
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
-                if(this.conditions.user_number && !this.conditions.user_number.includes(' ')) {
-                    this.conditions.page_number = 1;
-                    this.getHouseList();
-                }
+                this.conditions.page_number = 1;
+                this.getHouseList();
             } 
+        },
+        getPageSize() {
+            const rowHeight = 60;
+            const block = document.querySelector('.montior-main').offsetHeight;
+            const rowCount = Math.floor((block - 204) / rowHeight);
+            this.conditions.page_size = rowCount;
         }
+    },
+    mounted() {
+        this.getPageSize();
+        this.getHouseList();
     },
     created() {
         this.conditions.community_id = Number(this.$route.query.community_id);
         this.communityName = this.$route.query.community_name;
-        this.getHouseList();
     }
 }
 </script>
