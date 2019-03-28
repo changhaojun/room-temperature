@@ -11,7 +11,7 @@
                         <dl>
                             <dt><div><i style="color:#FFA509" class="iconfont iconwendu"></i></div></dt>
                             <dd>
-                                <p><span>21</span><span>℃</span></p>
+                                <p><span>{{companyInfo.avg_data}}</span><span>℃</span></p>
                                 <p>平均室温</p>
                             </dd>
                         </dl>
@@ -20,7 +20,7 @@
                         <dl>
                             <dt><div><i style="color:#1EC2B4;font-size:28px" class="iconfont icondashaxiaoqudizhi01"></i></div></dt>
                             <dd>
-                                <p><span>46</span><span>个</span></p>
+                                <p><span>{{companyInfo.community_count}}</span><span>个</span></p>
                                 <p>小区数量</p>
                             </dd>
                         </dl>
@@ -29,7 +29,7 @@
                         <dl>
                             <dt><div><i style="color:#FF9C71;" class="iconfont iconfangzi222"></i></div></dt>
                             <dd>
-                                <p><span>212</span><span>户</span></p>
+                                <p><span>{{companyInfo.house_count}}</span><span>户</span></p>
                                 <p>住户数量</p>
                             </dd>
                         </dl>
@@ -38,7 +38,7 @@
                         <dl>
                             <dt><div><i style="color:#FFA509;font-size:28px" class="iconfont iconziyuanxhdpi"></i></div></dt>
                             <dd>
-                                <p><span>210</span><span>户</span></p>
+                                <p><span>{{companyInfo.monitor_house_count}}</span><span>户</span></p>
                                 <p>监测住户数量</p>
                             </dd>
                         </dl>
@@ -62,7 +62,7 @@ import {lineCharts, barCharts} from '@charts/charts'
 export default {
     data () {
         return {
-
+            companyInfo: {}
         }
     },
     methods: {
@@ -73,13 +73,46 @@ export default {
             const dataY1 = [12, 13, 14, 15, 16, 17, 18];
             const dataY2 = [18, 17, 16, 15, 15, 14, 13];
             const line = lineCharts(this.$refs['average-tem'],dataX, dataY1, dataY2);
+        },
 
-            const bar = barCharts(this.$refs['high-top'], {dataX, dataY: dataY1}, ['#F5C51D','#EFA31F'])
-            const bar2 = barCharts(this.$refs['low-top'], {dataX, dataY: dataY2}, ['#00F0FF', '#00A8FF'])
+        async getHightTop() {
+            const {result: {rows}} = await this.$http('company/hotTop');
+            const dataX = [], dataY = [];
+            for(const row of rows) {
+                const {community_name, data_value} = row;
+                dataX.push(community_name);
+                dataY.push(data_value);
+            }
+            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'])
+        },
+        async getCoolTop() {
+            const {result: {rows}} = await this.$http('company/coolTop');
+            const dataX = [], dataY = [];
+            for(const row of rows) {
+                const {community_name, data_value} = row;
+                dataX.push(community_name);
+                dataY.push(data_value);
+            }
+            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'])
+        },
+
+        async getBasicInfo() {
+            const {result} = await this.$http('company/getCompanyInfo',{
+                data: {
+                    community_count: 1,
+                    house_count:1,
+                    monitor_house_count:1,
+                    avg_data:1
+                }
+            });
+            this.companyInfo = result;
         }
     },
     mounted() {
         this.getAverage();
+        this.getHightTop();
+        this.getCoolTop();
+        this.getBasicInfo();
     }
 }
 </script>
