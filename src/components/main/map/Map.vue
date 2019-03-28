@@ -2,8 +2,8 @@
     <div class="amap-page-container">
         
         <div class="header">
-            <el-button round :class="[!allActive?'normal':'active']" @click="selectAll()">全部</el-button>
-             
+            <!-- <el-button round  @click="selectAll()">全部</el-button> -->
+            <mu-button round :class="[!allActive?'normal':'active']"  @click="selectAll()">全部</mu-button>
             <div class="temp-select">
                 <span class="label">温度区间选择</span>
                  <!-- <div class="user-bar unonline-bar"></div>  -->
@@ -17,7 +17,7 @@
                 <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
             </div>
         </div>
-       <el-amap vid="amap-demo"  class="amap-demo" id="container" :center="center"  :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973">
+       <el-amap vid="amap-demo"  class="amap-demo" id="container" :center="center" :zooms="zooms" :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973">
            <el-amap-marker v-for="(marker,index) in markers" :key="index+'a'"  :position="marker.center" :template="marker.template"></el-amap-marker>
             <!-- <el-amap-circle-marker v-for="(marker,index) in markers" :key="index+'a'" :center="marker.center" :radius="marker.radius" :stroke-weight="marker.strokeWeight" :fill-color="marker.fillColor" :fill-opacity="marker.fillOpacity" :stroke-color="marker.strokeColor" :events="marker.events" :z-index='9999' :content="marker.index"></el-amap-circle-marker>
             <el-amap-text v-for="(marker,index) in markers" :key="index+'b'" :text="marker.text" :position="marker.center" :events="marker.events" :z-index='100' :offset="[42,0]"></el-amap-text> -->
@@ -25,14 +25,17 @@
        <el-dialog
             :title="dialogParams.title"
             :visible.sync="dialogParams.dialogVisible"
-            width="30%"
+            width="60%"
             custom-class="message-box"
             >
-            <span>这是一段信息</span>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogParams.dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogParams.dialogVisible = false">确 定</el-button>
-            </span>
+           <el-scrollbar style="height:100%">
+               <div>
+                <div class="main-top">
+                        <DataSearchTop  :ID="dialogParams.community_id" :typeOfID="0"></DataSearchTop>
+                </div>
+                <div style="height:600px"></div>
+               </div>
+           </el-scrollbar>
         </el-dialog>
     </div>
   </template>
@@ -40,12 +43,16 @@
   import VueAMap  from 'vue-amap';
   let _this={}
     export default {
+        components:{
+            DataSearchTop: ()=> import ('../../../assets/common/DataSearchTop/DataSearchTop.vue')
+        },
         data() {
             return {
                 activeIndex:-1,
                 allActive:true,
                 search:'',
                 zoom: 12,
+                zooms:[10,30],
                 center: [108.939621,34.343147], 
                 markers:[], 
                 communityCount:0,
@@ -57,7 +64,8 @@
                 tempSelect:[],
                 dialogParams:{
                     dialogVisible:false,
-                    title:""
+                    title:"",
+                    community_id:''
                 },
             };
         },
@@ -131,6 +139,8 @@
                 const community_name = event.target.align;
                 _this.dialogParams.dialogVisible = true;
                 _this.dialogParams.title = community_name;
+                _this.dialogParams.community_id = community_id;
+           
             },
         },
         created(){
