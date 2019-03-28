@@ -1,0 +1,105 @@
+.data-search-menu {
+    height: 100%;
+}
+
+.menu {
+    width: 240px;
+    height: 100%;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px 0px rgba(59, 65, 114, 0.16);
+    float: left;
+
+    .menu-search {
+        height: 34px;
+        margin-top: 40px;
+        margin-left: 19px;
+
+        input.el-input__inner {
+            width: 201px;
+            height: 34px;
+            background: rgba(237, 239, 242, 1);
+            border-radius: 17px;
+            border-width: 0px;
+
+        }
+
+        .el-input__inner::placeholder {
+            font-size: 14px;
+            font-family: SourceHanSansCN-Regular;
+            color: rgba(114, 114, 114, 1);
+            opacity: 0.6;
+        }
+
+        .el-input__suffix {
+            right: 33px;
+            top: 5px;
+            color: black;
+            opacity: 0.4;
+            cursor: pointer;
+        }
+    }
+
+    .menu-list {
+        margin-top: 15px;
+        margin-left: 20px;
+        height: calc(100% - 99px);
+        font-size: 16px;
+        font-family: SourceHanSansCN-Regular;
+        font-weight: 400;
+        color: rgba(114, 114, 114, 1);
+        opacity: 0.84;
+
+        .menu-scrollbar {
+            height: 100%;
+
+            .el-scrollbar__wrap{
+                overflow-x: hidden;
+            }
+
+            .community {
+                margin-bottom: 25px;
+
+                .community-name {
+                    span.clickedCommunity {
+                        color: #FFA509;
+                    }
+                }
+
+                .community-name,
+                .building-name {
+                    cursor: pointer;
+                }
+
+                .blank {
+                    height: 20px;
+                }
+
+                .building {
+                    width: 199px;
+                    height: 40px;
+
+                    .building-name {
+                        margin-left: 36px;
+                        padding-top: 8px;
+                        color: #727272
+                    }
+                }
+
+                .building.clickedBuilding {
+                    background: rgba(255, 165, 9, 1);
+                    box-shadow: 0px 5px 10px 0px rgba(255, 165, 9, 0.71);
+                    border-radius: 6px;
+
+                    .building-name {
+                        color: #fff;
+                    }
+                }
+            }
+
+            .community.clickedCommunity {
+                color: #FFA509
+            }
+        }
+
+    }
+}
