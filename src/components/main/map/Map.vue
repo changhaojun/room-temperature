@@ -38,7 +38,6 @@
   </template>
   <script>
   import VueAMap  from 'vue-amap';
-//   import AMap from 'vue-amap';
   let _this={}
     export default {
         data() {
@@ -57,7 +56,7 @@
                 copyMarkers:[],
                 tempSelect:[],
                 dialogParams:{
-                    dialogVisible:true,
+                    dialogVisible:false,
                     title:""
                 },
             };
@@ -70,9 +69,6 @@
                     // 插件集合 （插件按需引入）
                     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor']
                 });
-                // new AMap.Map('container',{
-                //     mapStyle: 'amap://styles/3b77fc3578a70a921c30f4ecd84f2973',
-                // });
             },
             async getcommunityDistribute(){
                 const {result} = await this.$http('community/communityDistribute');
@@ -121,8 +117,8 @@
                     markers.push({
                         center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
                         template: `<div class="marker-box" @click="dialogShow($event)">
-                                        <div class="circle-box" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
-                                        <div class="marker-text">${data[i].community_name}</div>
+                                        <div class="circle-box"  accessKey="${data[i].community_id}" align="${data[i].community_name}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
+                                        <div class="marker-text" accessKey="${data[i].community_id}" align="${data[i].community_name}">${data[i].community_name}</div>
                                     </div>`,
                         status:data[i].data_value<16?1:data[i].data_value>25?3:2
                     }); 
@@ -131,11 +127,10 @@
                 this.copyMarkers = markers;
             },
             dialogShow(event){
-                // alert("click")
-                console.log(_this)
-                
+                const community_id =  event.target.accessKey;
+                const community_name = event.target.align;
                 _this.dialogParams.dialogVisible = true;
-                // this.dialogParams.title = name;
+                _this.dialogParams.title = community_name;
             },
         },
         created(){
