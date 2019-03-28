@@ -6,8 +6,8 @@
         <div class="montior-main">
             <div class="main-tool">
                 <div class="tool-buttons">
-                    <mu-button color="warning" class="all">全部</mu-button>
-                    <mu-button color="" class="warn">告警</mu-button>
+                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
+                        @click="clickBtn(index+1)" v-for="btn,index in btns" :key="index">{{btn}}</mu-button>
                 </div>
                 <div style="display: flex; align-items: center;">
                     <div class="refresh">
@@ -15,7 +15,7 @@
                         <el-switch v-model="refresh" active-color="#FFA509" inactive-color="#949494" :width="33"></el-switch>
                     </div>
                     <div class="tool-search" @keydown="search($event)">
-                        <el-input v-model="conditions.key" placeholder="搜索"></el-input>
+                        <el-input v-model="communityName" placeholder="搜索"></el-input>
                         <span class="iconfont iconsousuo icon" @click="search($event)"></span>
                     </div>
                 </div>
@@ -24,22 +24,58 @@
                 <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;"
                     @row-click='details'>
                     <el-table-column prop="community_name" label="小区名称" width="180"></el-table-column>
-                    <el-table-column prop="result.avg_data" label="平均温度(℃)" ></el-table-column>
-                    <el-table-column prop="result.min_data" label="室外温度(℃)" ></el-table-column>
+                    <el-table-column prop="avg_data" label="平均温度(℃)" ></el-table-column>
+                    <el-table-column prop="" label="室外温度(℃)" ></el-table-column>
                     <el-table-column label="前段 ( 温度℃ )">
-                        <el-table-column prop="result.avg_data" label="顶" ></el-table-column>
-                        <el-table-column prop="result.avg_data" label="底" ></el-table-column>
-                        <el-table-column prop="result.avg_data" label="边" ></el-table-column>
+                        <el-table-column prop="befor.top.data_value" label="顶">
+                            <template slot-scope="scope">
+                                <div :class="scope.row.befor.top.status === 1 ? 'warnHigh' : scope.row.befor.top.status === 2 ? 'warnLow' : ''">{{scope.row.befor.top.data_value}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="befor.bottom.data_value" label="底" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.befor.bottom.status === 1 ? 'warnHigh' : scope.row.befor.bottom.status === 2 ? 'warnLow' : ''">{{scope.row.befor.bottom.data_value}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="befor.side.data_value" label="边" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.befor.side.status === 1 ? 'warnHigh' : scope.row.befor.side.status === 2 ? 'warnLow' : ''">{{scope.row.befor.side.data_value}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
-                    <el-table-column label="中端 ( 温度℃ )">
-                        <el-table-column prop="result.avg_data" label="顶" ></el-table-column>
-                        <el-table-column prop="result.avg_data" label="底" ></el-table-column>
-                        <el-table-column prop="result.avg_data" label="边" ></el-table-column>
+                    <el-table-column label="中段 ( 温度℃ )">
+                        <el-table-column prop="middle.top.data_value" label="顶" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.middle.top.status === 1 ? 'warnHigh' : scope.row.middle.top.status === 2 ? 'warnLow' : ''">{{scope.row.middle.top.data_value}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="middle.bottom.data_value" label="底" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.middle.bottom.status === 1 ? 'warnHigh' : scope.row.middle.bottom.status === 2 ? 'warnLow' : ''">{{scope.row.middle.bottom.data_value}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="middle.side.data_value" label="边" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.middle.side.status === 1 ? 'warnHigh' : scope.row.middle.side.status === 2 ? 'warnLow' : ''">{{scope.row.middle.side.data_value}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
-                    <el-table-column label="末端 ( 温度℃ )">
-                        <el-table-column prop="result.avg_data" label="顶" ></el-table-column>
-                        <el-table-column prop="result.avg_data" label="底" ></el-table-column>
-                        <el-table-column prop="result.avg_data" label="边" ></el-table-column>
+                    <el-table-column label="末段 ( 温度℃ )">
+                        <el-table-column prop="back.top.data_value" label="顶" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.back.top.status === 1 ? 'warnHigh' : scope.row.back.top.status === 2 ? 'warnLow' : ''">{{scope.row.back.top.data_value}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="back.bottom.data_value" label="底" >
+                            <template slot-scope="scope">
+                                <div :class="scope.row.back.bottom.status === 1 ? 'warnHigh' : scope.row.back.bottom.status === 2 ? 'warnLow' : ''">{{scope.row.back.bottom.data_value}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="back.side.data_value" label="边">
+                            <template slot-scope="scope" >
+                                <div :class="scope.row.back.side.status === 1 ? 'warnHigh' : scope.row.back.side.status === 2 ? 'warnLow' : ''">{{scope.row.back.side.data_value}}</div>
+                            </template>
+                        </el-table-column>
                     </el-table-column>
                 </el-table>
                 <el-pagination v-if="initData.datas.length > 0"
@@ -47,9 +83,9 @@
                     @current-change='pageChange'
                     prev-click='pageChange' 
                     next-click='pageChange'
-                    :current-page.sync="conditions.page_number"
+                    :current-page.sync="page_number"
                     :total="initData.total"
-                    :page-size="2">
+                    :page-size="page_size">
                 </el-pagination>
             </div>
         </div>       
@@ -62,59 +98,104 @@ export default {
     components: {CommunityDetails},
     data() {
         return {
-            conditions: {
-                key: '',
-                page_size: 8,
-                page_number: 1
-            },
+            
+            communityName: '' ,
+            page_size: 0,
+            page_number: 1,
             initData: {
+                allDatas: [],
+                allTotal: 0,
                 total: 0,
-                datas: []
+                datas: [],
+                warnData: [],
+                warnTotal: 0
             },
-            refresh: true
+            refresh: true,
+            btns: ['全部', '告警'],
+            indexActive: 1
         }
     },
     methods: {
-        // 获取小区列表
-        async getCommunityList() {
-            if(!this.conditions.key) {
-                delete this.conditions.key;
-            }
-            console.log(this.conditions);
-            const { result: { rows, total } } = await this.$http('community/getCommunity', {data: this.conditions});
-            if(rows.length > 0) {
-                let params = {
-                    community_id: null,
-                    avg_data: 1,
-                    max_data: 1,
-                    min_data: 1
-                }
-                for(let row of rows) {
-                    params.community_id = row.community_id;
-                    row.result = await this.getCommunityInfo(params);
-                }
-            }
-            this.initData.datas = rows;
+        // 获取小区数据报表
+        async getCommunityTable() {
+            const { result: { rows, total } } = await this.$http('community/getCommunityTable');
+            this.initData.allDatas = rows;
+            this.initData.allTotal = total;
             this.initData.total = total;
             console.log(this.initData);
-        },
-        // 获取小区信息
-        async getCommunityInfo(params) {
-            const {result}  = await this.$http('community/getCommunityInfo', {data: params});
-            return result;
+            this.pageChange(1);
         },
         //换页
         pageChange(current) {
-            this.conditions.page_number = current;
-            this.getCommunityList();
+            if(this.indexActive == 1) {
+                this.initData.total = this.initData.allTotal;
+                let n = Math.ceil(this.initData.total / this.page_size);
+                let end = current*this.page_size;
+                this.page_number = current;
+                if(n === this.page_number) {
+                    end = this.initData.total;
+                }
+                this.initData.datas = this.initData.allDatas.slice((current-1)*this.page_size, end);
+            }else {
+                this.initData.total = this.initData.warnTotal;
+                let n = Math.ceil(this.initData.total / this.page_size);
+                let end = current*this.page_size;
+                this.page_number = current;
+                if(n === this.page_number) {
+                    end = this.initData.total;
+                }
+                this.initData.datas = this.initData.warnData.slice((current-1)*this.page_size, end);
+            }
+            
         },
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
-                if(this.conditions.key && !this.conditions.key.includes(' ')) {
-                    this.conditions.page_number = 1;
-                    this.getCommunityList();
+                this.page_number = 1;
+                let datas = [];
+                if(this.indexActive == 1) {
+                    if(!this.communityName) {
+                        this.pageChange(1);
+                    }else {
+                        this.initData.allDatas.forEach(data => {
+                            if(data.community_name.includes(this.communityName)) {
+                                datas.push(data);
+                            }
+                        });
+                        this.initData.total = datas.length; 
+                        this.initData.datas = datas;
+                    }
+                }else {
+                    if(!this.communityName) {
+                        this.pageChange(1);
+                    }else {
+                        this.initData.warnData.forEach(data => {
+                            if(data.community_name.includes(this.communityName)) {
+                                datas.push(data);
+                            }
+                        });
+                        this.initData.total = datas.length; 
+                        this.initData.datas = datas;
+                    }
                 }
             } 
+        },
+        clickBtn(type) {
+            this.indexActive = type;
+            if(type === 1) {
+                this.pageChange(1);
+            }else {
+                this.page_number = 1;
+                let datas = [];
+                this.initData.allDatas.forEach(data => {
+                    if(data.status === 1) {
+                        datas.push(data);
+                    }
+                });
+                this.initData.warnData = datas;
+                this.initData.warnTotal = datas.length;
+                this.initData.total = datas.length; 
+                this.pageChange(1)
+            }
         },
         // 小区详情
         details(row) {
@@ -126,10 +207,17 @@ export default {
                     community_name: row.community_name
                 }
             })
+        },
+        getPageSize() {
+            const rowHeight = 60;
+            const block = document.querySelector('.montior-main').offsetHeight;
+            const rowCount = Math.floor((block - 204) / rowHeight);
+            this.page_size = rowCount;
         }
     },
-    created() {
-        this.getCommunityList();
+    mounted() {
+        this.getPageSize();
+        this.getCommunityTable();
     }
 }
 </script>

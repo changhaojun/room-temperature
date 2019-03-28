@@ -3,7 +3,7 @@
         <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;">
             <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index"></el-table-column>
         </el-table>
-        <el-pagination v-if="initData.datas.length > 0"
+        <el-pagination v-if="initData.datas.length > 0 && manager"
             layout="prev, pager, next, jumper"
             @current-change='pageChange'
             prev-click='pageChange' 
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    props: ['initData', 'columns', 'pageNumber'],
+    props: ['initData', 'columns', 'manager', 'pageNumber'],
     data() {
         return {
             page_number: 1
@@ -95,5 +95,8 @@ export default {
     }
     .el-pagination__editor {
         padding: 0 6px;
+    }
+    .el-pagination {
+        height: 50px;
     }
 </style>
