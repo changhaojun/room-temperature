@@ -7,7 +7,7 @@
         </div>
         <div class="menu-list">
             <el-scrollbar class="menu-scrollbar">
-                <div v-for="community in communityList" class="community"
+                <div v-for="(community,key) in communityList" class="community"
                     :class="{ clickedCommunity: expandedCommunityList.includes(community)}">
                     <div class="community-name">
                         <i class="el-icon-caret-bottom" v-if="expandedCommunityList.includes(community)"
@@ -17,7 +17,7 @@
                             @click="clickCommunity(community)">{{community.community_name}}</span>
                     </div>
                     <div v-if="expandedCommunityList.includes(community)" class="blank"></div>
-                    <div v-for="building in community.buildings" v-if="expandedCommunityList.includes(community)"
+                    <div v-for="(building,key) in community.buildings" v-if="expandedCommunityList.includes(community)"
                         class="building" :class="{ clickedBuilding: clickedBuilding == building}">
                         <div class="building-name" @click="clickBuliding(building)">
                             {{building.building_name}}
@@ -81,46 +81,34 @@
             },
             async getCommunityList() {
                 const res = await this.$http.get(
-                    'http://121.42.253.149:18859/app/mock/31/GET//v1/community/getCommunity', {
+                    'community/getCommunity', {
                         data: {
                             key: this.searchKey
                         }
                     });
                 let list = [];
                 //console.log('已获取小区列表');
-                if (res.code == 200) {
-                    list = res.result.rows;
-                    //console.log(list);
-                    for (let i = 0; i < list.length; i++) {
-                        const res2 = await this.$http.get(
-                            'http://121.42.253.149:18859/app/mock/31/GET//v1/building/getBuilding', {
-                                data: {
-                                    community_id: list[i].community_id
-                                }
-                            });
-                        if (res2.code == 200) {
-                            list[i].buildings = res2.result.rows;
-                            if (i == list.length - 1) {
-                                this.communityList = list;
-                                if (this.communityList.length != 0) {
-                                    this.clickCommunity(this.communityList[0]);
-                                }
+
+                list = res.result.rows;
+                //console.log(list);
+                for (let i = 0; i < list.length; i++) {
+                    const res2 = await this.$http.get(
+                        'building/getBuilding', {
+                            data: {
+                                community_id: list[i].community_id
                             }
-                        } else {
-                            this.$message({
-                                message: '网络请求失败',
-                                type: 'error',
-                                duration: 1000
-                            });
+                        });
+
+                    list[i].buildings = res2.result.rows;
+                    if (i == list.length - 1) {
+                        this.communityList = list;
+                        if (this.communityList.length != 0) {
+                            this.clickCommunity(this.communityList[0]);
                         }
                     }
-                } else {
-                    this.$message({
-                        message: '网络请求失败',
-                        type: 'error',
-                        duration: 1000
-                    });
+
                 }
+
             },
         },
         mounted() {

@@ -91,7 +91,7 @@
                 let res = '';
                 if (this.typeOfID == 0) {
                     res = await this.$http.get(
-                        'http://121.42.253.149:18859/app/mock/31/GET//v1/build/getHouse', {
+                        'build/getHouse', {
                             data: {
                                 community_id: this.ID,
                                 user_number: this.searchUser,
@@ -101,7 +101,7 @@
                         });
                 } else {
                     res = await this.$http.get(
-                        'http://121.42.253.149:18859/app/mock/31/GET//v1/building/getHouse', {
+                        'building/getHouse', {
                             data: {
                                 building_id: this.ID,
                                 user_number: this.searchUser,
@@ -110,17 +110,11 @@
                             }
                         });
                 }
-                if (res.code == 200) {
-                    this.tableData.total = res.result.total;
-                    this.tableData.datas = res.result.rows;
-                    console.log('this.tableData', this.tableData);
-                } else {
-                    this.$message({
-                        message: '网络请求失败',
-                        type: 'error',
-                        duration: 1000
-                    });
-                }
+
+                this.tableData.total = res.result.total;
+                this.tableData.datas = res.result.rows;
+                console.log('this.tableData', this.tableData);
+
             },
         },
     }
