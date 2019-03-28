@@ -7,12 +7,12 @@
             <div class="main-tool">
                 <div class="tool-buttons">
                     <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
-                        @click="clickBtn(index+1)" v-for="btn,index in btns" :key="index">{{btn}}</mu-button>
+                        @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
                 </div>
                 <div style="display: flex; align-items: center;">
                     <div class="refresh">
                         <span>自动刷新</span>
-                        <el-switch v-model="refresh" active-color="#FFA509" inactive-color="#949494" :width="33"></el-switch>
+                        <el-switch v-model="refresh" active-color="#FFA509" inactive-color="#949494" :width="33" @change='changeRefresh'></el-switch>
                     </div>
                     <div class="tool-search" @keydown="search($event)">
                         <el-input v-model="communityName" placeholder="搜索"></el-input>
@@ -21,59 +21,80 @@
                 </div>
             </div>
             <div class="main-table">
-                <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;"
-                    @row-click='details'>
-                    <el-table-column prop="community_name" label="小区名称" width="180"></el-table-column>
+                <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;">
+                    <el-table-column prop="community_name" label="小区名称" width="180">
+                        <template slot-scope="scope">
+                            <div @click='details(scope.row)' style="text-align: left; padding: 0 12px;">{{scope.row.community_name}}</div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="avg_data" label="平均温度(℃)" ></el-table-column>
                     <el-table-column prop="" label="室外温度(℃)" ></el-table-column>
                     <el-table-column label="前段 ( 温度℃ )">
                         <el-table-column prop="befor.top.data_value" label="顶">
                             <template slot-scope="scope">
-                                <div :class="scope.row.befor.top.status === 1 ? 'warnHigh' : scope.row.befor.top.status === 2 ? 'warnLow' : ''">{{scope.row.befor.top.data_value}}</div>
+                                <div :class="scope.row.befor.top.status === 1 ? 'warnHigh' : scope.row.befor.top.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.befor.top.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="befor.bottom.data_value" label="底" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.befor.bottom.status === 1 ? 'warnHigh' : scope.row.befor.bottom.status === 2 ? 'warnLow' : ''">{{scope.row.befor.bottom.data_value}}</div>
+                                <div :class="scope.row.befor.bottom.status === 1 ? 'warnHigh' : scope.row.befor.bottom.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.befor.bottom.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="befor.side.data_value" label="边" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.befor.side.status === 1 ? 'warnHigh' : scope.row.befor.side.status === 2 ? 'warnLow' : ''">{{scope.row.befor.side.data_value}}</div>
+                                <div :class="scope.row.befor.side.status === 1 ? 'warnHigh' : scope.row.befor.side.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.befor.side.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table-column>
                     <el-table-column label="中段 ( 温度℃ )">
                         <el-table-column prop="middle.top.data_value" label="顶" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.middle.top.status === 1 ? 'warnHigh' : scope.row.middle.top.status === 2 ? 'warnLow' : ''">{{scope.row.middle.top.data_value}}</div>
+                                <div :class="scope.row.middle.top.status === 1 ? 'warnHigh' : scope.row.middle.top.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.middle.top.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="middle.bottom.data_value" label="底" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.middle.bottom.status === 1 ? 'warnHigh' : scope.row.middle.bottom.status === 2 ? 'warnLow' : ''">{{scope.row.middle.bottom.data_value}}</div>
+                                <div :class="scope.row.middle.bottom.status === 1 ? 'warnHigh' : scope.row.middle.bottom.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.middle.bottom.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="middle.side.data_value" label="边" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.middle.side.status === 1 ? 'warnHigh' : scope.row.middle.side.status === 2 ? 'warnLow' : ''">{{scope.row.middle.side.data_value}}</div>
+                                <div :class="scope.row.middle.side.status === 1 ? 'warnHigh' : scope.row.middle.side.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.middle.side.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table-column>
                     <el-table-column label="末段 ( 温度℃ )">
                         <el-table-column prop="back.top.data_value" label="顶" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.back.top.status === 1 ? 'warnHigh' : scope.row.back.top.status === 2 ? 'warnLow' : ''">{{scope.row.back.top.data_value}}</div>
+                                <div :class="scope.row.back.top.status === 1 ? 'warnHigh' : scope.row.back.top.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.back.top.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="back.bottom.data_value" label="底" >
                             <template slot-scope="scope">
-                                <div :class="scope.row.back.bottom.status === 1 ? 'warnHigh' : scope.row.back.bottom.status === 2 ? 'warnLow' : ''">{{scope.row.back.bottom.data_value}}</div>
+                                <div :class="scope.row.back.bottom.status === 1 ? 'warnHigh' : scope.row.back.bottom.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.back.bottom.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                         <el-table-column prop="back.side.data_value" label="边">
                             <template slot-scope="scope" >
-                                <div :class="scope.row.back.side.status === 1 ? 'warnHigh' : scope.row.back.side.status === 2 ? 'warnLow' : ''">{{scope.row.back.side.data_value}}</div>
+                                <div :class="scope.row.back.side.status === 1 ? 'warnHigh' : scope.row.back.side.status === 2 ? 'warnLow' : ''" @click='details(scope.row)'>
+                                    {{scope.row.back.side.data_value}}
+                                </div>
                             </template>
                         </el-table-column>
                     </el-table-column>
@@ -112,7 +133,9 @@ export default {
             },
             refresh: true,
             btns: ['全部', '告警'],
-            indexActive: 1
+            indexActive: 1,
+
+            timer: null
         }
     },
     methods: {
@@ -211,13 +234,26 @@ export default {
         getPageSize() {
             const rowHeight = 60;
             const block = document.querySelector('.montior-main').offsetHeight;
-            const rowCount = Math.floor((block - 204) / rowHeight);
+            const rowCount = Math.floor((block - 228) / rowHeight);
             this.page_size = rowCount;
+        },
+        autoRefresh() {
+            this.timer = setInterval(() => {
+                this.getCommunityTable();    
+            },180000);
+        },
+        changeRefresh() {
+            if(!this.refresh) {
+                clearInterval(this.timer);
+            }else {
+                this.autoRefresh();
+            }
         }
     },
     mounted() {
         this.getPageSize();
         this.getCommunityTable();
+        this.autoRefresh();
     }
 }
 </script>
