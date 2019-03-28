@@ -45,7 +45,7 @@ export const barCharts = (el, data, barColor) => {
             shadowBlur: 10
         },
         toolbox: {
-            show: true,
+            show: false,
             feature: {
                 dataZoom: {
                     yAxisIndex: 'none'
@@ -128,7 +128,7 @@ export const lineCharts = (el, dataX, dataY1, dataY2) => {
             shadowBlur: 10
         },
         toolbox: {
-            show: true,
+            show: false,
             feature: {
                 dataZoom: {
                     yAxisIndex: 'none'
