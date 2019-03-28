@@ -137,8 +137,6 @@
 
                 }
             }
-
-
         },
         methods: {
             async getInfo() {
