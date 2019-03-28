@@ -88,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pie-center" id="myChart"></div>
+            <div class="pie-center" ref="myChart"></div>
             <div class="pie-right">
                 <div class="pie-tips-cool">
                     <div class="pie-tips-top">
@@ -114,6 +114,9 @@
 </template>
 
 <script>
+    import {
+        pieCharts
+    } from '@charts/charts'
     export default {
         data() {
             return {
@@ -188,54 +191,22 @@
 
             },
             drawLine() {
-                // 基于准备好的dom，初始化echarts实例
-                let myChart = this.$echarts.init(document.getElementById('myChart'))
-                // 绘制图表
-                myChart.setOption({
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b}: {c} ({d}%)"
-                    },
-                    series: [{
-                        name: '数据统计',
-                        type: 'pie',
-                        radius: ['40%', '70%'],
-                        avoidLabelOverlap: false,
-                        label: {
-                            normal: {
-                                show: false,
-                                position: 'center'
-                            }
-                        },
-                        labelLine: {
-                            normal: {
-                                show: false
-                            }
-                        },
-                        data: [{
-                                value: this.info.room_tempera.normal,
-                                name: '17 ~ 23℃',
-                                itemStyle: {
-                                    color: '#FFCB72'
-                                }
-                            },
-                            {
-                                value: this.info.room_tempera.cool,
-                                name: '<16℃',
-                                itemStyle: {
-                                    color: '#5DC8FF'
-                                }
-                            },
-                            {
-                                value: this.info.room_tempera.hot,
-                                name: '>24℃',
-                                itemStyle: {
-                                    color: '#FF9186'
-                                }
-                            },
-                        ]
-                    }]
-                });
+                const dataNormal = {
+                    value: this.info.room_tempera.normal,
+                    name: '17 ~ 23℃',
+                    color: '#FFCB72'
+                };
+                const dataCool = {
+                    value: this.info.room_tempera.cool,
+                    name: '<16℃',
+                    color: '#5DC8FF'
+                };
+                const dataHot = {
+                    value: this.info.room_tempera.hot,
+                    name: '>24℃',
+                    color: '#FF9186'
+                };
+                const pie = pieCharts(this.$refs['myChart'], dataNormal, dataCool, dataHot);
             }
 
         },
