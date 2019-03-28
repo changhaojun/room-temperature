@@ -40,6 +40,7 @@
 import FirstPage from './firstPage/firstPage';
 import DataSearch from './dataSearch/DataSearch';
 import OnlineMonitor from './onlineMonitor/onlineMonitor';
+import CommunityDetails from './onlineMonitor/communityDetails';
 import RoomMap from './map/Map';
 import WarnRecord from './warnRecord/warnRecord';
 import Analysis from './analysis/Analysis';
@@ -60,6 +61,11 @@ export default {
             path: '/main/onlineMonitor',
             name: 'OnlineMonitor',
             component: OnlineMonitor,
+        },
+        {
+            path: '/main/communityDetails',
+            name: 'CommunityDetails',
+            component: CommunityDetails,
         },
         {
             path: '/main/roomMap',
