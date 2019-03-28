@@ -5,9 +5,8 @@ import {
 } from 'element-ui';
 import convert from './convert.js'; //返回结果转为中文提示
 const Axios = axios.create({
-    // baseURL: 'http://121.42.253.149:18859/app/mock/25/v1/',
-    // baseURL: 'http://121.42.253.149:18859/app/mock/31/v1/',
-    baseURL: 'http://192.168.1.78:7001/v1',
+    baseURL: 'http://121.42.253.149:18859/app/mock/31/v1/',
+    // baseURL: 'http://192.168.1.78:7001/v1',
     timeout: 30000,
     responseType: 'json',
     withCredentials: false,
