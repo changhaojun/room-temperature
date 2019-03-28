@@ -5,7 +5,7 @@
                 <div class="main-chart-datas-top-households">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconfangzi222 green"></i>
+                            <i slot="suffix" class="iconfont iconfangzi222 green" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -19,7 +19,7 @@
                 <div class="main-chart-datas-top-monitoredHouseholds">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconziyuanxhdpi orange"></i>
+                            <i slot="suffix" class="iconfont iconziyuanxhdpi orange" style="font-size:24px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -35,7 +35,7 @@
                 <div class="main-chart-datas-bottem-averageTemperature">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconwendu yellow"></i>
+                            <i slot="suffix" class="iconfont iconwendu yellow" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -49,7 +49,7 @@
                 <div class="main-chart-datas-bottem-maxTemperature">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconwendu red"></i>
+                            <i slot="suffix" class="iconfont iconwendu red" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -63,7 +63,7 @@
                 <div class="main-chart-datas-bottem-minTemperature">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconwendu blue"></i>
+                            <i slot="suffix" class="iconfont iconwendu blue" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
