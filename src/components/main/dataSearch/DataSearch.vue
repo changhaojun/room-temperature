@@ -18,15 +18,17 @@
 </template>
 
 <script>
-    import DataSearchTop from '../../../assets/common/DataSearchTop/DataSearchTop.vue';
-    import DataSearchMenu from '../../../assets/common/DataSearchMenu/DataSearchMenu.vue';
-    import DataSearchTable from '../../../assets/common/DataSearchTable/DataSearchTable.vue'
+
     export default {
+        components: {
+            DataSearchTop: () => import('@common/DataSearchTop/DataSearchTop'),
+            DataSearchMenu: () => import('@common/DataSearchMenu/DataSearchMenu'),
+            DataSearchTable: () => import('@common/DataSearchTable/DataSearchTable')
+        },
         data() {
             return {
                 ID: -1,
                 typeOfID: -1,
-
             }
         },
         methods: {
@@ -52,11 +54,6 @@
 
         },
         mounted() {},
-        components: {
-            DataSearchTop,
-            DataSearchMenu,
-            DataSearchTable
-        }
     }
 
 </script>

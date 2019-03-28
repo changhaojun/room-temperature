@@ -69,13 +69,11 @@
             </div>
             <div class="config_footer">
                 <el-pagination
+                    @current-change="getConfigList"
                     :page-size="page.page_size"
-                    layout="prev, pager, next"
+                    layout="prev, pager, next, jumper"
                     :total="total">
                 </el-pagination>
-                <div class="jump" v-if="total > 1">
-                    <span>前往</span><input type="text" :model="jump_page">页
-                </div>
             </div>
         </div>
     </div>
@@ -151,151 +149,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import './../../../assets/styles/mixin.scss';
-#warn_config {
-    width: calc(100% - 60px);
-    height: calc(100% - 60px);
-    margin: 30px;
-    background: #fff;
-    @include baseShadow;
-    .el-dialog__header{
-        height: 0;
-        display: none;
-    }
-    .el-dialog__body{
-        padding: 0
-    }
-    .change_header{
-        height: 50px;
-        line-height: 50px;
-        border-bottom: 1px solid rgba(233,234,236,1);
-        position: relative;
-        >h3{
-            height: 50px;
-            text-indent: 20px;
-            >span{
-                font-size: 18px;
-                color: #464c5b;
-                font-weight: 600;
-            }
-            >i{
-                position: absolute;
-                right: 20px;
-                top:18px;
-                cursor: pointer;
-                transition: all linear 0.5s;
-                &:hover{
-                    color: skyblue;
-                }
-            }
-        }
-    }
-    .input-list{
-        .input-item{
-            margin-bottom: 20px;
-            margin-left: 10px;
-            >span{
-                font-size: 14px;
-                color: #464c5b;
-                margin-right: 20px;
-            }
-        }
-        .el-input{
-            width: 50%;
-        }
-    }
-    .change_footer{
-        margin-top: -10px;
-        padding: 15px;
-        border-top: 1px solid rgba(233,234,236,1);
-        button{
-            margin-left:20px;
-            height:26px;
-            line-height:26px;
-            padding:0;
-            width:90px
-        }
-    }
-    >.warn_config_main{
-        width: 100%;
-        height: 100%;
-        >.config_header{
-            height: 60px;
-            line-height: 60px;
-            >h4{
-                width: 60%;
-                height: 60px;
-                float: left;
-                text-indent: 20px;
-                font-size: 18px;
-                font-weight: 900
-            }
-            >div{
-                margin-right: 20px;
-                width: 20%;
-                height: 60px;
-                float: right;
-                input {
-                    border-radius: 13px;
-                    background: rgba(0, 0, 0, .05);
-                    border: 0;
-                    color: #000
-                }
-            }
-        }
-        >.config_tabel{
-            width: 100%;
-            height: calc(100% - 110px);
-            padding-left: 1%;
-            thead{
-                th{
-                    height: 70px;
-                    background:rgba(248,248,249,1);
-                }
-            }
-            .el-table{
-                height: 100%;
-                .el-table__body-wrapper {
-                    // height: 100%;d
-                    table{
-                        height: 100%;
-                        tbody{
-                            height: 100%;
-                            tr{
-                                height: 10% !important;
-                            }
-                        }
-                    }
-                }
-                .nohightConfig,.nolowConfig{
-                    color: #FF716A;
-                }
-            }
-        }
 
-        >.config_footer{
-            width: 100%;
-            height: 45px;
-            line-height: 50px;
-            padding-top: 5px;
-            position: relative;
-            >.jump{
-                position: absolute;
-                right: 30px;
-                top: 0;
-                >input{
-                    width: 40px;
-                    height: 24px;
-                    margin: 0 5px;
-                    background: rgba(0, 0, 0, .05);
-                    border-radius: 4px;
-                    border: 1px solid #ccc;
-                    outline: none;
-                    text-indent: 5px;
-                }
-            }
-        }
-    }
-}
-
+    @import './warnConfig.scss'
 </style>
