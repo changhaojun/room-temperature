@@ -202,3 +202,57 @@ export const lineCharts = (el, dataX, dataY1, dataY2) => {
     line.setOption(lineOption);
     return line;
 }
+
+export const pieCharts = (el, data1, data2, data3) => {
+    const pieOption = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        series: [{
+            name: '数据统计',
+            type: 'pie',
+            radius: ['40%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data: [{
+                    value: data1.value,
+                    name: data1.name,
+                    itemStyle: {
+                        color: data1.color
+                    }
+                },
+                {
+                    value: data2.value,
+                    name: data2.name,
+                    itemStyle: {
+                        color: data2.color
+                    }
+                },
+                {
+                    value: data3.value,
+                    name: data3.name,
+                    itemStyle: {
+                        color: data3.color
+                    }
+                },
+            ]
+        }]
+    }
+    const pie = echarts.init(el);
+    window.addEventListener('resize', () => {
+        pie.resize();
+    })
+    pie.setOption(pieOption);
+    return pie;
+}
