@@ -42,7 +42,7 @@
                 <mu-form-item label="旧密码" help-text="" prop="old_pwd" :rules="passwordRules">
                     <mu-text-field type="password" v-model="changeInfo.old_pwd" prop="username"></mu-text-field>
                 </mu-form-item>
-                <mu-form-item label="密码" prop="new_pwd" :rules="passwordRules">
+                <mu-form-item label="新密码" prop="new_pwd" :rules="passwordRules">
                     <mu-text-field type="password" v-model="changeInfo.new_pwd" prop="password"></mu-text-field>
                 </mu-form-item>
             </mu-form>
@@ -184,6 +184,7 @@ export default {
                     margin-left:30px;
                     text-align: center;
                     color:rgba(80,80,80,0.78);
+                    transition: all linear 0.5s;
                     &:hover{
                         opacity: 0.78;
                     }
