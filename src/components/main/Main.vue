@@ -14,12 +14,12 @@
             </nav>
 
             <div id="user-menu">
-                <el-dropdown placement="top-start">
+                <el-dropdown placement="top-start" @command="handleCommand">
                     <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>配置告警</el-dropdown-item>
-                        <el-dropdown-item>修改密码</el-dropdown-item>
-                        <el-dropdown-item>退出登录</el-dropdown-item>
+                        <el-dropdown-item command="config">配置告警</el-dropdown-item>
+                        <el-dropdown-item command="password">修改密码</el-dropdown-item>
+                        <el-dropdown-item command="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
@@ -32,6 +32,25 @@
         <footer>
             <p>北京智信远景软件技术有限公司</p>
         </footer>
+
+        <el-dialog
+            title="修改密码"
+            :visible.sync="changePassword"
+            width="30%">
+            <!-- <span>这是一段信息</span> -->
+            <mu-form ref="form" class="mu-demo-form" :model="changeInfo">
+                <mu-form-item label="旧密码" help-text="" prop="old_pwd" :rules="passwordRules">
+                    <mu-text-field type="password" v-model="changeInfo.old_pwd" prop="username"></mu-text-field>
+                </mu-form-item>
+                <mu-form-item label="密码" prop="new_pwd" :rules="passwordRules">
+                    <mu-text-field type="password" v-model="changeInfo.new_pwd" prop="password"></mu-text-field>
+                </mu-form-item>
+            </mu-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="changePassword = false">取 消</el-button>
+                <el-button type="primary" @click="modifyPwd">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -45,6 +64,48 @@ import WarnRecord from './warnRecord/warnRecord';
 import Analysis from './analysis/Analysis';
 import WarnConfig from './warnConfig/warnConfig';
 export default {
+    data () {
+        return {
+            passwordRules: [
+                { validate: (val) => !!val, message: '必须填写密码'}
+            ],
+            changeInfo: {
+                old_pwd: '',
+                new_pwd: ''
+            },
+            changePassword: false
+        }
+    },
+    methods: {
+        handleCommand(command) {
+            // console.log(command)
+            if(command === 'config') {
+                this.$router.push({
+                    path: '/main/warnConfig'
+                })
+            }
+            if(command === 'password') {
+                this.changePassword = true;
+            }
+            if(command === 'exit') {
+                sessionStorage.removeItem('userInfo');
+                this.$router.push({
+                    path: '/'
+                })
+            }
+        },
+        async modifyPwd() {
+            const res = await this.$http.put('user/password',Object.assign(this.changeInfo, {
+                user_id: Number(JSON.parse(sessionStorage.getItem('userInfo')).user_id)
+            }))
+            this.$message({
+                message: res.message,
+                type: 'success',
+                duration: 1000
+            })
+            this.changePassword = false;
+        }
+    },
     children: [
         {
             path: '/main/firstPage',
@@ -75,6 +136,11 @@ export default {
             path: '/main/analysis',
             name: 'Analysis',
             component: Analysis,
+        },
+        {
+            path: '/main/warnConfig',
+            name: 'WarnConfig',
+            component: WarnConfig
         }
     ]
 }

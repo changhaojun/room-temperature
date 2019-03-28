@@ -29,7 +29,7 @@ export const barCharts = (el, data, barColor) => {
         tooltip: {
             trigger: 'axis'
         },
-        color: barColor,
+        color: barColor[0],
         legend: {
             data:[
                 {
@@ -77,7 +77,18 @@ export const barCharts = (el, data, barColor) => {
                 type: 'bar',
                 data: data.dataY,
                 itemStyle: {
-                    color: barColor
+                    normal: {
+                        barBorderRadius: [7.5, 7.5, 0, 0],
+                        color: new echarts.graphic.LinearGradient(
+                            0, 1, 0, 0, [{
+                                offset: 0,
+                                color: barColor[0]
+                            }, {
+                                offset: 1,
+                                color: barColor[1]
+                            }]
+                        )
+                    }
                 },
                 barWidth: 15
             }

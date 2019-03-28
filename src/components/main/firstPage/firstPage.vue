@@ -74,8 +74,8 @@ export default {
             const dataY2 = [18, 17, 16, 15, 15, 14, 13];
             const line = lineCharts(this.$refs['average-tem'],dataX, dataY1, dataY2);
 
-            const bar = barCharts(this.$refs['high-top'], {dataX, dataY: dataY1}, '#FFA509')
-            const bar2 = barCharts(this.$refs['low-top'], {dataX, dataY: dataY2}, '#00A8FF')
+            const bar = barCharts(this.$refs['high-top'], {dataX, dataY: dataY1}, ['#F5C51D','#EFA31F'])
+            const bar2 = barCharts(this.$refs['low-top'], {dataX, dataY: dataY2}, ['#00F0FF', '#00A8FF'])
         }
     },
     mounted() {

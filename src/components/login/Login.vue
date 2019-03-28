@@ -59,27 +59,24 @@ export default {
         submitBtn() {
             this.$refs['form'].validate().then(async valid => {
                 if (valid) {
-                this.btnTxt = '登陆中...'
-                this.disable = true;
-                const res = await this.$http.post('login', this.user);
-                this.$message({
-                    message: '登录成功',
-                    type: 'success',
-                    duration: 1000
-                })
-                if (this.remember) {
-                    localStorage.setItem('remember', true);
-                    localStorage.setItem('userInfo', JSON.stringify(this.user));
-                } else {
-                    localStorage.setItem('remember', false);
-                    localStorage.removeItem('userInfo');
-                }
-                const { result: { actk, fullname, user_id } } = res;
-                sessionStorage.setItem('actk', actk);
-                sessionStorage.setItem('fullname', fullname);
-                sessionStorage.setItem('user_id', user_id);
-                sessionStorage.setItem('userInfo', JSON.stringify(this.user));
-                this.$router.push({ path: '/main/firstPage' });
+                    this.btnTxt = '登陆中...'
+                    this.disable = true;
+                    const res = await this.$http.post('user/login', this.user);
+                    this.$message({
+                        message: '登录成功',
+                        type: 'success',
+                        duration: 1000
+                    })
+                    if (this.remember) {
+                        localStorage.setItem('remember', true);
+                        localStorage.setItem('userInfo', JSON.stringify(this.user));
+                    } else {
+                        localStorage.setItem('remember', false);
+                        localStorage.removeItem('userInfo');
+                    }
+                    const { result: { fullname, user_id } } = res;
+                    sessionStorage.setItem('userInfo', JSON.stringify(Object.assign({ fullname, user_id }, this.user)));
+                    this.$router.push({ path: '/main/firstPage' });
                 }
             });
         },
