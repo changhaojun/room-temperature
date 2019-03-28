@@ -17,15 +17,29 @@
                 <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
             </div>
         </div>
-       <el-amap vid="amap-demo"  class="amap-demo" :center="center"  :zoom="zoom">
+       <el-amap vid="amap-demo"  class="amap-demo" id="container" :center="center"  :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973">
            <el-amap-marker v-for="(marker,index) in markers" :key="index+'a'"  :position="marker.center" :template="marker.template"></el-amap-marker>
             <!-- <el-amap-circle-marker v-for="(marker,index) in markers" :key="index+'a'" :center="marker.center" :radius="marker.radius" :stroke-weight="marker.strokeWeight" :fill-color="marker.fillColor" :fill-opacity="marker.fillOpacity" :stroke-color="marker.strokeColor" :events="marker.events" :z-index='9999' :content="marker.index"></el-amap-circle-marker>
             <el-amap-text v-for="(marker,index) in markers" :key="index+'b'" :text="marker.text" :position="marker.center" :events="marker.events" :z-index='100' :offset="[42,0]"></el-amap-text> -->
        </el-amap>
+       <el-dialog
+            :title="dialogParams.title"
+            :visible.sync="dialogParams.dialogVisible"
+            width="30%"
+            custom-class="message-box"
+            >
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogParams.dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogParams.dialogVisible = false">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
   </template>
   <script>
   import VueAMap  from 'vue-amap';
+//   import AMap from 'vue-amap';
+  let _this={}
     export default {
         data() {
             return {
@@ -41,9 +55,11 @@
                     citylimit: true
                 },
                 copyMarkers:[],
-                tempSelect:[
-
-                ]
+                tempSelect:[],
+                dialogParams:{
+                    dialogVisible:true,
+                    title:""
+                },
             };
         },
         methods:{
@@ -54,6 +70,9 @@
                     // 插件集合 （插件按需引入）
                     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor']
                 });
+                // new AMap.Map('container',{
+                //     mapStyle: 'amap://styles/3b77fc3578a70a921c30f4ecd84f2973',
+                // });
             },
             async getcommunityDistribute(){
                 const {result} = await this.$http('community/communityDistribute');
@@ -63,6 +82,7 @@
                 this.allActive = true;
                 this.activeIndex = -1;
                 this.getAllCommunity();
+               
             },
             selectTemp(index){
                 this.allActive = false;
@@ -100,8 +120,8 @@
                 for(let i=0;i<data.length;i++){
                     markers.push({
                         center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
-                        template: `<div class="marker-box" @click="dialogShow()">
-                                        <div class="circle-box" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${i}</div>
+                        template: `<div class="marker-box" @click="dialogShow($event)">
+                                        <div class="circle-box" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
                                         <div class="marker-text">${data[i].community_name}</div>
                                     </div>`,
                         status:data[i].data_value<16?1:data[i].data_value>25?3:2
@@ -110,17 +130,24 @@
                 this.markers = markers
                 this.copyMarkers = markers;
             },
-            dialogShow(){
-                console.log(1111)
+            dialogShow(event){
+                // alert("click")
+                console.log(_this)
+                
+                _this.dialogParams.dialogVisible = true;
+                // this.dialogParams.title = name;
             },
-
         },
         created(){
            if(!window.AMap && !window.AMapUI){
                 this.initMap()
            }
+           console.log(this)
            this.getAllCommunity();
            this.getcommunityDistribute();
+        },
+         beforeCreate(){
+            _this = this;
         }
     };
 </script>

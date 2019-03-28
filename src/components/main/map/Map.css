@@ -154,3 +154,7 @@
 .amap-page-container > .amap-marker {
   border-radius: 10px !important;
 }
+
+.message-box {
+  z-index: 999999;
+}
