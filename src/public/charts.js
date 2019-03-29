@@ -34,7 +34,7 @@ export const barCharts = (el, data, barColor, chartType) => {
         color: barColor[0],
         legend: {
             data: [{
-                name: '室温',
+                name:chartType === 1 ? '告警住户' : '室温',
                 icon: 'roundRect'
             }],
             right: 50,
@@ -78,7 +78,7 @@ export const barCharts = (el, data, barColor, chartType) => {
             data: data.dataY,
             itemStyle: {
                 normal: {
-                    barBorderRadius: [7.5, 7.5, 0, 0],
+                    barBorderRadius: chartType === 1 ? [7.5, 7.5, 0, 0] : [0,0,0,0],
                     color: new echarts.graphic.LinearGradient(
                         0, 1, 0, 0, [{
                             offset: 0,
@@ -96,9 +96,9 @@ export const barCharts = (el, data, barColor, chartType) => {
 
     if (chartType == 1) {
         barOption.yAxis.axisLabel = {
-            formatter: '{value} °C'
+            formatter: '{value}'
         };
-        barOption.series[0].name = '室温';
+        barOption.series[0].name = '告警住户';
     } else if (chartType == 0) {
         barOption.xAxis.axisLabel = {
             formatter: '{value} °C'
@@ -114,7 +114,7 @@ export const barCharts = (el, data, barColor, chartType) => {
     return bar;
 }
 
-export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
+export const lineCharts = (el, grid, dataX, dataY1, dataY2, interval) => {
     const lineOption = {
         grid: grid,
         tooltip: {
@@ -159,7 +159,10 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
             boundaryGap: false,
             axisLine,
             splitLine,
-            data: dataX
+            data: dataX,
+            axisLabel: {
+                interval: interval ? interval : 'auto'
+            }
         },
         yAxis: {
             type: 'value',

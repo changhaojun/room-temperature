@@ -10,7 +10,7 @@
                     <li>
                         <div class="device-count">
                             <dl>
-                                <dt><span style="color:#F9BB50">251</span>/<span>262</span></dt>
+                                <dt><span style="color:#F9BB50">{{companyInfo.online_count}}</span>/<span>{{companyInfo.monitor_house_count}}</span></dt>
                                 <dd>设备在线率</dd>
                             </dl>
                         </div>
@@ -57,11 +57,11 @@
                 </ul>
             </li>
             <li class="">
-                <h4>高温TOP</h4>
+                <h4>分公司告警TOP</h4>
                 <div ref="high-top" class="charts-content"></div>
             </li>
             <li class="">
-                <h4>低温TOP</h4>
+                <h4>小区告警TOP</h4>
                 <div ref="low-top" class="charts-content"></div>
             </li>
         </ul>
@@ -78,71 +78,77 @@ export default {
     },
     methods: {
         async getAverage() {
-            const res = await this.$http("community/getCommunity");
+            const {result:{data_value}} = await this.$http("historyData/getCustomerHistory");
 
-            const dataX = ['0h', '12h', '24h', '36h', '48h', '60h', '72h'];
-            const dataY1 = [12, 13, 14, 15, 16, 17, 18];
-            const dataY2 = [18, 17, 16, 15, 15, 14, 13];
+            const dataX = [];
+            for(let i = 0;i < 73;i ++) {
+                dataX.push(i + 'h');
+            }
+            const dataY1 = data_value;
+
+            const dataY2 = data_value;
             const line = lineCharts(this.$refs['average-tem'],{
                 left: '5%',
                 right: '10%',
                 bottom: '10%',
                 top: '15%',
                 containLabel: true
-            },dataX, dataY1, dataY2);
+            },dataX, dataY1, dataY2, 11);
         },
 
-        async getHightTop() {
-            const {result: {rows}} = await this.$http('company/hotTop');
+        async getComponyTop() {
+            const {result: {rows}} = await this.$http('customer/getAlarmTop', {
+                data: {
+                    topType: 1
+                }
+            });
             const dataX = [], dataY = [];
             for(const row of rows) {
-                const {community_name, data_value} = row;
-                dataX.push(community_name);
-                dataY.push(data_value);
+                const {company_name, total} = row;
+                dataX.push(company_name);
+                dataY.push(total);
             }
-            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'],1)
+            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'], 1)
         },
-        async getCoolTop() {
-            const {result: {rows}} = await this.$http('company/coolTop');
+        async getCommunityTop() {
+            const {result: {rows}} = await this.$http('customer/getAlarmTop', {
+                data: {
+                    topType: 2
+                }
+            });
             const dataX = [], dataY = [];
             for(const row of rows) {
-                const {community_name, data_value} = row;
+                const {community_name, total} = row;
                 dataX.push(community_name);
-                dataY.push(data_value);
+                dataY.push(total);
             }
-            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'],1)
+            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'], 1)
         },
 
         async getBasicInfo() {
-            const {result} = await this.$http('company/getCompanyInfo',{
+            const {result} = await this.$http('customer/getCustomerInfo',{
                 data: {
                     community_count: 1,
                     house_count:1,
                     monitor_house_count:1,
-                    avg_data:1
+                    avg_data:1,
+                    alarm_count: 1,
+                    is_online:1
                 }
             });
             this.companyInfo = result;
+            this.drawPie(result.online_count, result.monitor_house_count);
         },
 
-        drawPie() {
-            const data1 = {
-                value: 210,
-                color: 'red'
-            }
-            const data2 = {
-                value: 9,
-                color: 'yellow'
-            }
-            pieCharts2(this.$refs['device-chart'], data1, data2)
+        drawPie(online, total) {
+            pieCharts2(this.$refs['device-chart'], {value:online}, {value:total})
         }
     },
     mounted() {
         this.getAverage();
-        this.getHightTop();
-        this.getCoolTop();
+        this.getComponyTop();
+        this.getCommunityTop();
         this.getBasicInfo();
-        this.drawPie();
     }
 }
 </script>
