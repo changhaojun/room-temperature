@@ -117,6 +117,10 @@
 
             },
         },
+        mounted() {
+             this.getTableData();
+            //console.log('this.building', this.buildingID);
+        },
     }
 
 </script>

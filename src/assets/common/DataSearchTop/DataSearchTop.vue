@@ -123,7 +123,7 @@
                 info: {},
                 normalPerc: '',
                 coolPerc: '',
-                hotPerc: '',
+                hotPerc: ''
             }
         },
         //typeOfID=0代表是小区id，typeOfID=1代表是楼id
@@ -183,26 +183,64 @@
 
             },
             drawLine() {
+                
                 const dataNormal = {
                     value: this.info.room_tempera.normal,
                     name: '17 ~ 23℃',
-                    color: '#FFCB72'
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#FFCB72' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#EFA41F' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    } 
                 };
                 const dataCool = {
                     value: this.info.room_tempera.cool,
                     name: '<16℃',
-                    color: '#5DC8FF'
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#5DC8FF' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#2FA3EF' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    } 
                 };
                 const dataHot = {
                     value: this.info.room_tempera.hot,
                     name: '>24℃',
-                    color: '#FF9186'
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#FF9186' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#FF716A' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    } 
                 };
                 const pie = pieCharts(this.$refs['myChart'], dataNormal, dataCool, dataHot);
             }
 
         },
         mounted() {
+             this.getInfo();
             //console.log('this.building', this.buildingID);
         },
     }
