@@ -5,7 +5,7 @@
                 <conditions-tools :date='date' :manager=true @current-change='reload'></conditions-tools>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' :pageNumber='conditions.page_number' @page-change='pageChange'></table-page>
+                <table-page :initData='initData' :columns='columns' :pageNumber='conditions.page_number' :type=2 @page-change='pageChange'></table-page>
             </div>
         </div>
     </div>

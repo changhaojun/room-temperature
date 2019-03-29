@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' @page-change='pageChange'></table-page>
+                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1 @page-change='pageChange'></table-page>
             </div>
         </div>
     </div>

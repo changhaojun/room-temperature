@@ -87,9 +87,6 @@
             .el-table th>.cell {
                 color: rgba(118,118,118,1);
             }
-            .el-table .el-table_1_column_1>.cell {
-                text-align: left;
-            }
             .el-table td div {
                 color:rgba(70,76,91,1);
                 padding: 0;
@@ -123,6 +120,7 @@
             }
             .el-pagination {
                 padding: 0;
+                height: 50px;
             }
             .el-pagination button, .el-pagination span:not([class*=suffix]) {
                 min-width: 0;
@@ -133,9 +131,10 @@
             .el-pagination__editor {
                 padding: 0 6px;
             }
-            .el-table_1_column_1>.cell {
-                padding: 0 12px;
+            thead>tr:first-child>th:first-child>.cell {
+                text-align: left;
             }
+            
 
             .warnHigh {
                 height: 100%;
