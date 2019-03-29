@@ -185,6 +185,20 @@
   height: calc(100% - 41px);
 }
 
+.message-box > .el-dialog__body > .communityBox {
+  height: 100%;
+  overflow: auto;
+}
+
+.message-box > .el-dialog__body > .communityBox::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
+
+.message-box > .el-dialog__body > .communityBox::-webkit-scrollbar-thumb {
+  background: #eeeeee;
+}
+
 .message-box .el-scrollbar__wrap {
   overflow-x: hidden;
 }

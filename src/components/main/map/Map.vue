@@ -29,7 +29,7 @@
             custom-class="message-box"
             @close="close"
             >
-           <el-scrollbar style="height:100%">
+           <!-- <el-scrollbar style="height:100%"> -->
                <div class="communityBox" v-if="!dialogParams.tempHistory">
                     <div class="main-top">
                         <data-search-top  :ID="dialogParams.community_id" :typeOfID="0"></data-search-top>
@@ -38,23 +38,29 @@
                         <data-search-table :ID="dialogParams.community_id" :typeOfID="0" @select="select" :mapdialog="dialogParams.mapdialog"></data-search-table>
                     </div>
                </div>
-               <div v-if="dialogParams.tempHistory" style="height:300px">
-                   <div class="temp-header">
-                       <span @click="allCommunity()">所有小区 &gt;</span>
+               <div v-if="dialogParams.tempHistory" class="communityBox" style="padding-right:20px;">
+                   <div class="temp-header" >
+                       <span @click="allCommunity()">{{dialogParams.title}} &gt;</span>
                        <span>温度变化曲线</span>
+                       <div>
+                           <data-dialog :date='dialogParams.date' :conditionsHistory='dialogParams.conditionsHistory'></data-dialog>
+                       </div>
+                       
                    </div>
                </div>
-           </el-scrollbar>
+           <!-- </el-scrollbar> -->
         </el-dialog>
     </div>
   </template>
   <script>
   import VueAMap  from 'vue-amap';
+  import moment from 'moment';
   let _this={}
     export default {
         components:{
             DataSearchTop: ()=> import ('../../../assets/common/DataSearchTop/DataSearchTop.vue'),
-            DataSearchTable :()=> import ('../../../assets/common/DataSearchTable/DataSearchTable.vue')
+            DataSearchTable :()=> import ('../../../assets/common/DataSearchTable/DataSearchTable.vue'),
+            DataDialog :()=> import ('./../onlineMonitor/dataDialog.vue')
         },
         data() {
             return {
@@ -77,7 +83,13 @@
                     title:"",
                     community_id:'',
                     mapdialog:true,
-                    tempHistory:false
+                    tempHistory:false,
+                    date: [moment().subtract(3,'days'), moment()],
+                    conditionsHistory: {
+                        house_id: null,
+                        start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD'),
+                        end_time: moment().format('YYYY-MM-DD')
+                    }
                 },
                 
             };
@@ -150,14 +162,16 @@
             dialogShow(event){
                 const community_id =  event.target.accessKey;
                 const community_name = event.target.align;
+                console.log(community_name)
                 _this.dialogParams.dialogVisible = true;
                 _this.dialogParams.title = community_name;
                 _this.dialogParams.community_id = community_id;
            
             },
-            select(data){
-                console.log(data)
+            select(id){
+                console.log(id)
                 this.dialogParams.tempHistory = true;
+                this.dialogParams.conditionsHistory.house_id = id;
             },
             close(){
                 this.dialogParams.tempHistory = !this.dialogParams.tempHistory;

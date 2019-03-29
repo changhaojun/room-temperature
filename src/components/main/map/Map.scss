@@ -169,6 +169,18 @@
     >.el-dialog__body{
         padding:15px 12px;
         height:calc(100% - 41px);
+        // overflow: auto;
+        >.communityBox{
+            height:100%;
+            overflow: auto;
+            &::-webkit-scrollbar{
+                width:4px;
+                background: transparent;
+            }
+            &::-webkit-scrollbar-thumb{
+                background:rgba(238,238,238,1);
+            }
+        }
     }
     .el-scrollbar__wrap{
         overflow-x: hidden;

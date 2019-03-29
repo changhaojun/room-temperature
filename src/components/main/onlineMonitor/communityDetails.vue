@@ -6,8 +6,8 @@
         <div class="montior-main">
             <div class="main-tool">
                 <div class="tool-buttons">
-                    <mu-button color="warning" class="all">全部</mu-button>
-                    <mu-button color="" class="warn">告警</mu-button>
+                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
+                        @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
                 </div>
                 <div style="display: flex; align-items: center;">
                     <div class="tool-search" @keydown="search($event)">
@@ -17,7 +17,9 @@
                 </div>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1 @page-change='pageChange'></table-page>
+                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1 
+                    @page-change='pageChange'>
+                </table-page>
             </div>
         </div>
     </div>
@@ -26,6 +28,7 @@
 <script>
 import OnlineMonitor from './onlineMonitor.vue';
 import TablePage from './tablePage.vue';
+
 export default {
     components: {OnlineMonitor, TablePage},
     data() {
@@ -33,6 +36,7 @@ export default {
             conditions: {
                 community_id: null,
                 user_number: null,
+                warn: null,
                 page_size: 6,
                 page_number: 1
             },
@@ -41,6 +45,9 @@ export default {
                 total: 0,
                 datas: []
             },
+            btns: ['全部', '告警'],
+            indexActive: 1,
+
             columns: [
                 {
                     label: "编号",
@@ -84,6 +91,9 @@ export default {
             if(!this.conditions.user_number) {
                 delete this.conditions.user_number;
             }
+            if(this.conditions === null) {
+                delete this.conditions.warn;
+            }
             console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('build/getHouse', {data: this.conditions});
             for (const row of rows) {
@@ -105,10 +115,20 @@ export default {
                 this.getHouseList();
             } 
         },
+        clickBtn(type) {
+            this.indexActive = type;
+            this.conditions.page_number = 1;
+            if(type === 1) {
+                this.conditions.warn = null;
+            }else {
+                this.conditions.warn = 1;
+            }
+            this.getHouseList();
+        },
         getPageSize() {
             const rowHeight = 60;
             const block = document.querySelector('.montior-main').offsetHeight;
-            const rowCount = Math.floor((block - 204) / rowHeight);
+            const rowCount = Math.floor((block - 228) / rowHeight);
             this.conditions.page_size = rowCount;
         }
     },

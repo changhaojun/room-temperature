@@ -10,7 +10,7 @@
         </div>
         <div class="main-table-table">
             <tablePage :initData='tableData' :columns='columns' :pageNumber='conditions.page_number'
-                @page-change='pageChange' :type='2' :manager="true" @select="select" :mapdialog="mapdialog">
+                @page-change='pageChange' :type='1' :manager="true" @select="select" :mapdialog="mapdialog">
             </tablePage>
         </div>
     </div>
