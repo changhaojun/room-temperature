@@ -29,7 +29,7 @@ module.exports = {
       '@': resolve('src'),
       '$styles': resolve('src/assets/styles'),
       '@charts': resolve('src/public'),
-      '@common': resolve('src/assets/common')
+      '@common': resolve('src/assets/common'),
     }
   },
   module: {

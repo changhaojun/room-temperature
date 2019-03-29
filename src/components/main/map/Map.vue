@@ -31,9 +31,11 @@
            <el-scrollbar style="height:100%">
                <div>
                 <div class="main-top">
-                        <DataSearchTop  :ID="dialogParams.community_id" :typeOfID="0"></DataSearchTop>
+                    <data-search-top  :ID="dialogParams.community_id" :typeOfID="0"></data-search-top>
                 </div>
-                <div style="height:600px"></div>
+                <div style="height:817px;box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.22);margin:0 10px;margin-top:30px;margin-bottom:20px;">
+                    <data-search-table :ID="dialogParams.community_id" :typeOfID="0"></data-search-table>
+                </div>
                </div>
            </el-scrollbar>
         </el-dialog>
@@ -44,7 +46,8 @@
   let _this={}
     export default {
         components:{
-            DataSearchTop: ()=> import ('../../../assets/common/DataSearchTop/DataSearchTop.vue')
+            DataSearchTop: ()=> import ('../../../assets/common/DataSearchTop/DataSearchTop.vue'),
+            DataSearchTable :()=> import ('../../../assets/common/DataSearchTable/DataSearchTable.vue')
         },
         data() {
             return {
