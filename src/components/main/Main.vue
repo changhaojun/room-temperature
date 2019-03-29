@@ -156,6 +156,16 @@ export default {
 </script>
 
 <style lang="scss">
+    ul.el-dropdown-menu{
+        padding: 5px 0;
+        transform: translateY(-10px) !important;
+        li{
+            color: #727272 !important;
+            &:hover{
+                background: rgba(0,0,0,.16) !important;
+            }
+        }
+    }
     .fade-enter-active, .fade-leave-active {
         transition: opacity .3s;
     }
@@ -196,7 +206,7 @@ export default {
                     border-radius:15px;
                     transition: all linear 0.3s;
                     &:hover{
-                        opacity: 0.78;
+                        opacity: 0.6;
                     }
                     &.active-router{
                         background:rgba(255,165,9,1);
@@ -215,7 +225,7 @@ export default {
                 margin-top: 15px;
                 line-height: 30px;
                 &:hover{
-                    opacity: 0.78;
+                    color: #2198d8;
                 }
                 .user-config{
                     font-size: 16px;

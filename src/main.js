@@ -11,7 +11,7 @@ import { Button, Select, Helpers, TextField,Checkbox,Radio,Switch,theme,DateInpu
 import 'muse-ui/lib/styles/theme.less';
 import echarts from 'echarts';
 
-Vue.prototype.$echarts = echarts 
+Vue.prototype.$echarts = echarts
 import VueAMap  from 'vue-amap';
 
 
@@ -35,6 +35,18 @@ Vue.use(VueAMap );
 Vue.config.productionTip = false;
 Vue.use(ElementUI)
 Vue.prototype.$http = httpClient;
+
+router.beforeEach((to, from, next) => {
+    if(to.path === '/') {
+        next();
+    }else {
+        if(!sessionStorage.getItem('userInfo')) {
+            router.replace('/');
+        }else {
+            next();
+        }
+    }
+})
 
 /* eslint-disable no-new */
 new Vue({

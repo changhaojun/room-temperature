@@ -5,7 +5,8 @@ import {
 } from 'element-ui';
 import convert from './convert.js'; //返回结果转为中文提示
 const Axios = axios.create({
-    baseURL: 'http://121.42.253.149:18859/app/mock/31/v1/',
+    // baseURL: 'http://121.42.253.149:18859/app/mock/31/v1/',
+    baseURL: 'http://121.42.253.149:17748/v1',
     // baseURL: 'http://192.168.1.78:7001/v1',
     timeout: 30000,
     responseType: 'json',
@@ -46,25 +47,6 @@ Axios.interceptors.response.use(
                 type: 'error'
             });
             return Promise.reject(res.data);
-        } else if (res.data.code === 423) {
-            res.data.message = convert(res.data.message);
-            Message({
-                showClose: true,
-                message: '存在重复采集器',
-                type: 'error'
-            });
-            Notification({
-                title: '提示',
-                message: res.data.result.rows.join(",") + "采集器重复",
-                duration: 0,
-                type: 'warning',
-                position: 'bottom-right'
-            });
-            return Promise.reject(res.data);
-        } else if (res.data.code === 424) {
-
-        } else if (res.data.code === 201) {
-
         } else if (res.data.code !== 200) {
             res.data.message = convert(res.data.message);
             Message({

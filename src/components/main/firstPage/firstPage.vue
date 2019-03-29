@@ -8,8 +8,19 @@
             <li class="">
                 <ul>
                     <li>
+                        <div class="device-count">
+                            <dl>
+                                <dt><span style="color:#F9BB50">251</span>/<span>262</span></dt>
+                                <dd>设备在线率</dd>
+                            </dl>
+                        </div>
+                        <div class="device-chart" ref="device-chart">
+
+                        </div>
+                    </li>
+                    <li>
                         <dl>
-                            <dt><div><i style="color:#FFA509" class="iconfont iconwendu"></i></div></dt>
+                            <dt><i style="color:#FFA509;font-size:34px" class="iconfont iconwendu"></i></dt>
                             <dd>
                                 <p><span>{{companyInfo.avg_data}}</span><span>℃</span></p>
                                 <p>平均室温</p>
@@ -18,28 +29,28 @@
                     </li>
                     <li>
                         <dl>
-                            <dt><div><i style="color:#1EC2B4;font-size:28px" class="iconfont icondashaxiaoqudizhi01"></i></div></dt>
+                            <dt><i style="color:#FF716A;font-size:30px" class="iconfont icongaojing"></i></dt>
+                            <dd>
+                                <p><span>{{companyInfo.community_count}}</span><span>个</span></p>
+                                <p>告警用户数</p>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl>
+                            <dt><i style="color:#FFA509;font-size:28px" class="iconfont iconziyuanxhdpi"></i></dt>
+                            <dd>
+                                <p><span>{{companyInfo.monitor_house_count}}&nbsp;/&nbsp;{{companyInfo.house_count}}</span><span>个</span></p>
+                                <p>监测住户率</p>
+                            </dd>
+                        </dl>
+                    </li>
+                    <li>
+                        <dl>
+                            <dt><i style="color:#1EC2B4;font-size:28px" class="iconfont icondashaxiaoqudizhi01"></i></dt>
                             <dd>
                                 <p><span>{{companyInfo.community_count}}</span><span>个</span></p>
                                 <p>小区数量</p>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li>
-                        <dl>
-                            <dt><div><i style="color:#FF9C71;" class="iconfont iconfangzi222"></i></div></dt>
-                            <dd>
-                                <p><span>{{companyInfo.house_count}}</span><span>户</span></p>
-                                <p>住户数量</p>
-                            </dd>
-                        </dl>
-                    </li>
-                    <li>
-                        <dl>
-                            <dt><div><i style="color:#FFA509;font-size:28px" class="iconfont iconziyuanxhdpi"></i></div></dt>
-                            <dd>
-                                <p><span>{{companyInfo.monitor_house_count}}</span><span>户</span></p>
-                                <p>监测住户数量</p>
                             </dd>
                         </dl>
                     </li>
@@ -58,7 +69,7 @@
 </template>
 
 <script>
-import {lineCharts, barCharts} from '@charts/charts'
+import {lineCharts, barCharts, pieCharts2} from '@charts/charts'
 export default {
     data () {
         return {
@@ -106,6 +117,18 @@ export default {
                 }
             });
             this.companyInfo = result;
+        },
+
+        drawPie() {
+            const data1 = {
+                value: 210,
+                color: 'red'
+            }
+            const data2 = {
+                value: 9,
+                color: 'yellow'
+            }
+            pieCharts2(this.$refs['device-chart'], data1, data2)
         }
     },
     mounted() {
@@ -113,82 +136,11 @@ export default {
         this.getHightTop();
         this.getCoolTop();
         this.getBasicInfo();
+        this.drawPie();
     }
 }
 </script>
 
 <style lang="scss">
-    @import './../../../assets/styles/mixin.scss';
-    #first_page_content{
-        padding: 20px;
-        width: calc(100% - 40px);
-        height: calc(100% - 40px);
-        margin: 20px;
-        .basic-data{
-            @include fourBlockLayout(30px, 30px);
-            >li{
-                >h4{
-                    width: 60%;
-                    height: 30px;
-                    line-height: 50px;
-                    margin-left: 40px;
-                    font-size: 18px;
-                    font-weight:600;
-                    color:rgba(70,76,91,1);
-                }
-                >.charts-content{
-                    width: 100%;
-                    height: calc(100% - 30px);
-                }
-            }
-            >li:nth-child(2){
-                background: rgb(245, 245, 245);
-                box-shadow: none;
-                >ul{
-                    @include fourBlockLayout(30px, 22px);
-                    >li{
-                        >dl{
-                            width: 50%;
-                            height: 50%;
-                            transform: translate(60%, 50%);
-                            dt{
-                                width: 30%;
-                                display: inline-block;
-                                height: 100%;
-                                overflow: hidden;
-                                text-align: center;
-                                >div{
-                                    width: 100%;
-                                    height: 100%;
-                                    display:flex;
-                                    justify-content:center;
-                                    align-items:center;
-                                    >i{
-                                        font-size: 40px;
-                                    }
-                                }
-                            }
-                            dd{
-                                width: 60%;
-                                display: inline-block;
-                                height: 100%;
-                                overflow: hidden;
-                                >p:nth-child(1){
-                                    font-size: 26px;
-                                    margin-top: 10px;
-                                    >span:nth-child(2){
-                                        font-size: 20px
-                                    }
-                                }
-                                >p:nth-child(2){
-                                    font-size: 14px;
-                                    opacity: 0.6;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    @import './firstPage.scss'
 </style>

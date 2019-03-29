@@ -10,9 +10,9 @@ const splitLine = {
     show: 'true',
     interval: 'auto',
     lineStyle: {
-        color: ['#ccc'],
+        color: ['#727272'],
         type: 'dashed',
-        opacity: 0.5
+        opacity: 0.36
     }
 }
 
@@ -20,8 +20,8 @@ const axisLine = {
     show: true,
     lineStyle: {
         type: 'solid',
-        color: '#ccc',
-        opacity: 1
+        color: '#727272',
+        opacity: 0.4
     }
 }
 export const barCharts = (el, data, barColor) => {
@@ -246,6 +246,76 @@ export const pieCharts = (el, data1, data2, data3) => {
                         color: data3.color
                     }
                 },
+            ]
+        }]
+    }
+    const pie = echarts.init(el);
+    window.addEventListener('resize', () => {
+        pie.resize();
+    })
+    pie.setOption(pieOption);
+    return pie;
+}
+
+
+export const pieCharts2 = (el, data1, data2) => {
+    const pieOption = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} {c} ({d}%)"
+        },
+        series: [{
+            name: '设备在线率',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data: [{
+                    value: data1.value,
+                    name: data1.name,
+                    itemStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 1,
+                            y: 1,
+                            r: 1,
+                            colorStops: [{
+                                offset: 0, color: '#f0a938' // 0% 处的颜色
+                            }, {
+                                offset: 1, color: '#fac166' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                },
+                {
+                    value: data2.value,
+                    name: data2.name,
+                    itemStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 1,
+                            colorStops: [{
+                                offset: 0, color: '#b8b8b8' // 0% 处的颜色
+                            }, {
+                                offset: 1, color: 'rgba(0,0,0,.5)' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                }
             ]
         }]
     }

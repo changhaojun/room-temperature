@@ -19,7 +19,7 @@
         <el-pagination v-if="initData.datas.length > 0 && manager"
             layout="prev, pager, next, jumper"
             @current-change='pageChange'
-            prev-click='pageChange' 
+            prev-click='pageChange'
             next-click='pageChange'
             :current-page.sync="page_number"
             :total="initData.total"
@@ -55,7 +55,7 @@ export default {
 }
 </script>
 
-<style lang="scss">      
+<style lang="scss">
     .el-table .cell {
         text-align: center;
         font-size: 14px;
@@ -91,7 +91,7 @@ export default {
         margin-right: 6px;
     }
     .el-pagination .btn-next {
-        padding: 0; 
+        padding: 0;
         margin-left: 6px;
     }
     .el-pagination__jump {

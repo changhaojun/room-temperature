@@ -13,11 +13,11 @@
             <div class="input-list" style="padding:20px;">
                 <div class="input-item">
                     <span>高温告警阀值：</span>
-                    <el-input prefix-icon="el-icon-arrow-left" size="small" v-model="newConfig.high_warn"></el-input>
+                    <el-input prefix-icon="el-icon-arrow-right" size="small" v-model="newConfig.high_warn"></el-input>
                 </div>
                 <div class="input-item">
                     <span>低温告警阀值：</span>
-                    <el-input prefix-icon="el-icon-arrow-right" size="small" v-model="newConfig.low_warn"></el-input>
+                    <el-input prefix-icon="el-icon-arrow-left" size="small" v-model="newConfig.low_warn"></el-input>
                 </div>
             </div>
             <div class="change_footer">

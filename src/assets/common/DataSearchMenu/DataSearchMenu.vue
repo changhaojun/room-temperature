@@ -7,24 +7,30 @@
         </div>
         <div class="menu-list">
             <el-scrollbar class="menu-scrollbar">
-                <div v-for="(community,key) in communityList" class="community"
-                    :class="{ clickedCommunity: expandedCommunityList.includes(community)}">
-                    <div class="community-name">
-                        <i class="el-icon-caret-bottom" v-if="expandedCommunityList.includes(community)"
-                            @click="expandCommunity(community)"></i>
-                        <i class="el-icon-caret-right" v-else @click="expandCommunity(community)"></i>
-                        <span :class="{ clickedCommunity: clickedCommunity == community}"
-                            @click="clickCommunity(community)">{{community.community_name}}</span>
-                    </div>
-                    <div v-if="expandedCommunityList.includes(community)" class="blank"></div>
-                    <div v-for="(building,key) in community.buildings" v-if="expandedCommunityList.includes(community)"
-                        class="building" :class="{ clickedBuilding: clickedBuilding == building}">
-                        <div class="building-name" @click="clickBuliding(building)">
-                            {{building.building_name}}
+                <transition-group>
+                    <div v-for="(community,index) in communityList" class="community"
+                        :key="community.community_name+index"
+                        :class="{ clickedCommunity: expandedCommunityList.includes(community)}">
+                        <div class="community-name">
+                            <i class="el-icon-caret-bottom" v-if="expandedCommunityList.includes(community)"
+                                @click="expandCommunity(community)"></i>
+                            <i class="el-icon-caret-right" v-else @click="expandCommunity(community)"></i>
+                            <span :class="{ clickedCommunity: clickedCommunity == community}"
+                                @click="clickCommunity(community)">{{community.community_name}}</span>
                         </div>
-
+                        <div v-if="expandedCommunityList.includes(community)" class="blank"></div>
+                        <template v-if="expandedCommunityList.includes(community)">
+                            <div v-for="(building,index) in community.buildings"
+                                class="building"
+                                :key="building.building_name+index"
+                                :class="{ clickedBuilding: clickedBuilding == building}">
+                                    <div class="building-name" @click="clickBuliding(building)">
+                                        {{building.building_name}}
+                                    </div>
+                            </div>
+                        </template>
                     </div>
-                </div>
+                </transition-group>
             </el-scrollbar>
         </div>
     </div>
