@@ -33,20 +33,10 @@
             getClickedBuilding(clickedBuilding) {
                 this.ID = clickedBuilding.building_id;
                 this.typeOfID = 1;
-                /*this.tableData.total = 0;
-                this.tableData.datas = [];
-                this.searchUser = '';
-                this.conditions.page_number = 1;
-                this.getTableData();*/
             },
             getClickedCommunity(clickedCommunity) {
                 this.ID = clickedCommunity.community_id;
                 this.typeOfID = 0;
-                /*this.tableData.total = 0;
-                this.tableData.datas = [];
-                this.searchUser = '';
-                this.conditions.page_number = 1;
-                this.getTableData();*/
             },
 
 
