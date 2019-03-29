@@ -27,15 +27,22 @@
             :visible.sync="dialogParams.dialogVisible"
             width="60%"
             custom-class="message-box"
+            @close="close"
             >
            <el-scrollbar style="height:100%">
-               <div>
-                <div class="main-top">
-                    <data-search-top  :ID="dialogParams.community_id" :typeOfID="0"></data-search-top>
-                </div>
-                <div style="height:817px;box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.22);margin:0 10px;margin-top:30px;margin-bottom:20px;">
-                    <data-search-table :ID="dialogParams.community_id" :typeOfID="0"></data-search-table>
-                </div>
+               <div class="communityBox" v-if="!dialogParams.tempHistory">
+                    <div class="main-top">
+                        <data-search-top  :ID="dialogParams.community_id" :typeOfID="0"></data-search-top>
+                    </div>
+                    <div style="height:817px;box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.22);margin:0 10px;margin-top:30px;margin-bottom:20px;">
+                        <data-search-table :ID="dialogParams.community_id" :typeOfID="0" @select="select" :mapdialog="dialogParams.mapdialog"></data-search-table>
+                    </div>
+               </div>
+               <div v-if="dialogParams.tempHistory" style="height:300px">
+                   <div class="temp-header">
+                       <span @click="allCommunity()">所有小区 &gt;</span>
+                       <span>温度变化曲线</span>
+                   </div>
                </div>
            </el-scrollbar>
         </el-dialog>
@@ -68,8 +75,11 @@
                 dialogParams:{
                     dialogVisible:false,
                     title:"",
-                    community_id:''
+                    community_id:'',
+                    mapdialog:true,
+                    tempHistory:false
                 },
+                
             };
         },
         methods:{
@@ -145,6 +155,16 @@
                 _this.dialogParams.community_id = community_id;
            
             },
+            select(data){
+                console.log(data)
+                this.dialogParams.tempHistory = true;
+            },
+            close(){
+                this.dialogParams.tempHistory = !this.dialogParams.tempHistory;
+            },
+            allCommunity(){
+                this.dialogParams.tempHistory = !this.dialogParams.tempHistory;
+            }
         },
         created(){
            if(!window.AMap && !window.AMapUI){

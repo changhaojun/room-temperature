@@ -202,3 +202,23 @@
   margin-left: 10px;
   margin-bottom: 10px;
 }
+
+.message-box .temp-header {
+  height: 30px;
+  line-height: 30px;
+}
+
+.message-box .temp-header span {
+  color: #767676;
+  font-size: 16px;
+}
+
+.message-box .temp-header span:nth-child(1) {
+  cursor: pointer;
+}
+
+.message-box .temp-header span:nth-child(2) {
+  font-size: 18px;
+  color: #464C5B;
+  font-weight: bold;
+}
