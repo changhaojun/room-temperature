@@ -25,19 +25,18 @@ const axisLine = {
     }
 }
 
-export const barCharts = (el, data, barColor) => {
+//chartType=1代表是首页的图表，chartType=0代表是统计分析的图表
+export const barCharts = (el, data, barColor, chartType) => {
     const barOption = {
         tooltip: {
             trigger: 'axis'
         },
         color: barColor[0],
         legend: {
-            data:[
-                {
-                    name: '室温',
-                    icon: 'roundRect'
-                }
-            ],
+            data: [{
+                name: '室温',
+                icon: 'roundRect'
+            }],
             right: 50,
             itemHeight: 5,
             itemWidth: 15,
@@ -51,13 +50,17 @@ export const barCharts = (el, data, barColor) => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
                 restore: {},
                 saveAsImage: {}
             }
         },
-        xAxis:  {
+        xAxis: {
             type: 'category',
             boundaryGap: true,
             axisLine,
@@ -66,34 +69,41 @@ export const barCharts = (el, data, barColor) => {
         },
         yAxis: {
             type: 'value',
-            axisLabel: {
-                formatter: '{value} °C'
-            },
             axisLine,
             splitLine
         },
-        series: [
-            {
-                name: '室温',
-                type: 'bar',
-                data: data.dataY,
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: [7.5, 7.5, 0, 0],
-                        color: new echarts.graphic.LinearGradient(
-                            0, 1, 0, 0, [{
-                                offset: 0,
-                                color: barColor[0]
-                            }, {
-                                offset: 1,
-                                color: barColor[1]
-                            }]
-                        )
-                    }
-                },
-                barWidth: 15
-            }
-        ]
+        series: [{
+            //name: '室温',
+            type: 'bar',
+            data: data.dataY,
+            itemStyle: {
+                normal: {
+                    barBorderRadius: [7.5, 7.5, 0, 0],
+                    color: new echarts.graphic.LinearGradient(
+                        0, 1, 0, 0, [{
+                            offset: 0,
+                            color: barColor[0]
+                        }, {
+                            offset: 1,
+                            color: barColor[1]
+                        }]
+                    )
+                }
+            },
+            barWidth: 15
+        }]
+    }
+
+    if (chartType == 1) {
+        barOption.yAxis.axisLabel = {
+            formatter: '{value} °C'
+        };
+        barOption.series[0].name = '室温';
+    } else if (chartType == 0) {
+        barOption.xAxis.axisLabel = {
+            formatter: '{value} °C'
+        };
+        barOption.series[0].name = '户数';
     }
 
     const bar = echarts.init(el);
@@ -112,8 +122,7 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
         },
         color: ['#FFA509', '#00A8FF'],
         legend: {
-            data:[
-                {
+            data: [{
                     name: '室温',
                     icon: 'roundRect'
                 },
@@ -135,13 +144,17 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
                 restore: {},
                 saveAsImage: {}
             }
         },
-        xAxis:  {
+        xAxis: {
             type: 'category',
             boundaryGap: false,
             axisLine,
@@ -156,16 +169,15 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
             axisLine,
             splitLine
         },
-        series: [
-            {
-                name:'室温',
-                type:'line',
+        series: [{
+                name: '室温',
+                type: 'line',
                 smooth: true,
                 lineStyle: {
                     color: '#FFA509'
                 },
                 symbol: 'none',
-                data:dataY1,
+                data: dataY1,
                 areaStyle: {
                     color: {
                         type: 'linear',
@@ -174,25 +186,28 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
                         x2: 0,
                         y2: 1,
                         colorStops: [{
-                            offset: 0, color: 'rgba(255,182,48,.8)'
+                            offset: 0,
+                            color: 'rgba(255,182,48,.8)'
                         }, {
-                            offset: 0.5, color: 'rgba(255,182,48,.4)'
-                        },{
-                            offset: 1, color: 'rgba(255,182,48,.1)'
+                            offset: 0.5,
+                            color: 'rgba(255,182,48,.4)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(255,182,48,.1)'
                         }],
                         global: false
                     }
                 }
             },
             {
-                name:'气温',
-                type:'line',
+                name: '气温',
+                type: 'line',
                 smooth: true,
                 lineStyle: {
                     color: '#00A8FF'
                 },
                 symbol: 'none',
-                data:dataY2,
+                data: dataY2,
             }
         ]
     }

@@ -83,7 +83,7 @@ export default {
                 dataX.push(community_name);
                 dataY.push(data_value);
             }
-            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'])
+            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'],1)
         },
         async getCoolTop() {
             const {result: {rows}} = await this.$http('company/coolTop');
@@ -93,7 +93,7 @@ export default {
                 dataX.push(community_name);
                 dataY.push(data_value);
             }
-            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'])
+            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'],1)
         },
 
         async getBasicInfo() {

@@ -9,9 +9,9 @@
             </div>
         </div>
         <div class="main-table-table">
-            <tablePage :initData='tableData' :columns='columns' :pageNumber='conditions.page_number'
-                @page-change='pageChange' :type='1' :manager="true" @select="select" :mapdialog="mapdialog">
-            </tablePage>
+            <table-page :initData='tableData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1
+                @page-change='pageChange'>
+            </table-page>
         </div>
     </div>
 </template>
