@@ -83,7 +83,13 @@ export default {
             const dataX = ['0h', '12h', '24h', '36h', '48h', '60h', '72h'];
             const dataY1 = [12, 13, 14, 15, 16, 17, 18];
             const dataY2 = [18, 17, 16, 15, 15, 14, 13];
-            const line = lineCharts(this.$refs['average-tem'],dataX, dataY1, dataY2);
+            const line = lineCharts(this.$refs['average-tem'],{
+                left: '5%',
+                right: '10%',
+                bottom: '10%',
+                top: '15%',
+                containLabel: true
+            },dataX, dataY1, dataY2);
         },
 
         async getHightTop() {
@@ -94,7 +100,7 @@ export default {
                 dataX.push(community_name);
                 dataY.push(data_value);
             }
-            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'])
+            const topbar = barCharts(this.$refs['high-top'], {dataX, dataY}, ['#F5C51D','#EFA31F'],1)
         },
         async getCoolTop() {
             const {result: {rows}} = await this.$http('company/coolTop');
@@ -104,7 +110,7 @@ export default {
                 dataX.push(community_name);
                 dataY.push(data_value);
             }
-            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'])
+            const topbar = barCharts(this.$refs['low-top'], {dataX, dataY}, ['#00F0FF', '#00A8FF'],1)
         },
 
         async getBasicInfo() {

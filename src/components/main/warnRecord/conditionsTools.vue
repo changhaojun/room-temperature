@@ -11,7 +11,7 @@
             </div>
             <div class="tool-buttons">
                 <mu-button color="" class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
-                    @click="clickBtn(index+1)" v-for="btn,index in btns" :key="index">{{btn}}</mu-button>
+                    @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
             </div>
         </div>
         <div v-if="manager" style="display: flex; align-items: center;" @keydown="search">
