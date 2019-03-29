@@ -1,15 +1,17 @@
 <template>
     <div>
-        <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;">
+        <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;"  @row-click="selectColumn">
             <el-table-column v-if='type === 1' :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
                 <template slot-scope="scope" >
-                    <div :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''">
+                    <div v-if="item.prop === 'data_value'" :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''" 
+                        style='cursor: pointer;' @click="houseTemp(scope.row.user_house_id)">
                         {{scope.row[item.prop]}}
                     </div>
+                    <div v-else>{{scope.row[item.prop]}}</div>
                 </template>
             </el-table-column>
             <el-table-column v-if='type === 2' :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
-                <template slot-scope="scope" >
+                <template slot-scope="scope">
                     <div :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''">
                         {{scope.row[item.prop]}}
                     </div>
@@ -25,20 +27,65 @@
             :total="initData.total"
             :page-size="2">
         </el-pagination>
+
+        <!-- 弹窗 -->
+        <el-dialog :title="dialogData.title" :visible.sync="dialogData.dialogFormVisible" :width="dialogData.dialogWidth" @close="Cancel">
+            <div class="main-dialog">
+                <data-dialog :date='date' :conditionsHistory='conditionsHistory'></data-dialog>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
+import DataDialog from './dataDialog.vue';
+import moment from 'moment';
 export default {
-    props: ['initData', 'columns', 'manager', 'pageNumber', 'type'],  //manager: 是否需要分页(否：pageNumber可不传)，type：每次调用传不同的值以区分表格样式
+    props: ['initData', 'columns', 'manager', 'pageNumber', 'type','mapdialog'],  //manager: 是否需要分页(否：pageNumber可不传)，type：每次调用传不同的值以区分表格样式
+    components:{DataDialog},
     data() {
         return {
-            page_number: 1
+            page_number: 1,
+
+            
+            dialogData: {
+                title: "",
+                dialogFormVisible: false,
+                dialogWidth: '80%',
+                type: 1
+            },
+
+            date: [moment().subtract(3,'days'), moment()],
+            conditionsHistory: {
+                house_id: null,
+                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD'),
+                end_time: moment().format('YYYY-MM-DD')
+            }
         }
     },
     methods: {
         pageChange(current) {
             this.$emit('page-change', {data: current});
+        },
+        selectColumn(){
+           
+        },
+        houseTemp(houseId) {
+             if(this.mapdialog){
+                this.$emit("select",houseId)
+            }else{
+                 this.dialogData.title = '温度变化历史';
+                this.dialogData.type = 1;
+                this.showDialog();
+                this.conditionsHistory.house_id = houseId;
+            }
+           
+        },
+        showDialog() {
+            this.dialogData.dialogFormVisible = true;
+        },
+        Cancel() {
+            this.dialogData.dialogFormVisible = false;      
         }
     },
     watch: {
@@ -64,9 +111,6 @@ export default {
     }
     .el-table th>.cell {
         color: rgba(118,118,118,1);
-    }
-    .el-table .el-table_1_column_1>.cell {
-        text-align: left;
     }
     .el-table td div {
         color:rgba(70,76,91,1);
@@ -103,13 +147,47 @@ export default {
     .el-pagination button, .el-pagination span:not([class*=suffix]) {
         min-width: 0;
     }
-    .el-table tbody tr {
-        cursor: pointer;
-    }
     .el-pagination__editor {
         padding: 0 6px;
     }
     .el-pagination {
         height: 50px;
     }
+    .el-dialog {
+        margin: 0 !important;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    .el-dialog__header {
+        padding: 10px 10px 10px 25px;
+        border-bottom: 1px solid rgba(233,234,236,1);
+        .el-dialog__title {
+            font-size:18px;
+            font-family:SourceHanSansCN-Bold;
+            font-weight:bold;
+            color:rgba(70,76,91,1);
+        }
+        .el-dialog__headerbtn {
+            top: 13px;
+        }
+    }
+    .el-dialog__body {
+        padding: 20px;
+    }
+    .main-dialog {
+        
+        height: 600px; 
+        overflow: auto;
+        padding-right: 20px;
+        &::-webkit-scrollbar{
+            width:4px;
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb{
+            background:rgba(238,238,238,1);
+        }
+    }
+    
 </style>

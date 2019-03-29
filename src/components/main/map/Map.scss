@@ -169,6 +169,18 @@
     >.el-dialog__body{
         padding:15px 12px;
         height:calc(100% - 41px);
+        // overflow: auto;
+        >.communityBox{
+            height:100%;
+            overflow: auto;
+            &::-webkit-scrollbar{
+                width:4px;
+                background: transparent;
+            }
+            &::-webkit-scrollbar-thumb{
+                background:rgba(238,238,238,1);
+            }
+        }
     }
     .el-scrollbar__wrap{
         overflow-x: hidden;
@@ -185,5 +197,22 @@
         margin-top: 10px;
         margin-left: 10px;
         margin-bottom:10px;
+    }
+    .temp-header{
+        height:30px;
+        line-height:30px;
+        span{
+            color:#767676;
+            font-size:16px;
+        }
+        span:nth-child(1){
+            cursor: pointer;
+        }
+        span:nth-child(2){
+            font-size:18px;
+            color:#464C5B;
+            font-weight: bold;
+        }
+        
     }
 }
