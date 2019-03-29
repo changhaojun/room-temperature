@@ -55,7 +55,7 @@
   align-items: center;
 }
 
-.amap-page-container > .header .el-button {
+.amap-page-container > .header .mu-button {
   width: 87px;
   height: 29px;
   padding: 0;
@@ -113,7 +113,7 @@
 }
 
 .amap-page-container > .header > .temp-select .user-bar.online-bar .clickBar {
-  height: 12px;
+  height: 12px !important;
   margin-top: -2px;
 }
 
@@ -153,4 +153,52 @@
 
 .amap-page-container > .amap-marker {
   border-radius: 10px !important;
+}
+
+.message-box {
+  z-index: 999999;
+  border-radius: 6px;
+  height: 67%;
+}
+
+.message-box .el-dialog__header {
+  border-bottom: 1px solid #e9eaec;
+  padding: 8px 20px 5px;
+  font-size: 18px;
+}
+
+.message-box .el-dialog__header > .el-dialog__title {
+  font-family: SourceHanSansCN-Bold;
+  font-weight: bold;
+}
+
+.message-box .el-dialog__header > .el-dialog__headerbtn {
+  top: 9px;
+}
+
+.message-box .el-dialog__header > .el-dialog__headerbtn > .el-dialog__close {
+  color: #464c5b;
+}
+
+.message-box > .el-dialog__body {
+  padding: 15px 12px;
+  height: calc(100% - 41px);
+}
+
+.message-box .el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
+.message-box .el-scrollbar__view {
+  height: 100%;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.message-box .main-top {
+  height: 195px;
+  width: calc(100% - 20px);
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }

@@ -5,7 +5,7 @@
                 <div class="main-chart-datas-top-households">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconfangzi222 green"></i>
+                            <i slot="suffix" class="iconfont iconfangzi222 green" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -19,7 +19,7 @@
                 <div class="main-chart-datas-top-monitoredHouseholds">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconziyuanxhdpi orange"></i>
+                            <i slot="suffix" class="iconfont iconziyuanxhdpi orange" style="font-size:24px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -35,7 +35,7 @@
                 <div class="main-chart-datas-bottem-averageTemperature">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconwendu yellow"></i>
+                            <i slot="suffix" class="iconfont iconwendu yellow" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -49,7 +49,7 @@
                 <div class="main-chart-datas-bottem-maxTemperature">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconwendu red"></i>
+                            <i slot="suffix" class="iconfont iconwendu red" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -63,7 +63,7 @@
                 <div class="main-chart-datas-bottem-minTemperature">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconwendu blue"></i>
+                            <i slot="suffix" class="iconfont iconwendu blue" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
@@ -123,7 +123,7 @@
                 info: {},
                 normalPerc: '',
                 coolPerc: '',
-                hotPerc: '',
+                hotPerc: ''
             }
         },
         //typeOfID=0代表是小区id，typeOfID=1代表是楼id
@@ -183,26 +183,64 @@
 
             },
             drawLine() {
+                
                 const dataNormal = {
                     value: this.info.room_tempera.normal,
                     name: '17 ~ 23℃',
-                    color: '#FFCB72'
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#FFCB72' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#EFA41F' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    } 
                 };
                 const dataCool = {
                     value: this.info.room_tempera.cool,
                     name: '<16℃',
-                    color: '#5DC8FF'
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#5DC8FF' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#2FA3EF' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    } 
                 };
                 const dataHot = {
                     value: this.info.room_tempera.hot,
                     name: '>24℃',
-                    color: '#FF9186'
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#FF9186' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#FF716A' // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    } 
                 };
                 const pie = pieCharts(this.$refs['myChart'], dataNormal, dataCool, dataHot);
             }
 
         },
         mounted() {
+             this.getInfo();
             //console.log('this.building', this.buildingID);
         },
     }

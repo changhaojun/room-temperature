@@ -26,7 +26,10 @@
         </header>
 
         <div id="main_content">
-            <router-view/>
+            <transition name="fade">
+                <router-view/>
+            </transition>
+
         </div>
 
         <footer>
@@ -153,6 +156,12 @@ export default {
 </script>
 
 <style lang="scss">
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .3s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
+    }
     #main_wrapper{
         width: 100%;
         height: 100%;
@@ -184,7 +193,8 @@ export default {
                     margin-left:30px;
                     text-align: center;
                     color:rgba(80,80,80,0.78);
-                    transition: all linear 0.5s;
+                    border-radius:15px;
+                    transition: all linear 0.3s;
                     &:hover{
                         opacity: 0.78;
                     }

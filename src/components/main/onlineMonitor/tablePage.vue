@@ -1,9 +1,22 @@
 <template>
     <div>
         <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;">
-            <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index"></el-table-column>
+            <el-table-column v-if='type === 1' :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
+                <template slot-scope="scope" >
+                    <div :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''">
+                        {{scope.row[item.prop]}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column v-if='type === 2' :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
+                <template slot-scope="scope" >
+                    <div :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''">
+                        {{scope.row[item.prop]}}
+                    </div>
+                </template>
+            </el-table-column>
         </el-table>
-        <el-pagination v-if="initData.datas.length > 0"
+        <el-pagination v-if="initData.datas.length > 0 && manager"
             layout="prev, pager, next, jumper"
             @current-change='pageChange'
             prev-click='pageChange' 
@@ -17,7 +30,7 @@
 
 <script>
 export default {
-    props: ['initData', 'columns', 'pageNumber'],
+    props: ['initData', 'columns', 'manager', 'pageNumber', 'type'],  //manager: 是否需要分页(否：pageNumber可不传)，type：每次调用传不同的值以区分表格样式
     data() {
         return {
             page_number: 1
@@ -34,7 +47,7 @@ export default {
                 this.page_number = newVal;
             },
             deep: true
-            }
+        }
     },
     created() {
         this.page_number = this.pageNumber;
@@ -95,5 +108,8 @@ export default {
     }
     .el-pagination__editor {
         padding: 0 6px;
+    }
+    .el-pagination {
+        height: 50px;
     }
 </style>
