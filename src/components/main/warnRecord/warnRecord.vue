@@ -2,7 +2,7 @@
     <div class="warn-record">
         <div class="record-main">
             <div class="main-tool">
-                <conditions-tools :date='date' :manager=true @current-change='reload'></conditions-tools>
+                <conditions-tools :date='date' :group=true :manager=true @current-change='reload'></conditions-tools>
             </div>
             <div class="main-table">
                 <table-page :initData='initData' :columns='columns' manager=true :pageNumber='conditions.page_number' :type=2 @page-change='pageChange'></table-page>
@@ -22,8 +22,8 @@ export default {
             date: [moment().subtract(3,'days'), moment()],
 
             conditions: {
-                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD'),
-                end_time: moment().format('YYYY-MM-DD'),
+                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD hh:mm:ss'),
+                end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
                 community_name: '',
                 page_size: 6,
                 page_number: 1
@@ -35,7 +35,7 @@ export default {
             columns: [
                 {
                     label: "小区名称",
-                    prop: "user_number"
+                    prop: "community_name"
                 },
                 {
                     label: "住户",
@@ -43,19 +43,27 @@ export default {
                 },
                 {
                     label: "告警类型",
-                    prop: "user_number"
+                    prop: "alarm_type"
                 },
                 {
                     label: "室外温度(℃)",
-                    prop: "user_number"
+                    prop: ""
                 },
                 {
                     label: "室内温度(℃)",
-                    prop: "user_number"
+                    prop: "data_value"
+                },
+                {
+                    label: "触发类型",
+                    prop: "config_type"
                 },
                 {
                     label: "时间",
-                    prop: "user_number"
+                    prop: "data_time"
+                },
+                {
+                    label: "阅读状态",
+                    prop: "read_state"
                 }
             ]   
         }
@@ -67,7 +75,12 @@ export default {
             if(!this.conditions.community_name) {
                 delete this.conditions.community_name;
             }
-            const { result: { rows, total } } = await this.$http('build/getHouse', {data: this.conditions});
+            const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
+            for (const row of rows) {
+                row.read_state  = row.read_state === 0 ? '未读' : row.read_state === 1 ? '已读' : '';
+                row.config_type = row.config_type === 1 ? '系统告警' : row.config_type === 2 ? '用户告警' : '';
+                row.alarm_type = row.alarm_type === 1 ? '高温告警' : row.alarm_type === 2 ? '低温告警' :  row.alarm_type === 3 ? '低电告警' : row.alarm_type === 4 ? '信号告警' : '';
+            }
             this.initData.datas = rows;
             this.initData.total = total;
             console.log(this.initData);

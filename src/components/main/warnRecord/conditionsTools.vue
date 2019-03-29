@@ -14,10 +14,22 @@
                     @click="clickBtn(index+1)" v-for="btn,index in btns" :key="index">{{btn}}</mu-button>
             </div>
         </div>
-        <div v-if="manager" style="display: flex; align-items: center;" @keydown="search">
-            <div class="tool-search">
-                <el-input v-model="currentParams.communityName"  placeholder="搜索"></el-input>
-                <span class="iconfont iconsousuo icon" @click="search"></span>
+        <div style="display: flex; align-items: center;">
+            <div v-if="group" class="tool-radio">
+                <div style="display: flex; align-items: center;">
+                    <el-radio-group v-model="dd">
+                        <el-radio-button :label="item" v-for="item in radioRead" :key="item"></el-radio-button>
+                    </el-radio-group>
+                    <el-radio-group v-model="aa">
+                        <el-radio-button :label="item" v-for="item in radioUser" :key="item"></el-radio-button>
+                    </el-radio-group>
+                </div>
+            </div>
+            <div v-if="manager" style="display: flex; align-items: center;" @keydown="search">
+                <div class="tool-search">
+                    <el-input v-model="currentParams.communityName"  placeholder="搜索"></el-input>
+                    <span class="iconfont iconsousuo icon" @click="search"></span>
+                </div>
             </div>
         </div>
     </div>
@@ -26,7 +38,7 @@
 <script>
 import moment from 'moment';
 export default {
-    props: ['date', 'manager'],
+    props: ['date', 'group', 'manager'],
     data() {
         return {
             dateArray: [],
@@ -35,8 +47,13 @@ export default {
                 endTime: '',
                 communityName: ''
             },
-            btns: ['72小时', '本月', '供暖季'],
-            indexActive: 1
+            btns: ['72小时', '本周', '本月'],
+            indexActive: 1,
+
+            radioRead: ['全部', '未读 ', '已读'],
+            radioUser: ['全部', '用户', '系统'],
+            dd: '全部',
+            aa: '全部'
         }
     },
     methods: {
@@ -56,11 +73,11 @@ export default {
                 this.currentParams.startTime = moment(moment().subtract(3,'days')).format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }else if(type === 2) {
-                this.currentParams.startTime = moment(moment().month(moment().month()).startOf('month').valueOf()).format('YYYY-MM-DD');
+                this.currentParams.startTime = moment().subtract(parseInt(moment().format('d'))-1, 'days').format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }else {
-                this.currentParams.startTime = moment().format('YYYY-11-15');
-                this.currentParams.endTime = moment(moment(this.currentParams.startTime).add(4,'month')).format('YYYY-MM-DD');
+                this.currentParams.startTime = moment(moment().month(moment().month()).startOf('month').valueOf()).format('YYYY-MM-DD');
+                this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }
             this.indexActive = type;
             this.sendParams();
@@ -110,6 +127,28 @@ export default {
                 border:1px solid rgba(255,165,9,1);
                 background:rgba(255,165,9,1);
                 box-shadow:0px 5px 10px 0px rgba(255,165,9,0.71);
+            }
+        }
+        .tool-radio {
+            margin-right: 40px;
+            .el-radio-group {
+                margin-left: 20px;
+            }
+            .el-radio-button__inner {
+                padding: 0 6px;
+                font-size: 14px;
+            }
+            .el-radio-button__inner {
+                border: none;
+                &:hover {
+                    color: #ffa509;
+                }
+            }
+            .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+                color: #ffa509;
+                background-color: transparent;
+                border-color: transparent;
+                box-shadow: -1px 0 0 0 transparent;
             }
         }
         .tool-search {

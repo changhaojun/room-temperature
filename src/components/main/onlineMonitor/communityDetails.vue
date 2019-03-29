@@ -91,7 +91,7 @@ export default {
             if(!this.conditions.user_number) {
                 delete this.conditions.user_number;
             }
-            if(this.conditions === null) {
+            if(this.conditions.warn === null) {
                 delete this.conditions.warn;
             }
             console.log(this.conditions);

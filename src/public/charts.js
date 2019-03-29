@@ -205,6 +205,134 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
     return line;
 }
 
+export const moreLineCharts = (el, grid, dataX, dataY1, dataY2, dataY3) => {
+    const lineOption = {
+        grid: grid,
+        tooltip: {
+            trigger: 'axis'
+        },
+        color: ['#FFA509', '#00A8FF', '#8AE064'],
+        legend: {
+            data:[
+                {
+                    name: '室温',
+                    icon: 'roundRect'
+                },
+                {
+                    name: '气温',
+                    icon: 'roundRect'
+                },
+                {
+                    name: '湿度',
+                    icon: 'roundRect'
+                }
+            ],
+            right: 50,
+            itemHeight: 5,
+            itemWidth: 15,
+            borderRadius: 2.5,
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+            shadowBlur: 10
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {readOnly: false},
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis:  {
+            type: 'category',
+            boundaryGap: false,
+            axisLine,
+            splitLine,
+            data: dataX
+        },
+        yAxis: [
+            {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} °C'
+                },
+                axisLine,
+                splitLine
+            },
+            {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} %'
+                },
+                axisLine,
+                splitLine
+            },
+        ],
+        series: [
+            {
+                name:'室温',
+                type:'line',
+                yAxisIndex: 0,
+                smooth: true,
+                lineStyle: {
+                    color: '#FFA509'
+                },
+                symbol: 'none',
+                data:dataY1,
+                areaStyle: {
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: 'rgba(255,182,48,.8)'
+                        }, {
+                            offset: 0.5, color: 'rgba(255,182,48,.4)'
+                        },{
+                            offset: 1, color: 'rgba(255,182,48,.1)'
+                        }],
+                        global: false
+                    }
+                }
+            },
+            {
+                name:'气温',
+                type:'line',
+                yAxisIndex: 0,
+                smooth: true,
+                lineStyle: {
+                    color: '#00A8FF'
+                },
+                symbol: 'none',
+                data:dataY2,
+            },
+            {
+                name:'湿度',
+                type:'line',
+                yAxisIndex: 1,
+                smooth: true,
+                lineStyle: {
+                    color: '#8AE064'
+                },
+                symbol: 'none',
+                data:dataY3,
+            }
+        ]
+    }
+
+    const moreLine = echarts.init(el);
+    window.addEventListener('resize', () => {
+        moreLine.resize();
+    })
+    moreLine.setOption(lineOption);
+    return moreLine;
+}
+
 export const pieCharts = (el, data1, data2, data3) => {
     const pieOption = {
         tooltip: {

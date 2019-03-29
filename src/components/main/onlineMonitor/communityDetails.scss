@@ -78,6 +78,8 @@
         }
         .main-table {
             padding: 0 40px 0 20px;
+
+
             .el-table td div {
                 color: #464c5b;
                 padding: 0;
@@ -87,13 +89,13 @@
                 height: 60px;
                 padding: 0;
             }
-
             .warnHigh {
                 color:rgba(255,113,106,1) !important;
                 height: 100%;
                 background:rgba(255,113,106,0.1);
             }
             .warnLow {
+                color:rgba(0,168,255,1) !important;
                 height: 100%;
                 background:rgba(51,171,241,0.1);
             }

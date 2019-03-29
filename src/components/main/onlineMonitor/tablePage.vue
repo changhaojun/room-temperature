@@ -12,9 +12,23 @@
             </el-table-column>
             <el-table-column v-if='type === 2' :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
                 <template slot-scope="scope">
-                    <div :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''">
+                    <div v-if="item.prop === 'data_value'" :class="scope.row.alarm_type === '高温告警' ? 'warnHigh' : scope.row.alarm_type === '低温告警' ? 'warnLow' : ''" 
+                        style='cursor: pointer;' @click="houseTemp(scope.row.user_house_id)">
                         {{scope.row[item.prop]}}
                     </div>
+                    <div v-else-if="item.prop === 'alarm_type' && scope.row.alarm_type === '信号告警' " @click="houseTemp(scope.row.user_house_id)">
+                        <span class="iconfont iconwuxinhao" style="font-size: 20px; color:rgba(255,113,106,1); margin-right: 8px; margin-left: -28px;"></span>
+                        {{scope.row[item.prop]}}
+                    </div>
+                    <div v-else-if="item.prop === 'alarm_type' && scope.row.alarm_type === '低电告警' " @click="houseTemp(scope.row.user_house_id)">
+                        <span class="iconfont icondianchi--" style="font-size: 12px; color:rgba(255,113,106,1); margin-right: 8px; margin-left: -28px;"></span>
+                        {{scope.row[item.prop]}}
+                    </div>
+                    <div v-else-if="item.prop === 'read_state' && scope.row.read_state === '未读' " @click="houseTemp(scope.row.user_house_id)">
+                        <span class="iconfont iconyuandianzhong" style="font-size: 16px; color:rgba(255,113,106,1); margin-top: 5px; margin-right: 2px; margin-left: -22px;"></span>
+                        {{scope.row[item.prop]}}
+                    </div>
+                    <div v-else>{{scope.row[item.prop]}}</div>
                 </template>
             </el-table-column>
         </el-table>
@@ -67,7 +81,6 @@ export default {
         pageChange(current) {
             this.$emit('page-change', {data: current});
         },
-        
         houseTemp(houseId) {
             this.dialogData.title = '温度变化历史';
             this.dialogData.type = 1;
@@ -91,6 +104,7 @@ export default {
     },
     created() {
         this.page_number = this.pageNumber;
+        console.log(this.initData)
     }
 }
 </script>
