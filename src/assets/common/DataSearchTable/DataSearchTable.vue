@@ -9,9 +9,9 @@
             </div>
         </div>
         <div class="main-table-table">
-            <tablePage :initData='tableData' :columns='columns' :pageNumber='conditions.page_number'
+            <table-page :initData='tableData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1
                 @page-change='pageChange'>
-            </tablePage>
+            </table-page>
         </div>
     </div>
 </template>
