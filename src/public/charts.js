@@ -24,6 +24,7 @@ const axisLine = {
         opacity: 1
     }
 }
+
 export const barCharts = (el, data, barColor) => {
     const barOption = {
         tooltip: {
@@ -103,8 +104,9 @@ export const barCharts = (el, data, barColor) => {
     return bar;
 }
 
-export const lineCharts = (el, dataX, dataY1, dataY2) => {
+export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
     const lineOption = {
+        grid: grid,
         tooltip: {
             trigger: 'axis'
         },

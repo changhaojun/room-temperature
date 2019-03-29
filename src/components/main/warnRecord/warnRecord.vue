@@ -5,7 +5,7 @@
                 <conditions-tools :date='date' :manager=true @current-change='reload'></conditions-tools>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' :pageNumber='conditions.page_number' :type=2 @page-change='pageChange'></table-page>
+                <table-page :initData='initData' :columns='columns' manager=true :pageNumber='conditions.page_number' :type=2 @page-change='pageChange'></table-page>
             </div>
         </div>
     </div>
@@ -87,7 +87,7 @@ export default {
         getPageSize() {
             const rowHeight = 60;
             const block = document.querySelector('.record-main').offsetHeight;
-            const rowCount = Math.floor((block - 210) / rowHeight);
+            const rowCount = Math.floor((block - 234) / rowHeight);
             this.conditions.page_size = rowCount;
         }
     },
