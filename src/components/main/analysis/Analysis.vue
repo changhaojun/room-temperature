@@ -1,7 +1,7 @@
 <template>
     <div class="analysis">
         <div class="menu">
-            <data-search-menu @clickBuliding="getClickedBuilding" @clickCommunity="getClickedCommunity">
+            <data-search-menu @clickedItem="getClickedItem">
             </data-search-menu>
         </div>
         <div class="main">
@@ -60,6 +60,9 @@
                 this.getTemperatureDistribution();
                 this.getAverage();
             },
+            getClickedItem(clickedItem){
+                console.log(clickedItem);
+            },
             reload(params) {
                 console.log('params', params);
             },
@@ -87,7 +90,13 @@
                 const dataX = ['0h', '12h', '24h', '36h', '48h', '60h', '72h'];
                 const dataY1 = [12, 13, 14, 15, 16, 17, 18];
                 const dataY2 = [18, 17, 16, 15, 15, 14, 13];
-                const line = lineCharts(this.$refs['average-tem'],dataX, dataY1, dataY2);
+                const line = lineCharts(this.$refs['average-tem'],{
+                    left: '5%',
+                    right: '10%',
+                    bottom: '10%',
+                    top: '15%',
+                    containLabel: true
+                },dataX, dataY1, dataY2);
             },
         },
         components: {
