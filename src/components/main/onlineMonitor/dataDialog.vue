@@ -110,6 +110,9 @@ export default {
 
 <style lang="scss">
     .house {
+         *, :before, :after{
+            z-index: 0;
+        }
         .charts-content {
             height: 280px;
             // margin-top: -18px;
@@ -128,6 +131,10 @@ export default {
             color:rgba(0,168,255,1) !important;
             height: 100%;
             background:rgba(51,171,241,0.1);
+        }
+        .el-table td,.el-table td div{
+            padding: 0;
+            line-height: 60px;
         }
     }
 </style>

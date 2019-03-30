@@ -10,7 +10,7 @@
         </div>
         <div class="main-table-table">
             <table-page :initData='tableData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1
-                @page-change='pageChange'>
+                @page-change='pageChange' :mapdialog="mapdialog" @select="select">
             </table-page>
         </div>
     </div>
@@ -91,7 +91,7 @@
                 let res = '';
                 if (this.typeOfID == 0) {
                     res = await this.$http.get(
-                        'build/getHouse', {
+                        'community/getHouse', {
                             data: {
                                 community_id: this.ID,
                                 user_number: this.searchUser,
