@@ -87,7 +87,7 @@ export default {
             if(this.conditions.config_type === null) {
                 delete this.conditions.config_type;
             }
-            console.log(this.conditions);
+            // console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
             for (const row of rows) {
                 row.read_state  = row.read_state === 0 ? '未读' : row.read_state === 1 ? '已读' : '';
@@ -96,7 +96,7 @@ export default {
             }
             this.initData.datas = rows;
             this.initData.total = total;
-            console.log(this.initData);
+            // console.log(this.initData);
         },
         //换页
         pageChange(current) {
@@ -105,7 +105,7 @@ export default {
         },
         // 修改阅读状态
         async readChange(params) {
-            console.log(params.data);
+            // console.log(params.data);
             const res = await this.$http.put('warn/upDateWarn', params.data);
             this.$message({
                 message: '阅读状态修改成功', 
@@ -122,7 +122,7 @@ export default {
             this.getWarnList();
         },
         group(params) {
-            console.log(params);
+            // console.log(params);
             this.conditions.read_state = params.readState === '全部' ? null : params.readState === '未读' ? 0 : 1;
             this.conditions.config_type = params.configType === '全部' ? null : params.configType === '用户' ? 2 : 1;
             this.conditions.page_number = 1;

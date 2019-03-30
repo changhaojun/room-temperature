@@ -101,7 +101,6 @@ export default {
     watch: {
         toggle: {
             handler(newVal) {
-                console.log(newVal)
                 this.dateArray = this.date;  // 改变默认时间
                 this.indexActive = 1; // 改变按钮状态
             },
@@ -159,7 +158,7 @@ export default {
                 margin-left: 20px;
             }
             .el-radio-button__inner {
-                padding: 0 6px;
+                padding: 0 4px;
                 font-size: 14px;
             }
             .el-radio-button__inner {
