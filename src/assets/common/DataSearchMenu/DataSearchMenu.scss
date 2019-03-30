@@ -57,8 +57,9 @@
             }
 
             .community {
+                // transition: all 0.5s linear;
                 margin-bottom: 25px;
-
+                overflow: hidden;
                 .community-name {
                     span.clickedCommunity {
                         color: #FFA509;

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;">
+        <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;"  @row-click="selectColumn">
             <el-table-column v-if='type === 1' :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
                 <template slot-scope="scope" >
                     <div v-if="item.prop === 'data_value'" :class="scope.row.data_alarm === 1 ? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''" 
@@ -35,7 +35,7 @@
         <el-pagination v-if="initData.datas.length > 0 && manager"
             layout="prev, pager, next, jumper"
             @current-change='pageChange'
-            prev-click='pageChange' 
+            prev-click='pageChange'
             next-click='pageChange'
             :current-page.sync="page_number"
             :total="initData.total"
@@ -55,8 +55,8 @@
 import DataDialog from './dataDialog.vue';
 import moment from 'moment';
 export default {
-    components: {DataDialog},
-    props: ['initData', 'columns', 'manager', 'pageNumber', 'type'],  //manager: 是否需要分页(否：pageNumber可不传)，type：每次调用传不同的值以区分表格样式
+    props: ['initData', 'columns', 'manager', 'pageNumber', 'type','mapdialog'],  //manager: 是否需要分页(否：pageNumber可不传)，type：每次调用传不同的值以区分表格样式
+    components:{DataDialog},
     data() {
         return {
             page_number: 1,
@@ -81,11 +81,19 @@ export default {
         pageChange(current) {
             this.$emit('page-change', {data: current});
         },
+        selectColumn(){
+           
+        },
         houseTemp(houseId) {
-            this.dialogData.title = '温度变化历史';
-            this.dialogData.type = 1;
-            this.showDialog();
-            this.conditionsHistory.house_id = houseId;
+             if(this.mapdialog){
+                this.$emit("select",houseId)
+            }else{
+                 this.dialogData.title = '温度变化历史';
+                this.dialogData.type = 1;
+                this.showDialog();
+                this.conditionsHistory.house_id = houseId;
+            }
+           
         },
         showDialog() {
             this.dialogData.dialogFormVisible = true;
@@ -109,7 +117,7 @@ export default {
 }
 </script>
 
-<style lang="scss">      
+<style lang="scss">
     .el-table .cell {
         text-align: center;
         font-size: 14px;
@@ -142,7 +150,7 @@ export default {
         margin-right: 6px;
     }
     .el-pagination .btn-next {
-        padding: 0; 
+        padding: 0;
         margin-left: 6px;
     }
     .el-pagination__jump {

@@ -10,9 +10,9 @@ const splitLine = {
     show: 'true',
     interval: 'auto',
     lineStyle: {
-        color: ['#ccc'],
+        color: ['#727272'],
         type: 'dashed',
-        opacity: 0.5
+        opacity: 0.36
     }
 }
 
@@ -20,24 +20,23 @@ const axisLine = {
     show: true,
     lineStyle: {
         type: 'solid',
-        color: '#ccc',
-        opacity: 1
+        color: '#727272',
+        opacity: 0.4
     }
 }
 
-export const barCharts = (el, data, barColor) => {
+//chartType=1代表是首页的图表，chartType=0代表是统计分析的图表
+export const barCharts = (el, data, barColor, chartType) => {
     const barOption = {
         tooltip: {
             trigger: 'axis'
         },
         color: barColor[0],
         legend: {
-            data:[
-                {
-                    name: '室温',
-                    icon: 'roundRect'
-                }
-            ],
+            data: [{
+                name:chartType === 1 ? '告警住户' : '室温',
+                icon: 'roundRect'
+            }],
             right: 50,
             itemHeight: 5,
             itemWidth: 15,
@@ -51,13 +50,17 @@ export const barCharts = (el, data, barColor) => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
                 restore: {},
                 saveAsImage: {}
             }
         },
-        xAxis:  {
+        xAxis: {
             type: 'category',
             boundaryGap: true,
             axisLine,
@@ -66,34 +69,41 @@ export const barCharts = (el, data, barColor) => {
         },
         yAxis: {
             type: 'value',
-            axisLabel: {
-                formatter: '{value} °C'
-            },
             axisLine,
             splitLine
         },
-        series: [
-            {
-                name: '室温',
-                type: 'bar',
-                data: data.dataY,
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: [7.5, 7.5, 0, 0],
-                        color: new echarts.graphic.LinearGradient(
-                            0, 1, 0, 0, [{
-                                offset: 0,
-                                color: barColor[0]
-                            }, {
-                                offset: 1,
-                                color: barColor[1]
-                            }]
-                        )
-                    }
-                },
-                barWidth: 15
-            }
-        ]
+        series: [{
+            //name: '室温',
+            type: 'bar',
+            data: data.dataY,
+            itemStyle: {
+                normal: {
+                    barBorderRadius: chartType === 1 ? [7.5, 7.5, 0, 0] : [0,0,0,0],
+                    color: new echarts.graphic.LinearGradient(
+                        0, 1, 0, 0, [{
+                            offset: 0,
+                            color: barColor[0]
+                        }, {
+                            offset: 1,
+                            color: barColor[1]
+                        }]
+                    )
+                }
+            },
+            barWidth: 15
+        }]
+    }
+
+    if (chartType == 1) {
+        barOption.yAxis.axisLabel = {
+            formatter: '{value}'
+        };
+        barOption.series[0].name = '告警住户';
+    } else if (chartType == 0) {
+        barOption.xAxis.axisLabel = {
+            formatter: '{value} °C'
+        };
+        barOption.series[0].name = '户数';
     }
 
     const bar = echarts.init(el);
@@ -104,7 +114,7 @@ export const barCharts = (el, data, barColor) => {
     return bar;
 }
 
-export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
+export const lineCharts = (el, grid, dataX, dataY1, dataY2, interval) => {
     const lineOption = {
         grid: grid,
         tooltip: {
@@ -112,8 +122,7 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
         },
         color: ['#FFA509', '#00A8FF'],
         legend: {
-            data:[
-                {
+            data: [{
                     name: '室温',
                     icon: 'roundRect'
                 },
@@ -135,18 +144,25 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
                 restore: {},
                 saveAsImage: {}
             }
         },
-        xAxis:  {
+        xAxis: {
             type: 'category',
             boundaryGap: false,
             axisLine,
             splitLine,
-            data: dataX
+            data: dataX,
+            axisLabel: {
+                interval: interval ? interval : 'auto'
+            }
         },
         yAxis: {
             type: 'value',
@@ -156,16 +172,15 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
             axisLine,
             splitLine
         },
-        series: [
-            {
-                name:'室温',
-                type:'line',
+        series: [{
+                name: '室温',
+                type: 'line',
                 smooth: true,
                 lineStyle: {
                     color: '#FFA509'
                 },
                 symbol: 'none',
-                data:dataY1,
+                data: dataY1,
                 areaStyle: {
                     color: {
                         type: 'linear',
@@ -174,25 +189,28 @@ export const lineCharts = (el, grid, dataX, dataY1, dataY2) => {
                         x2: 0,
                         y2: 1,
                         colorStops: [{
-                            offset: 0, color: 'rgba(255,182,48,.8)'
+                            offset: 0,
+                            color: 'rgba(255,182,48,.8)'
                         }, {
-                            offset: 0.5, color: 'rgba(255,182,48,.4)'
-                        },{
-                            offset: 1, color: 'rgba(255,182,48,.1)'
+                            offset: 0.5,
+                            color: 'rgba(255,182,48,.4)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(255,182,48,.1)'
                         }],
                         global: false
                     }
                 }
             },
             {
-                name:'气温',
-                type:'line',
+                name: '气温',
+                type: 'line',
                 smooth: true,
                 lineStyle: {
                     color: '#00A8FF'
                 },
                 symbol: 'none',
-                data:dataY2,
+                data: dataY2,
             }
         ]
     }
@@ -376,6 +394,76 @@ export const pieCharts = (el, data1, data2, data3) => {
                         color: data3.color
                     }
                 },
+            ]
+        }]
+    }
+    const pie = echarts.init(el);
+    window.addEventListener('resize', () => {
+        pie.resize();
+    })
+    pie.setOption(pieOption);
+    return pie;
+}
+
+
+export const pieCharts2 = (el, data1, data2) => {
+    const pieOption = {
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} {c} ({d}%)"
+        },
+        series: [{
+            name: '设备在线率',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: 'center'
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+            data: [{
+                    value: data1.value,
+                    name: data1.name,
+                    itemStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 1,
+                            y: 1,
+                            r: 1,
+                            colorStops: [{
+                                offset: 0, color: '#f0a938' // 0% 处的颜色
+                            }, {
+                                offset: 1, color: '#fac166' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                },
+                {
+                    value: data2.value,
+                    name: data2.name,
+                    itemStyle: {
+                        color: {
+                            type: 'radial',
+                            x: 0.5,
+                            y: 0.5,
+                            r: 1,
+                            colorStops: [{
+                                offset: 0, color: '#b8b8b8' // 0% 处的颜色
+                            }, {
+                                offset: 1, color: 'rgba(0,0,0,.5)' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                }
             ]
         }]
     }

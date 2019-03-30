@@ -9,9 +9,9 @@
             </div>
         </div>
         <div class="main-table-table">
-            <tablePage :initData='tableData' :columns='columns' :pageNumber='conditions.page_number'
+            <table-page :initData='tableData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1
                 @page-change='pageChange'>
-            </tablePage>
+            </table-page>
         </div>
     </div>
 </template>
@@ -63,7 +63,7 @@
                 searchUser: ''
             }
         },
-        props: ['ID', 'typeOfID'],
+        props: ['ID', 'typeOfID','mapdialog'],
         watch: {
             ID: {
                 handler() {
@@ -107,7 +107,8 @@
                                 user_number: this.searchUser,
                                 page_size: 10,
                                 page_number: 1,
-                            }
+                            } 
+
                         });
                 }
 
@@ -116,6 +117,9 @@
                 console.log('this.tableData', this.tableData);
 
             },
+            select(item){
+               this.$emit("select",item)
+            }
         },
         mounted() {
              this.getTableData();
