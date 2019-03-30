@@ -54,8 +54,8 @@ export default {
                 data.data_value_temp = result.temp_value[index];
                 data.data_value_outTemp = result.temp_value[index];
                 data.data_value_hum = result.hum_value[index];
-                data.high = Number(result.high_warn.split('>')[1]);
-                data.low = Number(result.low_warn.split('<')[1]);
+                data.high = result.high_warn?Number(result.high_warn.split('>')[1]):'';
+                data.low =result.low_warn? Number(result.low_warn.split('<')[1]):'';
                 this.datas.push(data);
             });
             const dataX = result.data_time;
@@ -86,6 +86,9 @@ export default {
 
 <style lang="scss">
     .house {
+         *, :before, :after{
+            z-index: 0;
+        }
         .charts-content {
             height: 280px;
             margin-top: -18px;
@@ -104,6 +107,10 @@ export default {
             color:rgba(0,168,255,1) !important;
             height: 100%;
             background:rgba(51,171,241,0.1);
+        }
+        .el-table td,.el-table td div{
+            padding: 0;
+            line-height: 60px;
         }
     }
 </style>

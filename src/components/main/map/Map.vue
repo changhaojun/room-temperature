@@ -38,11 +38,11 @@
                         <data-search-table :ID="dialogParams.community_id" :typeOfID="0" @select="select" :mapdialog="dialogParams.mapdialog"></data-search-table>
                     </div>
                </div>
-               <div v-if="dialogParams.tempHistory" class="communityBox" style="padding-right:20px;padding-left:10px">
+               <div v-if="dialogParams.tempHistory" class="communityBox" style="padding-right:20px;padding-left:10px;z-index:999999">
                    <div class="temp-header" >
                        <span @click="allCommunity()">{{dialogParams.title}} &gt;</span>
                        <span>温度变化曲线</span>
-                       <div>
+                       <div style="margin-top:10px;">
                            <data-dialog :date='dialogParams.date' :conditionsHistory='dialogParams.conditionsHistory'></data-dialog>
                        </div>
                        
@@ -232,6 +232,7 @@
                 _this.getcommunityDistribute();
             },
             select(id){
+                console.log(id)
                 this.dialogParams.tempHistory = true;
                 this.dialogParams.conditionsHistory.house_id = id;
             },
