@@ -1,7 +1,7 @@
 <template>
     <div class="data-search">
         <div class="menu">
-            <data-search-menu @clickBuliding="getClickedBuilding" @clickCommunity="getClickedCommunity"></data-search-menu>
+            <data-search-menu @clickedItem="getClickedItem"></data-search-menu>
         </div>
         <el-scrollbar class="main-scrollbar">
             <div class="main">
@@ -32,15 +32,17 @@
             }
         },
         methods: {
-            getClickedBuilding(clickedBuilding) {
+            /*getClickedBuilding(clickedBuilding) {
                 this.ID = clickedBuilding.building_id;
                 this.typeOfID = 1;
             },
             getClickedCommunity(clickedCommunity) {
                 this.ID = clickedCommunity.community_id;
                 this.typeOfID = 0;
-            },
-
+            },*/
+            getClickedItem(clickedItem){
+                console.log(clickedItem);
+            }
 
         },
         mounted() {},
