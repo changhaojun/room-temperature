@@ -138,7 +138,6 @@ export default {
     created() {
         this.page_number = this.pageNumber;
         this.page_size = this.pageSize;
-        console.log(this.initData)
     }
 }
 </script>
