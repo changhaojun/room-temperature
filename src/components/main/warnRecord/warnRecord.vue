@@ -2,10 +2,10 @@
     <div class="warn-record">
         <div class="record-main">
             <div class="main-tool">
-                <conditions-tools :date='date' :group=true :manager=true @current-change='reload'></conditions-tools>
+                <conditions-tools :date='date' :group=true :manager=true @current-change='reload' @group-change='group'></conditions-tools>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' manager=true :pageNumber='conditions.page_number' :type=2 @page-change='pageChange'></table-page>
+                <table-page :initData='initData' :columns='columns' manager=true :pageNumber='conditions.page_number' :pageSize='conditions.page_size' :type=2 @page-change='pageChange' @read-change='readChange'></table-page>
             </div>
         </div>
     </div>
@@ -22,17 +22,28 @@ export default {
             date: [moment().subtract(3,'days'), moment()],
 
             conditions: {
-                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD hh:mm:ss'),
-                end_time: moment().format('YYYY-MM-DD hh:mm:ss'),
-                community_name: '',
+                type: 6,
+                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD'),
+                end_time: moment().format('YYYY-MM-DD'),
+                key: '',
                 page_size: 6,
-                page_number: 1
+                page_number: 1,
+                read_state: null,
+                config_type: null
             },
             initData: {
                 total: 0,
                 datas: []
             },
             columns: [
+                {
+                    label: "阅读状态",
+                    prop: "read_state"
+                },
+                {
+                    label: "公司名称",
+                    prop: "company_name"
+                },
                 {
                     label: "小区名称",
                     prop: "community_name"
@@ -60,10 +71,6 @@ export default {
                 {
                     label: "时间",
                     prop: "data_time"
-                },
-                {
-                    label: "阅读状态",
-                    prop: "read_state"
                 }
             ]   
         }
@@ -71,10 +78,16 @@ export default {
     methods: {
         // 获取告警列表
         async getWarnList() {
-            console.log(this.conditions);
-            if(!this.conditions.community_name) {
-                delete this.conditions.community_name;
+            if(!this.conditions.key) {
+                delete this.conditions.key;
             }
+            if(this.conditions.read_state === null) {
+                delete this.conditions.read_state;
+            }
+            if(this.conditions.config_type === null) {
+                delete this.conditions.config_type;
+            }
+            console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
             for (const row of rows) {
                 row.read_state  = row.read_state === 0 ? '未读' : row.read_state === 1 ? '已读' : '';
@@ -90,10 +103,28 @@ export default {
             this.conditions.page_number = current.data;
             this.getWarnList();
         },
+        // 修改阅读状态
+        async readChange(params) {
+            console.log(params.data);
+            const res = await this.$http.put('warn/upDateWarn', params.data);
+            this.$message({
+                message: '阅读状态修改成功', 
+                type: 'success'
+            })
+            this.getWarnList();
+        },
+
         reload(params) {
             this.conditions.start_time = params.startTime;
             this.conditions.end_time = params.endTime;
-            this.conditions.community_name = params.communityName;
+            this.conditions.key = params.key;
+            this.conditions.page_number = 1;
+            this.getWarnList();
+        },
+        group(params) {
+            console.log(params);
+            this.conditions.read_state = params.readState === '全部' ? null : params.readState === '未读' ? 0 : 1;
+            this.conditions.config_type = params.configType === '全部' ? null : params.configType === '用户' ? 2 : 1;
             this.conditions.page_number = 1;
             this.getWarnList();
         },

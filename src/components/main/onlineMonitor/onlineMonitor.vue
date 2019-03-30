@@ -204,6 +204,7 @@ export default {
         },
         clickBtn(type) {
             this.indexActive = type;
+            this.communityName = '';
             if(type === 1) {
                 this.pageChange(1);
             }else {

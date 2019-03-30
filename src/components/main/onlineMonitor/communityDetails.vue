@@ -50,6 +50,10 @@ export default {
 
             columns: [
                 {
+                    label: "时间",
+                    prop: "data_time"
+                },
+                {
                     label: "编号",
                     prop: "user_number"
                 },
@@ -72,11 +76,7 @@ export default {
                 {
                     label: "室内温度(℃)",
                     prop: "data_value"
-                },
-                {
-                    label: "时间",
-                    prop: "data_time"
-                },
+                }
             ]
         }
     },
@@ -95,7 +95,7 @@ export default {
                 delete this.conditions.warn;
             }
             console.log(this.conditions);
-            const { result: { rows, total } } = await this.$http('build/getHouse', {data: this.conditions});
+            const { result: { rows, total } } = await this.$http('community/getHouse', {data: this.conditions});
             for (const row of rows) {
                 row.distance  = row.distance === 1 ? '近' : row.distance === 2 ? '中' : row.distance === 3 ? '远' : '';
                 row.position  = row.position === 1 ? '顶' : row.position === 2 ? '底' : row.position === 3 ? '边' : '';
@@ -117,6 +117,7 @@ export default {
         },
         clickBtn(type) {
             this.indexActive = type;
+            this.conditions.user_number = '';
             this.conditions.page_number = 1;
             if(type === 1) {
                 this.conditions.warn = null;
