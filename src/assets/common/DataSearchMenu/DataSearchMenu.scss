@@ -13,6 +13,30 @@
         height: 34px;
         margin-top: 40px;
         margin-left: 19px;
+        position: relative;
+
+        span.el-input__suffix {
+            display: none;
+        }
+
+
+        .search-result {
+            margin-left: 10px;
+            margin-right: 30px;
+            margin-top: 1px;
+            background: rgba(237, 239, 242, 1);
+            z-index: 999;
+            position: absolute;
+            width: 80%;
+
+            .search-result-item {
+                font-size: 15px;
+                margin-top: 10px;
+                cursor: pointer;
+            }
+        }
+
+
 
         input.el-input__inner {
             width: 201px;
@@ -42,64 +66,75 @@
     .menu-list {
         margin-top: 15px;
         margin-left: 20px;
+        margin-right: 20px;
         height: calc(100% - 99px);
         font-size: 16px;
         font-family: SourceHanSansCN-Regular;
         font-weight: 400;
         color: rgba(114, 114, 114, 1);
         opacity: 0.84;
+        z-index: 1;
 
         .menu-scrollbar {
             height: 100%;
 
-            .el-scrollbar__wrap{
+            .el-scrollbar__wrap {
                 overflow-x: hidden;
             }
 
-            .community {
-                // transition: all 0.5s linear;
-                margin-bottom: 25px;
-                overflow: hidden;
-                .community-name {
-                    span.clickedCommunity {
-                        color: #FFA509;
-                    }
+            .company {
+                font-size: 16px;
+                font-family: SourceHanSansCN-Regular;
+                font-weight: bold;
+                color: rgba(114, 114, 114, 1);
+
+                span.company-span {
+                    line-height: 44px;
                 }
 
-                .community-name,
-                .building-name {
-                    cursor: pointer;
+                span.company-span.parentCompany,
+                span.community-span.parentCommunity {
+                    color: #FFA509;
                 }
 
-                .blank {
-                    height: 20px;
-                }
+                .communityList {
+                    margin-left: 20px;
 
-                .building {
-                    width: 199px;
-                    height: 40px;
+                    .community {
+                        // transition: all 0.5s linear;
+                        line-height: 44px;
+                        overflow: hidden;
 
-                    .building-name {
-                        margin-left: 36px;
-                        padding-top: 8px;
-                        color: #727272
-                    }
-                }
+                        .community-name {
+                            span.clickedCommunity {
+                                color: #FFA509;
+                            }
+                        }
 
-                .building.clickedBuilding {
-                    background: rgba(255, 165, 9, 1);
-                    box-shadow: 0px 5px 10px 0px rgba(255, 165, 9, 0.71);
-                    border-radius: 6px;
+                        .community-name,
+                        .building {
+                            cursor: pointer;
+                        }
 
-                    .building-name {
-                        color: #fff;
+                        .building {
+                            height: 40px;
+
+                            span.building-span {
+                                margin-left: 20px;
+                            }
+                        }
                     }
                 }
             }
 
-            .community.clickedCommunity {
-                color: #FFA509
+            .clickedItem {
+                background: rgba(255, 165, 9, 1);
+                box-shadow: 0px 5px 10px 0px rgba(255, 165, 9, 0.71);
+                border-radius: 6px;
+                color: #fff
             }
+
+
         }
 
     }
