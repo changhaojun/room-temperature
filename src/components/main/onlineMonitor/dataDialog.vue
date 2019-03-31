@@ -7,7 +7,7 @@
             <div ref="temp" class="charts-content"></div>
             <div style="padding-left: 20px;">
                 <el-table :data="datas" border style="width: 100%;">
-                    <el-table-column prop='data_time' label="时间"></el-table-column>
+                    <el-table-column prop='data_time' label="时间" ></el-table-column>
                     <el-table-column prop='data_value_hum' label="湿度( % )"></el-table-column>
                     <el-table-column prop='data_value_temp' label="室内温度(℃)">
                         <template slot-scope="scope">
@@ -59,9 +59,7 @@ export default {
         // 获取历史数据
         async getHouseHistory() {
             this.datas = [];
-            console.log(this.hsitoryParams);
             const {result} = await this.$http('historyData/getHouseHistory', {data: this.hsitoryParams});
-            console.log(result);
                 result.data_time.forEach((element,index) => {
                     let data = {};
                     data.data_time = element;
@@ -70,7 +68,7 @@ export default {
                     data.data_value_hum = result.hum_value[index];
                     data.high = result.high_warn?Number(result.high_warn.split('>')[1]):'';
                     data.low =result.low_warn? Number(result.low_warn.split('<')[1]):'';
-                    this.datas.push(data);
+                    this.datas.unshift(data);
                 });
                 this.dataX = result.data_time;
                 this.dataY1 = result.temp_value;
@@ -80,18 +78,14 @@ export default {
         },
         // 获取室外温度历史
         async getWeatherHistory() {
-            console.log(this.hsitoryParams)
             const datas = {
                 start_time: this.hsitoryParams.start_time,
                 end_time: this.hsitoryParams.end_time
             }
-            console.log(datas)
             const { result: { rows, total } } = await this.$http('getWeatherHistory', {data: datas});
-            console.log(rows)
             this.dataY2 = rows;
         },
         reload(params) {
-            console.log(1111)
             this.hsitoryParams.start_time = params.startTime;
             this.hsitoryParams.end_time = params.endTime;
             this.getHouseHistory();
@@ -101,8 +95,8 @@ export default {
         conditionsHistory: {
             handler(newVal) {
                 this.hsitoryParams.house_id = this.conditionsHistory.house_id;
-                this.hsitoryParams.start_time = moment(this.date[0]).format('YYYY-MM-DD');
-                this.hsitoryParams.end_time = moment(this.date[1]).format('YYYY-MM-DD');
+                this.hsitoryParams.start_time = moment(this.date[0]).add(1,"days").format('YYYY-MM-DD');
+                this.hsitoryParams.end_time = moment(this.date[1]).add(1,"days").format('YYYY-MM-DD');
                 this.toggle = !this.toggle; // 为使子组件监听有变化而改变默认日期和按钮状态
                 this.getHouseHistory();
             },
