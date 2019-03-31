@@ -27,7 +27,8 @@
                 },
                 columns: [{
                         label: "时间",
-                        prop: "data_time"
+                        prop: "data_time",
+                        width: 180
                     },
                     {
                         label: "分公司名称",
@@ -36,7 +37,7 @@
                     {
                         label: "小区名称",
                         prop: "community_name"
-                    }, 
+                    },
                     {
                         label: "楼名称",
                         prop: "building_name"
@@ -51,7 +52,8 @@
                     },
                     {
                         label: "设备SN",
-                        prop: "device_sn"
+                        prop: "device_sn",
+                        width: 150
                     },
                     {
                         label: "信号",

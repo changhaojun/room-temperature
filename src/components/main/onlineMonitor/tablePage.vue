@@ -45,7 +45,7 @@
                 </el-table-column>
             </div>
             <div v-if='type === 3'>
-                <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
+                <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index" :width="item.width">
                     <template slot-scope="scope">
                         <div v-if="item.prop === 'data_value'" :class="{warnHigh: scope.row.data_value>=25, warnLow: scope.row.data_value<=16 && scope.row.data_value>0}"
                             style='cursor: pointer;' @click="houseTemp(scope.row.user_house_id)">
