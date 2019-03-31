@@ -138,6 +138,8 @@ export default {
     mounted() {
         this.getPageSize();
         this.getHouseList();
+        console.log(document.querySelector('nav').querySelectorAll('a')[2])
+        document.querySelector('nav').querySelectorAll('a')[2].classList.add('active-router');
     },
     created() {
         this.conditions.community_id = Number(this.$route.query.community_id);
