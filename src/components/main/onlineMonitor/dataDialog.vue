@@ -61,12 +61,12 @@ export default {
             this.datas = [];
             console.log(this.hsitoryParams);
             const {result} = await this.$http('historyData/getHouseHistory', {data: this.hsitoryParams});
-            console.log(result.data_time);
+            console.log(result);
                 result.data_time.forEach((element,index) => {
                     let data = {};
                     data.data_time = element;
                     data.data_value_temp = result.temp_value[index];
-                    data.data_value_outTemp = result.temp_value[index];
+                    data.data_value_outTemp = [];
                     data.data_value_hum = result.hum_value[index];
                     data.high = Number(result.high_warn.split('>')[1]);
                     data.low = Number(result.low_warn.split('<')[1]);
@@ -74,9 +74,21 @@ export default {
                 });
                 this.dataX = result.data_time;
                 this.dataY1 = result.temp_value;
-                this.dataY2 = result.temp_value;
+                // this.dataY2 = [];
                 this.dataY3 = result.hum_value;
                 const moreLine = moreLineCharts(this.$refs['temp'], this.grid, this.dataX, this.dataY1, this.dataY2, this.dataY3);
+        },
+        // 获取室外温度历史
+        async getWeatherHistory() {
+            console.log(this.hsitoryParams)
+            const datas = {
+                start_time: this.hsitoryParams.start_time,
+                end_time: this.hsitoryParams.end_time
+            }
+            console.log(datas)
+            const { result: { rows, total } } = await this.$http('getWeatherHistory', {data: datas});
+            console.log(rows)
+            this.dataY2 = rows;
         },
         reload(params) {
             console.log(1111)
@@ -98,6 +110,7 @@ export default {
         }
     },
     mounted() {
+        this.getWeatherHistory();
         this.getHouseHistory();
     },
     created() {

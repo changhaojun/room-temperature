@@ -41,6 +41,7 @@ export default {
                 page_number: 1
             },
             communityName: '',
+            temp: '',
             initData: {
                 total: 0,
                 datas: []
@@ -59,7 +60,7 @@ export default {
                 },
                 {
                     label: "户主名称",
-                    prop: ""
+                    prop: "username"
                 },
                 {
                     label: "位置",
@@ -71,7 +72,7 @@ export default {
                 },
                 {
                     label: "室外温度(℃)",
-                    prop: ""
+                    prop: "temp"
                 },
                 {
                     label: "室内温度(℃)",
@@ -97,6 +98,7 @@ export default {
             console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('community/getHouse', {data: this.conditions});
             for (const row of rows) {
+                row.temp = this.temp;
                 row.distance  = row.distance === 1 ? '近' : row.distance === 2 ? '中' : row.distance === 3 ? '远' : '';
                 row.position  = row.position === 1 ? '顶' : row.position === 2 ? '底' : row.position === 3 ? '边' : '';
             }
@@ -140,6 +142,7 @@ export default {
     created() {
         this.conditions.community_id = Number(this.$route.query.community_id);
         this.communityName = this.$route.query.community_name;
+        this.temp = this.$route.query.temp;
     }
 }
 </script>

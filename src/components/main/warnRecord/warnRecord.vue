@@ -96,7 +96,7 @@ export default {
             }
             this.initData.datas = rows;
             this.initData.total = total;
-            // console.log(this.initData);
+            console.log(this.initData);
         },
         //换页
         pageChange(current) {
