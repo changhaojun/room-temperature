@@ -69,7 +69,7 @@
             </div>
             <div class="config_footer">
                 <el-pagination
-                    @current-change="getConfigList"
+                    @current-change="handelPage"
                     :page-size="page.page_size"
                     layout="prev, pager, next, jumper"
                     :total="total">
@@ -121,15 +121,20 @@ export default {
             this.total = total;
         },
 
+        handelPage(page) {
+            this.page.page_number = page;
+            this.getConfigList();
+        },
+
         changeConfig(row, column, event) {
             this.changeConfigShow = true;
-            const {community_name,id} = row;
+            const {community_name,community_id} = row;
             this.dialogTit = community_name;
-            this.changeId = id;
+            this.changeId = community_id;
         },
         async suerChange() {
             const res = await this.$http.put('warn/config', {
-                id: this.changeId,
+                community_id: this.changeId,
                 high_warn: '>' + this.newConfig.high_warn,
                 low_warn: '<' + this.newConfig.low_warn
             })
@@ -143,6 +148,11 @@ export default {
         }
     },
     mounted() {
+        this.page.page_size = Math.floor((this.$refs['config_tabel'].offsetHeight - 45) / 60);
+        window.addEventListener('resize', () =>{
+            this.page.page_size = Math.floor((this.$refs['config_tabel'].offsetHeight - 45) / 60);
+            this.getConfigList();
+        })
         this.getConfigList();
     }
 }

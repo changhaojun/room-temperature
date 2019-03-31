@@ -29,7 +29,15 @@ const axisLine = {
 export const barCharts = (el, data, barColor, chartType) => {
     const barOption = {
         tooltip: {
-            trigger: 'axis'
+            trigger: 'axis',
+            // formatter: '{a}：{c}户'
+        },
+        grid: {
+            left: '5%',
+            right: '10%',
+            bottom: '10%',
+            top: '15%',
+            containLabel: true
         },
         color: barColor[0],
         legend: {
@@ -96,8 +104,9 @@ export const barCharts = (el, data, barColor, chartType) => {
 
     if (chartType == 1) {
         barOption.yAxis.axisLabel = {
-            formatter: '{value}'
+            formatter: '{value}户'
         };
+        barOption.tooltip.formatter = '{a}: {c}户';
         barOption.series[0].name = '告警住户';
     } else if (chartType == 0) {
         barOption.xAxis.axisLabel = {
@@ -415,7 +424,7 @@ export const pieCharts2 = (el, data1, data2) => {
         series: [{
             name: '设备在线率',
             type: 'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             label: {
                 normal: {

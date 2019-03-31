@@ -103,15 +103,16 @@
             .el-table{
                 height: 100%;
                 .el-table__body-wrapper {
-                    // height: 100%;d
                     table{
                         height: 100%;
-                        tbody{
-                            height: 100%;
                             tr{
-                                height: 10% !important;
+                                height: 60px !important;
+                                cursor: pointer;
+                                td{
+                                    height: 60px !important;
+                                }
                             }
-                        }
+
                     }
                 }
                 .nohightConfig,.nolowConfig{
