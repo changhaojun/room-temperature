@@ -69,19 +69,29 @@
             <div class="input-list" style="padding:20px;">
                 <div class="input-item">
                     <span>选择公司:</span>
-                    <el-select v-model="selectCompany" placeholder="请选择公司">
-                        <!-- <el-option
+                    <el-select v-model="selectCompany" placeholder="请选择公司" @change="changeCompany">
+                        <el-option
                         v-for="item in company_list"
-                        :key="item.value"
-                        :label="item.label"
+                        :key="item.company_id"
+                        :label="item.company_name"
                         popper-class="selectcompany"
-                        :value="item.value">
-                        </el-option> -->
+                        :value="item">
+                        </el-option>
                     </el-select>
                 </div>
                 <div class="input-item">
                    <span>上传文件:</span>
-                    <el-input></el-input>
+                    <el-upload
+                        action="http://192.168.1.78:7001/file/upload"
+                        class="upload-demo upload"
+                        drag
+                        :on-change="onchange"
+                        :auto-upload="true"
+                        :before-upload="uoloadfiles"
+                        multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                    </el-upload>
                 </div>
             </div>
             <div class="change_footer">
@@ -116,7 +126,12 @@ export default {
             changePassword: false,
             changeConfigShow:false,
             company_list:[],
-            selectCompany:''
+            selectCompany:'',
+            postParams:{
+                company_id:"",
+                comapny_name:""
+            }
+
         }
     },
     methods: {
@@ -153,7 +168,24 @@ export default {
         },
         async suerChange() {
             
+        },
+        uoloadfiles(file){
+            console.log(file)
+        },
+        onchange(file, fileList){
+            console.log(file, fileList)
+        },
+        async changeCompany(data){
+           this.postParams.company_id = data.company_id;
+           this.postParams.company_name = data.company_name;
+        },
+        async getCompany(){
+            const {result:{rows}} = await this.$http(`company/getCompany`,{data:{map:1}})
+            this.company_list =rows;
         }
+    },
+    mounted(){
+        this.getCompany()
     },
     children: [
         {
@@ -345,8 +377,11 @@ export default {
                         margin-right: 20px;
                     }
                 }
-                .el-input,.selectcompany{
-                    width: 50%;
+                .selectcompany{
+                    width: 61%;
+                }
+                .el-upload-dragger{
+                    width:320px;
                 }
                 
             }

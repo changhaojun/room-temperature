@@ -84,7 +84,7 @@
                 activeIndex:-1,
                 allActive:true,
                 search:'',
-                zoom: 9,
+                zoom: 12,
                 zooms:[9,30],
                 center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],  
                 markers:[], 
@@ -96,11 +96,10 @@
                     init: (o) => { 
                         this.event = o ;
                     },
-                   
                     mousewheel:()=>{
                         const zoom =this.event.getZoom()
                         this.zoom = zoom;
-                        if(zoom<=12){
+                        if(zoom<=13){
                            this.analysisData()
                            this.companyDistribute();
                         }else{
@@ -194,13 +193,13 @@
                 const location = [];
                 let dom = '';
                 let data ='';
-                if(this.zoom<=12){
+                if(this.zoom<=13){
                     data = this.companyData;
                 }else{
                     data = this.communityData;
                 }
                 for(let i=0;i<data.length;i++){
-                    if(this.zoom<=12){
+                    if(this.zoom<=13){
                         // console.log(data)
                         dom = `<div class="marker-box"  @click="clickCompanyCenter($event)">
                                         <div class="circle-box"  align="${data[i].location}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
@@ -262,7 +261,7 @@
            if(!window.AMap && !window.AMapUI){
                 this.initMap()
            }
-           this.center=[JSON.parse(localStorage.getItem('address')).split(",")[0],JSON.parse(localStorage.getItem('address')).split(",")[1]] 
+           this.center=[localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]] 
         },
         mounted(){
             this.getCompany()
