@@ -58,7 +58,7 @@
             return {
                 ID: -1,
                 typeOfID: -1,
-                date: [moment().subtract(3, 'days'), moment()],
+                date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
             }
         },
         methods: {
@@ -76,9 +76,10 @@
                 this.getAverage();
             },
             reload(params) {
-                //console.log('params', params);
+                console.log('params', params);
                 this.date[0] = params.startTime;
                 this.date[1] = params.endTime;
+                this.getAverage();
             },
             async getHighTemperature() {
                 const {
@@ -173,18 +174,24 @@
                     res = await this.$http('historyData/getCompanyHistory', {
                         data: {
                             company_id: this.ID,
+                            start_time: this.date[0],
+                            end_time: this.date[1]
                         }
                     });
                 } else if (this.typeOfID == 0) {
                     res = await this.$http('historyData/getCommunityHistory', {
                         data: {
                             community_id: this.ID,
+                            start_time: this.date[0],
+                            end_time: this.date[1]
                         }
                     });
                 } else if (this.typeOfID == 1) {
                     res = await this.$http('historyData/getBuildingHistory', {
                         data: {
                             building_id: this.ID,
+                            start_time: this.date[0],
+                            end_time: this.date[1]
                         }
                     });
                 }
@@ -198,7 +205,7 @@
                     bottom: '10%',
                     top: '15%',
                     containLabel: true
-                }, dataX, dataY1, dataY2,11);
+                }, dataX, dataY1, dataY2);
             },
         },
         components: {
