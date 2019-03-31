@@ -81,8 +81,9 @@ export default {
                 localStorage.setItem('remember', false);
                 localStorage.removeItem('userInfo');
             }
-            const { result: { fullname, user_id } } = res;
+            const { result: { fullname, user_id, address } } = res;
             sessionStorage.setItem('userInfo', JSON.stringify(Object.assign({ fullname, user_id }, this.user)));
+            localStorage.setItem('address', address);
             this.$router.push({ path: '/main/firstPage' });
         }
     },
