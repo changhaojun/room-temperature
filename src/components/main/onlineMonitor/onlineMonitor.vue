@@ -145,7 +145,7 @@ export default {
             this.initData.allDatas = rows;
             this.initData.allTotal = total;
             this.initData.total = total;
-            console.log(this.initData);
+            // console.log(this.initData);
             this.pageChange(1);
         },
         //换页
@@ -223,7 +223,6 @@ export default {
         },
         // 小区详情
         details(row) {
-            console.log(row);
             this.$router.push({
                 name: 'CommunityDetails',
                 query: {
@@ -241,7 +240,7 @@ export default {
         autoRefresh() {
             this.timer = setInterval(() => {
                 this.getCommunityTable();    
-            },180000);
+            },1800000);
         },
         changeRefresh() {
             if(!this.refresh) {
@@ -255,6 +254,11 @@ export default {
         this.getPageSize();
         this.getCommunityTable();
         this.autoRefresh();
+    },
+    destroyed(){
+        if(this.timer) { //如果定时器在运行则关闭
+            clearInterval(this.timer); 
+        }
     }
 }
 </script>

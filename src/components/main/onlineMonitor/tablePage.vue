@@ -97,6 +97,7 @@ export default {
         },
         houseTemp(houseId) {
              if(this.mapdialog){
+                 console.log(houseId)
                 this.$emit("select",houseId)
             }else{
                 this.dialogData.title = '温度变化历史';
@@ -138,7 +139,6 @@ export default {
     created() {
         this.page_number = this.pageNumber;
         this.page_size = this.pageSize;
-        console.log(this.initData)
     }
 }
 </script>

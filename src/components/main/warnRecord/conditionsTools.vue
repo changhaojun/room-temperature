@@ -38,7 +38,7 @@
 <script>
 import moment from 'moment';
 export default {
-    props: ['date', 'group', 'manager'],
+    props: ['date', 'group', 'manager', 'toggle'],
     data() {
         return {
             dateArray: [],
@@ -64,6 +64,7 @@ export default {
             this.currentParams.startTime = moment(this.dateArray[0]).format('YYYY-MM-DD');
             this.currentParams.endTime = moment(this.dateArray[1]).format('YYYY-MM-DD');
             this.sendParams();
+            this.indexActive = 0;
         },
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
@@ -95,6 +96,15 @@ export default {
         // 改变组
         changeGroup() {
             this.$emit('group-change', this.groupParams);
+        }
+    },
+    watch: {
+        toggle: {
+            handler(newVal) {
+                this.dateArray = this.date;  // 改变默认时间
+                this.indexActive = 1; // 改变按钮状态
+            },
+            deep: true
         }
     },
     created() {
@@ -148,7 +158,7 @@ export default {
                 margin-left: 20px;
             }
             .el-radio-button__inner {
-                padding: 0 6px;
+                padding: 0 4px;
                 font-size: 14px;
             }
             .el-radio-button__inner {
