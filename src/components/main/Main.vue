@@ -103,6 +103,16 @@ import RoomMap from './map/Map';
 import WarnRecord from './warnRecord/warnRecord';
 import Analysis from './analysis/Analysis';
 import WarnConfig from './warnConfig/warnConfig';
+import myMqtt from './../../public/mqtt.js';
+import moment from 'moment';
+const mqttOptions = {
+  host: '121.42.143.106',
+  port: 8083,
+  username: 'admin',
+  password: 'finfosoft123',
+  protocolId: 'mqtt' + Math.floor(Math.random() * 1000)
+};
+
 export default {
     data () {
         return {
@@ -114,6 +124,7 @@ export default {
                 new_pwd: ''
             },
             changePassword: false,
+            client: null,
             changeConfigShow:false,
             company_list:[],
             selectCompany:''
@@ -121,7 +132,6 @@ export default {
     },
     methods: {
         handleCommand(command) {
-            // console.log(command)
             if(command === 'config') {
                 this.$router.push({
                     path: '/main/warnConfig'
@@ -151,9 +161,58 @@ export default {
             })
             this.changePassword = false;
         },
+
+        mqttConnect() {
+            this.client = new myMqtt(mqttOptions, 'roomWarn', this.warningData);
+        },
+
         async suerChange() {
-            
+
+        },
+
+        warningData(data) {
+            const {community_name, data_time, building_name, alarm_type, data_value, unit_number } = JSON.parse(data);
+            let warn_name = '';
+            switch (alarm_type) {
+                case 1:
+                    warn_name = '高温告警'
+                    break;
+                case 2:
+                    warn_name = '低温告警'
+                    break;
+                case 3:
+                    warn_name = `低电量告警<i class="iconfont icondianchi--" style="color:#fff"></i>`
+                    break;
+                case 4:
+                    warn_name = '信号告警'
+                    break;
+                case 5:
+                    warn_name = '离线告警'
+                    break;
+                default:
+                    break;
+            }
+            this.$notify({
+                customClass: 'warn-box',
+                dangerouslyUseHTMLString: true,
+                offset: 700,
+                showClose: false,
+                message: `
+                    <h4>${community_name}<span>${unit_number}单元${building_name}</span></h4>
+                    <p>${moment(data_time).format('YYYY-MM-DD HH:mm')}</p>
+                    <p>${warn_name}<span style="margin-left:10px;font-size:20px">${data_value ? data_value : ''}</span></p>
+                `,
+
+            });
         }
+    },
+
+    destroyed() {
+        this.client.destroyed();
+        this.client = null;
+    },
+    mounted() {
+        this.mqttConnect();
     },
     children: [
         {
@@ -201,6 +260,25 @@ export default {
 </script>
 
 <style lang="scss">
+    .warn-box{
+        background:rgba(255,113,106,0.88);
+        padding: 5px 10px 10px;
+        color: #fff;
+        transform: translate(20px,0);
+        width: auto;
+        h4{
+            color: #fff;
+            font-size: 16px;
+            span{
+                margin-left: 10px;
+            }
+        }
+        p{
+            color: #fff;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    }
     ul.el-dropdown-menu{
         padding: 5px 0;
         transform: translateY(-10px) !important;
@@ -348,7 +426,7 @@ export default {
                 .el-input,.selectcompany{
                     width: 50%;
                 }
-                
+
             }
             .change_footer{
                 margin-top: -10px;

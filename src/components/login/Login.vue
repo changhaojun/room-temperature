@@ -11,13 +11,13 @@
                     <mu-form-item label="账号" prop="username" :rules="usernameRules">
                         <mu-text-field v-model="user.username" prop="username"></mu-text-field>
                     </mu-form-item>
-                    <mu-form-item label="密码" prop="password" :rules="passwordRules">
+                    <mu-form-item label="密码" prop="password" :rules="passwordRules" style="margin-top:-10px">
                         <mu-text-field type="password" v-model="user.password" prop="password"></mu-text-field>
                     </mu-form-item>
-                    <mu-form-item>
+                    <mu-form-item style="margin-top:-10px">
                         <mu-checkbox v-model="remember" value="记住密码" label="记住密码"></mu-checkbox>
                     </mu-form-item>
-                    <mu-form-item>
+                    <mu-form-item style="margin-top:-10px">
                         <mu-button  round small color="#FFA509" @click="submitBtn">{{btnTxt}}</mu-button>
                     </mu-form-item>
                 </mu-form>
@@ -55,37 +55,37 @@ export default {
         };
     },
 
-    created() { },
-
     methods: {
 
         submitBtn() {
             this.$refs['form'].validate().then(async valid => {
                 if (valid) {
-                    this.btnTxt = '登陆中...'
-                    this.disable = true;
-                    const res = await this.$http.post('user/login', this.user);
-                    console.log(res)
-                    this.$message({
-                        message: '登录成功',
-                        type: 'success',
-                        duration: 1000
-                    })
-                    if (this.remember) {
-                        localStorage.setItem('remember', true);
-                        localStorage.setItem('userInfo', JSON.stringify(this.user));
-                    } else {
-                        localStorage.setItem('remember', false);
-                        localStorage.removeItem('userInfo');
-                    }
-                    const { result: { fullname, user_id ,address } } = res;
-                    sessionStorage.setItem('userInfo', JSON.stringify(Object.assign({ fullname, user_id }, this.user)));
-                    localStorage.setItem('address', JSON.stringify(address));
-                    this.$router.push({ path: '/main/firstPage' });
-                    console.log(localStorage.getItem('address') )
+                    await this.login();
                 }
             });
         },
+
+        async login() {
+            this.btnTxt = '登陆中...'
+            this.disable = true;
+            const res = await this.$http.post('user/login', this.user);
+            this.$message({
+                message: '登录成功',
+                type: 'success',
+                duration: 1000
+            })
+            if (this.remember) {
+                localStorage.setItem('remember', true);
+                localStorage.setItem('userInfo', JSON.stringify(this.user));
+            } else {
+                localStorage.setItem('remember', false);
+                localStorage.removeItem('userInfo');
+            }
+            const { result: { fullname, user_id, address } } = res;
+            sessionStorage.setItem('userInfo', JSON.stringify(Object.assign({ fullname, user_id }, this.user)));
+            localStorage.setItem('address', address);
+            this.$router.push({ path: '/main/firstPage' });
+        }
     },
     created() {
         if (localStorage.getItem('remember') === 'true') {
@@ -96,6 +96,9 @@ export default {
         else {
             this.remember = false;
         }
+    },
+    mounted() {
+
     }
 };
 </script>
