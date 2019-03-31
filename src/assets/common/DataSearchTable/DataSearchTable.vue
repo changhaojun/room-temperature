@@ -77,7 +77,7 @@
                     },
                     {
                         label: "室外温度(℃)",
-                        prop: "data_value"
+                        prop: "weather"
                     },
                     {
                         label: "室内温度(℃)",
@@ -91,7 +91,8 @@
                     page_size: 8,
                     page_number: 1
                 },
-                searchUser: ''
+                searchUser: '',
+                weather: ''
             }
         },
         //typeOfID=-1代表是公司id，typeOfID=0代表是小区id，typeOfID=1代表是楼id
@@ -118,6 +119,11 @@
             pageChange(current) {
                 this.conditions.page_number = current.data;
                 this.getTableData();
+            },
+            async getWeather() {
+                const res = await this.$http.get('weather/getWeather');
+                this.weather = res.result.temp;
+                console.log('getWeather',res.result.temp);
             },
             async getTableData() {
                 let res = '';
@@ -163,6 +169,8 @@
                         '';
                     row.csq_alarm = row.csq_alarm === 0 ? '正常' : row.csq_alarm === 1 ? '弱' : '';
                     row.status = row.status === 0 ? '离线' : row.status === 1 ? '在线' : '';
+                    
+                    row.weather = Number(this.weather.split('℃')[0]);
                 };
                 this.tableData.total = res.result.total;
                 this.tableData.datas = res.result.rows;
@@ -175,6 +183,7 @@
         },
         mounted() {
             this.getTableData();
+            this.getWeather();
             //console.log('this.building', this.buildingID);
         },
     }
