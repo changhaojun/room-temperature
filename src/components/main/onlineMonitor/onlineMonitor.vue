@@ -22,13 +22,18 @@
             </div>
             <div class="main-table">
                 <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;" @row-click='details'>
+                    <el-table-column prop="company_name" label="公司名称" width="180">
+                        <template slot-scope="scope">
+                            <div style="text-align: left; padding: 0 12px;">{{scope.row.community_name}}</div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="community_name" label="小区名称" width="180">
                         <template slot-scope="scope">
                             <div style="text-align: left; padding: 0 12px;">{{scope.row.community_name}}</div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="avg_data" label="平均温度(℃)" ></el-table-column>
-                    <el-table-column prop="" label="室外温度(℃)" ></el-table-column>
+                    <el-table-column prop="weather.temp" label="室外温度(℃)" ></el-table-column>
                     <el-table-column label="前段 ( 温度℃ )">
                         <el-table-column prop="befor.top.data_value" label="顶">
                             <template slot-scope="scope">
@@ -142,6 +147,10 @@ export default {
         // 获取小区数据报表
         async getCommunityTable() {
             const { result: { rows, total } } = await this.$http('community/getCommunityTable');
+            const weather = await this.getWeather();
+            rows.forEach(row => {
+                row.weather = weather;
+            });
             this.initData.allDatas = rows;
             this.initData.allTotal = total;
             this.initData.total = total;
@@ -204,6 +213,7 @@ export default {
         },
         clickBtn(type) {
             this.indexActive = type;
+            this.communityName = '';
             if(type === 1) {
                 this.pageChange(1);
             }else {
@@ -222,12 +232,14 @@ export default {
         },
         // 小区详情
         details(row) {
-            console.log(row);
+            const temp = row.weather.temp
+            console.log(temp)
             this.$router.push({
                 name: 'CommunityDetails',
                 query: {
                     community_id: row.community_id,
-                    community_name: row.community_name
+                    community_name: row.community_name,
+                    temp: temp
                 }
             })
         },
@@ -240,7 +252,7 @@ export default {
         autoRefresh() {
             this.timer = setInterval(() => {
                 this.getCommunityTable();    
-            },180000);
+            },1800000);
         },
         changeRefresh() {
             if(!this.refresh) {
@@ -248,12 +260,22 @@ export default {
             }else {
                 this.autoRefresh();
             }
+        },
+        async getWeather() {
+            const {result} = await this.$http('weather/getWeather');
+            console.log(result)
+            return result;
         }
     },
     mounted() {
         this.getPageSize();
         this.getCommunityTable();
         this.autoRefresh();
+    },
+    destroyed(){
+        if(this.timer) { //如果定时器在运行则关闭
+            clearInterval(this.timer); 
+        }
     }
 }
 </script>

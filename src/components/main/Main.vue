@@ -18,6 +18,7 @@
                     <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="config">配置告警</el-dropdown-item>
+                        <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item>
                         <el-dropdown-item command="password">修改密码</el-dropdown-item>
                         <el-dropdown-item command="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -54,6 +55,41 @@
                 <el-button type="primary" @click="modifyPwd">确 定</el-button>
             </span>
         </el-dialog>
+        <el-dialog
+            :visible.sync="changeConfigShow"
+            top="20%"
+            custom-class="uploadfiles"
+            width="380px">
+            <div class="change_header">
+                <h3>
+                    <span>上传文件</span>
+                    <i class="el-icon-close" @click="changeConfigShow = false"></i>
+                </h3>
+            </div>
+            <div class="input-list" style="padding:20px;">
+                <div class="input-item">
+                    <span>选择公司:</span>
+                    <el-select v-model="selectCompany" placeholder="请选择公司">
+                        <!-- <el-option
+                        v-for="item in company_list"
+                        :key="item.value"
+                        :label="item.label"
+                        popper-class="selectcompany"
+                        :value="item.value">
+                        </el-option> -->
+                    </el-select>
+                </div>
+                <div class="input-item">
+                   <span>上传文件:</span>
+                    <el-input></el-input>
+                </div>
+            </div>
+            <div class="change_footer">
+                <el-button type="warning" round size="small" @click="suerChange">提交</el-button>
+                <el-button round size="small" style="margin-left:120px;" @click="changeConfigShow = false">取消</el-button>
+            </div>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -88,7 +124,10 @@ export default {
                 new_pwd: ''
             },
             changePassword: false,
-            client: null
+            client: null,
+            changeConfigShow:false,
+            company_list:[],
+            selectCompany:''
         }
     },
     methods: {
@@ -107,6 +146,9 @@ export default {
                     path: '/'
                 })
             }
+            if(command === 'uploadfiles'){
+                this.changeConfigShow = true;
+            }
         },
         async modifyPwd() {
             const res = await this.$http.put('user/password',Object.assign(this.changeInfo, {
@@ -122,6 +164,10 @@ export default {
 
         mqttConnect() {
             this.client = new myMqtt(mqttOptions, 'roomWarn', this.warningData);
+        },
+
+        async suerChange() {
+
         },
 
         warningData(data) {
@@ -334,5 +380,66 @@ export default {
                 opacity:0.6;
             }
         }
+        .uploadfiles{
+            .el-dialog__header{
+        height: 0;
+        display: none;
     }
+    .el-dialog__body{
+        padding: 0
+    }
+    .change_header{
+        height: 50px;
+        line-height: 50px;
+        border-bottom: 1px solid rgba(233,234,236,1);
+        position: relative;
+        >h3{
+            height: 50px;
+            text-indent: 20px;
+            >span{
+                font-size: 18px;
+                color: #464c5b;
+                font-weight: 600;
+            }
+            >i{
+                position: absolute;
+                right: 20px;
+                top:18px;
+                cursor: pointer;
+                transition: all linear 0.5s;
+                &:hover{
+                    color: skyblue;
+                }
+            }
+        }
+    }
+    .input-list{
+        .input-item{
+                    margin-bottom: 20px;
+                    margin-left: 10px;
+                    >span{
+                        font-size: 14px;
+                        color: #464c5b;
+                        margin-right: 20px;
+                    }
+                }
+                .el-input,.selectcompany{
+                    width: 50%;
+                }
+
+            }
+            .change_footer{
+                margin-top: -10px;
+                padding: 15px;
+                border-top: 1px solid rgba(233,234,236,1);
+                button{
+                    margin-left:20px;
+                    height:26px;
+                    line-height:26px;
+                    padding:0;
+                    width:90px
+                }
+            }
+        }
+}
 </style>

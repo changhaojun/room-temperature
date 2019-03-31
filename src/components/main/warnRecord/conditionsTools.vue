@@ -17,17 +17,17 @@
         <div style="display: flex; align-items: center;">
             <div v-if="group" class="tool-radio">
                 <div style="display: flex; align-items: center;">
-                    <el-radio-group v-model="dd">
+                    <el-radio-group v-model="groupParams.readState" @change='changeGroup'>
                         <el-radio-button :label="item" v-for="item in radioRead" :key="item"></el-radio-button>
                     </el-radio-group>
-                    <el-radio-group v-model="aa">
+                    <el-radio-group v-model="groupParams.configType" @change='changeGroup'>
                         <el-radio-button :label="item" v-for="item in radioUser" :key="item"></el-radio-button>
                     </el-radio-group>
                 </div>
             </div>
             <div v-if="manager" style="display: flex; align-items: center;" @keydown="search">
                 <div class="tool-search">
-                    <el-input v-model="currentParams.communityName"  placeholder="搜索"></el-input>
+                    <el-input v-model="currentParams.key"  placeholder="小区名称"></el-input>
                     <span class="iconfont iconsousuo icon" @click="search"></span>
                 </div>
             </div>
@@ -38,22 +38,24 @@
 <script>
 import moment from 'moment';
 export default {
-    props: ['date', 'group', 'manager'],
+    props: ['date', 'group', 'manager', 'toggle'],
     data() {
         return {
             dateArray: [],
             currentParams: {
                 startTime: '',
                 endTime: '',
-                communityName: ''
+                key: ''
             },
             btns: ['72小时', '本周', '本月'],
             indexActive: 1,
 
-            radioRead: ['全部', '未读 ', '已读'],
+            radioRead: ['全部', '未读', '已读'],
             radioUser: ['全部', '用户', '系统'],
-            dd: '全部',
-            aa: '全部'
+            groupParams: {
+                readState: '全部',
+                configType: '全部'
+            }
         }
     },
     methods: {
@@ -62,6 +64,7 @@ export default {
             this.currentParams.startTime = moment(this.dateArray[0]).format('YYYY-MM-DD');
             this.currentParams.endTime = moment(this.dateArray[1]).format('YYYY-MM-DD');
             this.sendParams();
+            this.indexActive = 0;
         },
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
@@ -69,25 +72,45 @@ export default {
             } 
         },
         clickBtn(type) {
+            let start = null;
             if(type === 1) {
-                this.currentParams.startTime = moment(moment().subtract(3,'days')).format('YYYY-MM-DD');
+                start = moment(moment().subtract(3,'days'));
+                this.currentParams.startTime =start.format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }else if(type === 2) {
-                this.currentParams.startTime = moment().subtract(parseInt(moment().format('d'))-1, 'days').format('YYYY-MM-DD');
+                start = moment().subtract('days', 7);
+                this.currentParams.startTime = start.format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }else {
-                this.currentParams.startTime = moment(moment().month(moment().month()).startOf('month').valueOf()).format('YYYY-MM-DD');
+                start = moment(moment().month(moment().month()).startOf('month').valueOf());
+                this.currentParams.startTime = start.format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }
+            this.dateArray = [start, moment()];
             this.indexActive = type;
             this.sendParams();
         },
         sendParams() {
             this.$emit('current-change', this.currentParams);
         },
+        // 改变组
+        changeGroup() {
+            this.$emit('group-change', this.groupParams);
+        }
+    },
+    watch: {
+        toggle: {
+            handler(newVal) {
+                this.dateArray = this.date;  // 改变默认时间
+                this.indexActive = 1; // 改变按钮状态
+            },
+            deep: true
+        }
     },
     created() {
-        this.dateArray = this.date
+        this.dateArray = this.date;
+        this.currentParams.startTime = moment(this.dateArray[0]).format('YYYY-MM-DD');
+        this.currentParams.endTime = moment(this.dateArray[1]).format('YYYY-MM-DD');
     }
 }
 </script>
@@ -135,7 +158,7 @@ export default {
                 margin-left: 20px;
             }
             .el-radio-button__inner {
-                padding: 0 6px;
+                padding: 0 4px;
                 font-size: 14px;
             }
             .el-radio-button__inner {

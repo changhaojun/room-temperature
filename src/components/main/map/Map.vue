@@ -9,15 +9,32 @@
                  <!-- <div class="user-bar unonline-bar"></div>  -->
                 <div class="user-bar online-bar">
                     <div class="bar" :class="[activeIndex===index?'clickBar':'']" v-for="(item,index) in tempSelect" :key="index+'m'" :style="{width:item.value/communityCount*100+ '%',background:item.name==='cool'?'#33ABF1':item.name==='normal'?'#FFA509':'#FF716A'}" @click="selectTemp(index)">
-                        <span>{{item.value}}</span>
+                        <span v-if="item.value">{{item.value}}</span>
                     </div>
                 </div>
             </div>
             <div>
-                <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+                <el-select
+                v-model="searchData.inputText"
+                filterable
+                remote
+                placeholder='搜索小区'
+                :remote-method="remoteMethod"
+                popper-class="search-box"
+                @change='onSearchResult'
+                @blur='blur'
+                >
+                <el-option
+                  v-for="item in searchData.searchResult"
+                  :key="item.community_id"
+                  :label="item.community_name"
+                  :value="item.location">
+                </el-option>
+              </el-select>
+                <!-- <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
             </div>
         </div>
-       <el-amap vid="amap-demo"  class="amap-demo" id="container" :center="center" :zooms="zooms" :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973">
+       <el-amap vid="amap-demo" ref="map" class="amap-demo" id="container" :center="center" :zooms="zooms" :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973" :events="events">
            <el-amap-marker v-for="(marker,index) in markers" :key="index+'a'"  :position="marker.center" :template="marker.template"></el-amap-marker>
             <!-- <el-amap-circle-marker v-for="(marker,index) in markers" :key="index+'a'" :center="marker.center" :radius="marker.radius" :stroke-weight="marker.strokeWeight" :fill-color="marker.fillColor" :fill-opacity="marker.fillOpacity" :stroke-color="marker.strokeColor" :events="marker.events" :z-index='9999' :content="marker.index"></el-amap-circle-marker>
             <el-amap-text v-for="(marker,index) in markers" :key="index+'b'" :text="marker.text" :position="marker.center" :events="marker.events" :z-index='100' :offset="[42,0]"></el-amap-text> -->
@@ -32,17 +49,17 @@
            <!-- <el-scrollbar style="height:100%"> -->
                <div class="communityBox" v-if="!dialogParams.tempHistory">
                     <div class="main-top">
-                        <data-search-top  :ID="dialogParams.community_id" :typeOfID="0"></data-search-top>
+                        <data-search-top  :ID="dialogParams.community_id" :typeOfID="0" :typeOfComponent='0'></data-search-top>
                     </div>
-                    <div style="height:817px;box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.22);margin:0 10px;margin-top:30px;margin-bottom:20px;">
+                    <div style="box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.22);margin:0 10px;margin-top:30px;margin-bottom:20px;">
                         <data-search-table :ID="dialogParams.community_id" :typeOfID="0" @select="select" :mapdialog="dialogParams.mapdialog"></data-search-table>
                     </div>
                </div>
-               <div v-if="dialogParams.tempHistory" class="communityBox" style="padding-right:20px;">
+               <div v-if="dialogParams.tempHistory" class="communityBox" style="padding-right:20px;padding-left:10px;z-index:999999">
                    <div class="temp-header" >
                        <span @click="allCommunity()">{{dialogParams.title}} &gt;</span>
                        <span>温度变化曲线</span>
-                       <div>
+                       <div style="margin-top:10px;">
                            <data-dialog :date='dialogParams.date' :conditionsHistory='dialogParams.conditionsHistory'></data-dialog>
                        </div>
                        
@@ -67,15 +84,33 @@
                 activeIndex:-1,
                 allActive:true,
                 search:'',
-                zoom: 12,
-                zooms:[10,30],
-                center: [108.939621,34.343147], 
+                zoom: 9,
+                zooms:[9,30],
+                center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],  
                 markers:[], 
-                communityCount:0,
-                searchOption: {
-                    city: '陕西',
-                    citylimit: true
+                event:null,
+                communityData:[],
+                companyData:[],
+                initlocation:"",
+                events: {
+                    init: (o) => { 
+                        this.event = o ;
+                    },
+                   
+                    mousewheel:()=>{
+                        const zoom =this.event.getZoom()
+                        this.zoom = zoom;
+                        if(zoom<=12){
+                           this.analysisData()
+                           this.companyDistribute();
+                        }else{
+                            this.analysisData();
+                           this.getcommunityDistribute();
+                            
+                        }
+                    }
                 },
+                communityCount:0,
                 copyMarkers:[],
                 tempSelect:[],
                 dialogParams:{
@@ -91,7 +126,12 @@
                         end_time: moment().format('YYYY-MM-DD')
                     }
                 },
-                
+                searchData:{
+                    placeholder:"搜索小区",
+                    searchResult:[],
+                    total:-1 ,
+                    inputText:""
+                },
             };
         },
         methods:{
@@ -104,89 +144,130 @@
                 });
             },
             async getcommunityDistribute(){
+            
                 const {result} = await this.$http('community/communityDistribute');
                 this.tempSelect =[{name:'cool',value:result.cool},{name:'normal',value:result.normal},{name:'hot',value:result.hot}]
+            },
+            async companyDistribute(){
+           
+                const {result} = await this.$http("company/companyDistribute");
+                 this.tempSelect =[{name:'cool',value:result.cool},{name:'normal',value:result.normal},{name:'hot',value:result.hot}]
             },
             selectAll(){
                 this.allActive = true;
                 this.activeIndex = -1;
-                this.getAllCommunity();
-               
+                if(this.zoom<=12){
+                    this.getCompany();
+                }else{
+                    this.getAllCommunity();
+                }  
             },
             selectTemp(index){
                 this.allActive = false;
                 this.activeIndex = index;
-                this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)})
+                this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)}) 
             },
             //搜索小区
-            onSearchResult(pois) {
-                let latSum = 0;
-                let lngSum = 0;
-                if (pois.length > 0) {
-                    pois.forEach(poi => {
-                    let {lng, lat} = poi;
-                    lngSum += lng;
-                    latSum += lat;
-                    });
-                    let center = {
-                    lng: lngSum / pois.length,
-                    lat: latSum / pois.length
-                    };
-                    this.center = [center.lng, center.lat];
-                }
+            onSearchResult(data) {
+                this.zoom = 14;
+                this.center = [Number(data.split(",")[0]),Number(data.split(",")[1])]
+                this.analysisData();
+                 this.getcommunityDistribute();  
             },
+            // 获取分公司列表
+            async getCompany(){
+                const {result:{rows}} = await this.$http(`company/getCompany`,{data:{map:1}})
+                this.companyData = rows; 
+                this.analysisData();
+                this.getAllCommunity();
+            },  
             //获取全部小区
             async getAllCommunity(){
-                this.markers = [];
-                const {result:{rows,total}} = await this.$http(`community/getCommunity`)
-                this.analysisData(rows)
-                this.communityCount = total;
+                const {result:{rows,total}} = await this.$http(`community/getCommunity`,{data:{map:1}})
+                this.communityData = rows;
+                this.analysisData();
             },
+           
             //分析小区数据 1:低温 2：常温 3：高温
-            analysisData(data){
+            analysisData(){
                 const markers =[];
                 const location = [];
+                let dom = '';
+                let data ='';
+                if(this.zoom<=12){
+                    data = this.companyData;
+                }else{
+                    data = this.communityData;
+                }
                 for(let i=0;i<data.length;i++){
-                    markers.push({
-                        center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
-                        template: `<div class="marker-box" @click="dialogShow($event)">
+                    if(this.zoom<=12){
+                        // console.log(data)
+                        dom = `<div class="marker-box"  @click="clickCompanyCenter($event)">
+                                        <div class="circle-box"  align="${data[i].location}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
+                                        <div class="marker-text" align="${data[i].location}">${data[i].company_name}</div>
+                                </div>`
+                    }else{
+                        dom = `<div class="marker-box"  @click="dialogShow($event)">
                                         <div class="circle-box"  accessKey="${data[i].community_id}" align="${data[i].community_name}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
                                         <div class="marker-text" accessKey="${data[i].community_id}" align="${data[i].community_name}">${data[i].community_name}</div>
-                                    </div>`,
+                                </div>`
+                    }
+                    markers.push({
+                        center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
+                        template: dom,
                         status:data[i].data_value<16?1:data[i].data_value>25?3:2
                     }); 
                 }
                 this.markers = markers
                 this.copyMarkers = markers;
+                this.communityCount = data.length;
             },
             dialogShow(event){
                 const community_id =  event.target.accessKey;
                 const community_name = event.target.align;
-                console.log(community_name)
                 _this.dialogParams.dialogVisible = true;
                 _this.dialogParams.title = community_name;
                 _this.dialogParams.community_id = community_id;
            
             },
+            clickCompanyCenter(event){
+                const company_location = event.target.align;
+                _this.center = [Number(company_location.split(",")[0]),Number(company_location.split(",")[1])];
+                _this.zoom =14;
+                _this.analysisData();
+                _this.getcommunityDistribute();
+            },
             select(id){
-                console.log(id)
                 this.dialogParams.tempHistory = true;
                 this.dialogParams.conditionsHistory.house_id = id;
             },
             close(){
-                this.dialogParams.tempHistory = !this.dialogParams.tempHistory;
+                this.dialogParams.tempHistory = false;
             },
             allCommunity(){
-                this.dialogParams.tempHistory = !this.dialogParams.tempHistory;
+                this.dialogParams.tempHistory = false;
+            },
+            blur(){
+                this.searchData.inputText ='';
+            },
+            remoteMethod(query){
+                if(query !==''){
+                    this.searchData.searchResult = this.communityData.filter((item)=>{return item.community_name.includes(query)}) 
+                }else{
+                    this.searchData.searchResult=[]
+                }
             }
         },
         created(){
            if(!window.AMap && !window.AMapUI){
                 this.initMap()
            }
-           console.log(this)
-           this.getAllCommunity();
-           this.getcommunityDistribute();
+           this.center=[JSON.parse(localStorage.getItem('address')).split(",")[0],JSON.parse(localStorage.getItem('address')).split(",")[1]] 
+        },
+        mounted(){
+            this.getCompany()
+            this.getAllCommunity();  
+            this.companyDistribute();      
         },
          beforeCreate(){
             _this = this;

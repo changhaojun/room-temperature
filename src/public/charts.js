@@ -42,7 +42,7 @@ export const barCharts = (el, data, barColor, chartType) => {
         color: barColor[0],
         legend: {
             data: [{
-                name:chartType === 1 ? '告警住户' : '室温',
+                name: chartType === 1 ? '告警住户' : '室温',
                 icon: 'roundRect'
             }],
             right: 50,
@@ -86,7 +86,7 @@ export const barCharts = (el, data, barColor, chartType) => {
             data: data.dataY,
             itemStyle: {
                 normal: {
-                    barBorderRadius: chartType === 1 ? [7.5, 7.5, 0, 0] : [0,0,0,0],
+                    barBorderRadius: chartType === 1 ? [7.5, 7.5, 0, 0] : [0, 0, 0, 0],
                     color: new echarts.graphic.LinearGradient(
                         0, 1, 0, 0, [{
                             offset: 0,
@@ -109,6 +109,11 @@ export const barCharts = (el, data, barColor, chartType) => {
         barOption.tooltip.formatter = '{a}: {c}户';
         barOption.series[0].name = '告警住户';
     } else if (chartType == 0) {
+        barOption.yAxis.axisLabel = {
+            formatter: '{value} °C'
+        };
+        barOption.series[0].name = '温度(°C)';
+    } else if (chartType == 2) {
         barOption.xAxis.axisLabel = {
             formatter: '{value} °C'
         };
@@ -240,8 +245,7 @@ export const moreLineCharts = (el, grid, dataX, dataY1, dataY2, dataY3) => {
         },
         color: ['#FFA509', '#00A8FF', '#8AE064'],
         legend: {
-            data:[
-                {
+            data: [{
                     name: '室温',
                     icon: 'roundRect'
                 },
@@ -267,21 +271,24 @@ export const moreLineCharts = (el, grid, dataX, dataY1, dataY2, dataY3) => {
                 dataZoom: {
                     yAxisIndex: 'none'
                 },
-                dataView: {readOnly: false},
-                magicType: {type: ['line', 'bar']},
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
                 restore: {},
                 saveAsImage: {}
             }
         },
-        xAxis:  {
+        xAxis: {
             type: 'category',
             boundaryGap: false,
             axisLine,
             splitLine,
             data: dataX
         },
-        yAxis: [
-            {
+        yAxis: [{
                 type: 'value',
                 axisLabel: {
                     formatter: '{value} °C'
@@ -298,17 +305,16 @@ export const moreLineCharts = (el, grid, dataX, dataY1, dataY2, dataY3) => {
                 splitLine
             },
         ],
-        series: [
-            {
-                name:'室温',
-                type:'line',
+        series: [{
+                name: '室温',
+                type: 'line',
                 yAxisIndex: 0,
                 smooth: true,
                 lineStyle: {
                     color: '#FFA509'
                 },
                 symbol: 'none',
-                data:dataY1,
+                data: dataY1,
                 areaStyle: {
                     color: {
                         type: 'linear',
@@ -317,37 +323,40 @@ export const moreLineCharts = (el, grid, dataX, dataY1, dataY2, dataY3) => {
                         x2: 0,
                         y2: 1,
                         colorStops: [{
-                            offset: 0, color: 'rgba(255,182,48,.8)'
+                            offset: 0,
+                            color: 'rgba(255,182,48,.8)'
                         }, {
-                            offset: 0.5, color: 'rgba(255,182,48,.4)'
-                        },{
-                            offset: 1, color: 'rgba(255,182,48,.1)'
+                            offset: 0.5,
+                            color: 'rgba(255,182,48,.4)'
+                        }, {
+                            offset: 1,
+                            color: 'rgba(255,182,48,.1)'
                         }],
                         global: false
                     }
                 }
             },
             {
-                name:'气温',
-                type:'line',
+                name: '气温',
+                type: 'line',
                 yAxisIndex: 0,
                 smooth: true,
                 lineStyle: {
                     color: '#00A8FF'
                 },
                 symbol: 'none',
-                data:dataY2,
+                data: dataY2,
             },
             {
-                name:'湿度',
-                type:'line',
+                name: '湿度',
+                type: 'line',
                 yAxisIndex: 1,
                 smooth: true,
                 lineStyle: {
                     color: '#8AE064'
                 },
                 symbol: 'none',
-                data:dataY3,
+                data: dataY3,
             }
         ]
     }
@@ -447,9 +456,11 @@ export const pieCharts2 = (el, data1, data2) => {
                             y: 1,
                             r: 1,
                             colorStops: [{
-                                offset: 0, color: '#f0a938' // 0% 处的颜色
+                                offset: 0,
+                                color: '#f0a938' // 0% 处的颜色
                             }, {
-                                offset: 1, color: '#fac166' // 100% 处的颜色
+                                offset: 1,
+                                color: '#fac166' // 100% 处的颜色
                             }],
                             global: false // 缺省为 false
                         }
@@ -465,9 +476,11 @@ export const pieCharts2 = (el, data1, data2) => {
                             y: 0.5,
                             r: 1,
                             colorStops: [{
-                                offset: 0, color: '#b8b8b8' // 0% 处的颜色
+                                offset: 0,
+                                color: '#b8b8b8' // 0% 处的颜色
                             }, {
-                                offset: 1, color: 'rgba(0,0,0,.5)' // 100% 处的颜色
+                                offset: 1,
+                                color: 'rgba(0,0,0,.5)' // 100% 处的颜色
                             }],
                             global: false // 缺省为 false
                         }
