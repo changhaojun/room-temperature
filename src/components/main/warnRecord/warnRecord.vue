@@ -49,6 +49,10 @@ export default {
                     prop: "community_name"
                 },
                 {
+                    label: "楼名称",
+                    prop: "building_name"
+                },
+                {
                     label: "住户",
                     prop: "user_number"
                 },

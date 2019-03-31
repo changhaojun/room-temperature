@@ -50,10 +50,13 @@ export default {
             indexActive: 1,
 
             columns: [
-
                 {
                     label: "时间",
                     prop: "data_time"
+                },
+                {
+                    label: "楼名称",
+                    prop: "building_name"
                 },
                 {
                     label: "编号",

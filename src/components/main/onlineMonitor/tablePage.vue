@@ -44,7 +44,7 @@
                             <div v-else>{{scope.row[item.prop]}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column v-else :prop='item.prop' :label='item.label' min-width="180">
+                    <el-table-column v-else :prop='item.prop' :label='item.label'>
                         <template slot-scope="scope">
                             <div v-if="item.prop === 'data_value'"
                                 :class="scope.row.alarm_type === '高温告警' ? 'warnHigh' : scope.row.alarm_type === '低温告警' ? 'warnLow' : ''"
