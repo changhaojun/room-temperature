@@ -174,7 +174,7 @@
         font-weight: 400;
     }
     *, :after, :before{
-        z-index:none;
+        z-index:none !important;
     }
     .el-table th>.cell {
         color: rgba(118, 118, 118, 1);
