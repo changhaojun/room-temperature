@@ -2,34 +2,106 @@
     <div class="data-search-top">
         <div class="main-chart-datas">
             <div class="main-chart-datas-top">
-                <div class="main-chart-datas-top-households">
+                <div class="main-chart-datas-top-households" v-if="typeOfComponent==0">
                     <div class="card">
                         <div class="card-left">
-                            <i slot="suffix" class="iconfont iconfangzi222 green" style="font-size:32px;"></i>
+                            <i slot="suffix" class="iconfont iconziyuanxhdpi orange" style="font-size:32px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
-                                <div class="card-right-top-left">{{info.house_count}}</div>
+                                <div class="card-right-top-left">{{info.monitor_house_count}}/{{info.house_count}}</div>
                                 <div class="card-right-top-right">户</div>
                             </div>
-                            <div class="card-right-bottem">住户数量</div>
+                            <div class="card-right-bottem">监测用户率</div>
                         </div>
                     </div>
                 </div>
-                <div class="main-chart-datas-top-monitoredHouseholds">
+                <div class="main-chart-datas-top-monitoredHouseholds" v-if="typeOfComponent==0">
+                    <div class="card">
+                        <div class="card-left">
+                            <i slot="suffix" class="iconfont icongaojing1 red" style="font-size:24px;"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-right-top">
+                                <div class="card-right-top-left">{{info.alarm_count}}</div>
+                                <div class="card-right-top-right">户</div>
+                            </div>
+                            <div class="card-right-bottem">告警用户数</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-chart-datas-top-type11" v-if="typeOfComponent==1">
+                    <div class="card">
+                        <div class="card-left">
+                            <i slot="suffix" class="iconfont icondashaxiaoqudizhi01 blue" style="font-size:24px;"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-right-top">
+                                <div class="card-right-top-left">{{info.community_count}}</div>
+                                <div class="card-right-top-right">户</div>
+                            </div>
+                            <div class="card-right-bottem">小区数量</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-chart-datas-top-type12" v-if="typeOfComponent==1">
                     <div class="card">
                         <div class="card-left">
                             <i slot="suffix" class="iconfont iconziyuanxhdpi orange" style="font-size:24px;"></i>
                         </div>
                         <div class="card-right">
                             <div class="card-right-top">
-                                <div class="card-right-top-left">{{info.monitor_house_count}}</div>
+                                <div class="card-right-top-left">{{info.monitor_house_count}}/{{info.house_count}}</div>
                                 <div class="card-right-top-right">户</div>
                             </div>
-                            <div class="card-right-bottem">监测住户数量</div>
+                            <div class="card-right-bottem">监测用户率</div>
                         </div>
                     </div>
                 </div>
+                <div class="main-chart-datas-top-type13" v-if="typeOfComponent==1">
+                    <div class="card">
+                        <div class="card-left">
+                            <i slot="suffix" class="iconfont icongaojing1 red" style="font-size:24px;"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-right-top">
+                                <div class="card-right-top-left">{{info.alarm_count}}</div>
+                                <div class="card-right-top-right">户</div>
+                            </div>
+                            <div class="card-right-bottem">告警用户数</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-chart-datas-top-households" v-if="typeOfComponent==2">
+                        <div class="card">
+                            <div class="card-left">
+                                <i slot="suffix" class="iconfont iconfangzi222 green" style="font-size:32px;"></i>
+                            </div>
+                            <div class="card-right">
+                                <div class="card-right-top">
+                                    <div class="card-right-top-left">{{info.house_count}}</div>
+                                    <div class="card-right-top-right">户</div>
+                                </div>
+                                <div class="card-right-bottem">住户数量</div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="main-chart-datas-top-monitoredHouseholds" v-if="typeOfComponent==2">
+                    <div class="card">
+                        <div class="card-left">
+                            <i slot="suffix" class="iconfont iconziyuanxhdpi orange" style="font-size:24px;"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-right-top">
+                                <div class="card-right-top-left">{{info.monitor_house_count}}/{{info.house_count}}</div>
+                                <div class="card-right-top-right">户</div>
+                            </div>
+                            <div class="card-right-bottem">监测用户率</div>
+                        </div>
+                    </div>
+                </div>
+                
+
             </div>
             <div class="main-chart-datas-bottem">
                 <div class="main-chart-datas-bottem-averageTemperature">
@@ -77,37 +149,16 @@
             </div>
         </div>
         <div class="main-chart-pie">
-            <div class="pie-left">
-                <div class="pie-tips-normal">
-                    <div class="pie-tips-top">
-                        <div class="pie-tips-top-icon"></div>
-                        <div class="pie-tips-top-desc">17~23℃</div>
-                    </div>
-                    <div class="pie-tips-bottem">
-                        {{normalPerc}}
-                    </div>
-                </div>
+            <div class="device-count">
+                <dl>
+                    <dt><span
+                            style="color:#F9BB50">{{info.online_count}}</span>/<span>{{info.monitor_house_count}}</span>
+                    </dt>
+                    <dd>设备在线率</dd>
+                </dl>
             </div>
-            <div class="pie-center" ref="myChart"></div>
-            <div class="pie-right">
-                <div class="pie-tips-cool">
-                    <div class="pie-tips-top">
-                        <div class="pie-tips-top-icon"></div>
-                        <div class="pie-tips-top-desc">＜16℃</div>
-                    </div>
-                    <div class="pie-tips-bottem">
-                        {{coolPerc}}
-                    </div>
-                </div>
-                <div class="pie-tips-hot">
-                    <div class="pie-tips-top">
-                        <div class="pie-tips-top-icon"></div>
-                        <div class="pie-tips-top-desc">＞24℃</div>
-                    </div>
-                    <div class="pie-tips-bottem">
-                        {{hotPerc}}
-                    </div>
-                </div>
+            <div class="device-chart" ref="myChart">
+
             </div>
         </div>
     </div>
@@ -115,24 +166,28 @@
 
 <script>
     import {
-        pieCharts
+        pieCharts,
+        pieCharts2
     } from '@charts/charts'
+    //
     export default {
         data() {
             return {
                 info: {},
                 normalPerc: '',
                 coolPerc: '',
-                hotPerc: ''
+                hotPerc: '',
+
             }
         },
-        //typeOfID=0代表是小区id，typeOfID=1代表是楼id
-        props: ['ID', 'typeOfID'],
+        //typeOfID=-1代表是公司id，typeOfID=0代表是小区id，typeOfID=1代表是楼id
+        //typeOfComponent=0代表查询数据，=1代表统计分析分公司，=2代表统计分析
+        props: ['ID', 'typeOfID', 'typeOfComponent'],
         watch: {
             ID: {
                 handler() {
-                    //console.log(this.ID);
-                    //console.log(this.typeOfID);
+                    console.log(this.ID);
+                    console.log(this.typeOfID);
                     this.getInfo();
 
                 }
@@ -141,20 +196,26 @@
         methods: {
             async getInfo() {
                 let res = '';
-                if (this.typeOfID == 1) {
+
+                if (this.typeOfID == -1) {
+                    console.log('公司');
                     res = await this.$http.get(
-                        'building/getBuildingInfo', {
+                        'company/getCompanyInfo', {
                             data: {
-                                building_id: this.ID,
+                                company_id: this.ID,
                                 house_count: 1,
                                 monitor_house_count: 1,
                                 avg_data: 1,
                                 max_data: 1,
                                 min_data: 1,
-                                room_tempera: 1
+                                room_tempera: 1,
+                                is_online: 1,
+                                alarm_count: 1,
+                                community_count: 1
                             }
                         });
-                } else {
+                } else if (this.typeOfID == 0) {
+                    console.log('小区');
                     res = await this.$http.get(
                         'community/getCommunityInfo', {
                             data: {
@@ -164,84 +225,51 @@
                                 avg_data: 1,
                                 max_data: 1,
                                 min_data: 1,
-                                room_tempera: 1
+                                room_tempera: 1,
+                                is_online: 1,
+                                alarm_count: 1
+                            }
+                        });
+                } else if (this.typeOfID == 1) {
+                    console.log('楼');
+                    res = await this.$http.get(
+                        'building/getBuildingInfo', {
+                            data: {
+                                building_id: this.ID,
+                                house_count: 1,
+                                monitor_house_count: 1,
+                                avg_data: 1,
+                                max_data: 1,
+                                min_data: 1,
+                                room_tempera: 1,
+                                is_online: 1,
+                                alarm_count: 1
                             }
                         });
                 }
 
                 this.info = res.result;
-                let sum = this.info.room_tempera.normal + this.info.room_tempera.cool + this
-                    .info.room_tempera.hot;
-                this.normalPerc = Number(this.info.room_tempera.normal / sum * 100).toFixed(
-                    2) + '%';
-                this.coolPerc = Number(this.info.room_tempera.cool / sum * 100).toFixed(2) +
-                    '%';
-                this.hotPerc = Number(this.info.room_tempera.hot / sum * 100).toFixed(2) +
-                    '%';
-                this.drawLine();
+                console.log('aaaaa');
+                console.log(this.info.online_count);
+                console.log(this.info.monitor_house_count);
+                this.drawPie(this.info.online_count, this.info.monitor_house_count);
 
 
             },
-            drawLine() {
-                
-                const dataNormal = {
-                    value: this.info.room_tempera.normal,
-                    name: '17 ~ 23℃',
-                    color: {
-                        type: 'linear',
-                        x: 0,
-                        y: 0,
-                        x2: 0,
-                        y2: 1,
-                        colorStops: [{
-                            offset: 0, color: '#FFCB72' // 0% 处的颜色
-                        }, {
-                            offset: 1, color: '#EFA41F' // 100% 处的颜色
-                        }],
-                        global: false // 缺省为 false
-                    } 
-                };
-                const dataCool = {
-                    value: this.info.room_tempera.cool,
-                    name: '<16℃',
-                    color: {
-                        type: 'linear',
-                        x: 0,
-                        y: 0,
-                        x2: 0,
-                        y2: 1,
-                        colorStops: [{
-                            offset: 0, color: '#5DC8FF' // 0% 处的颜色
-                        }, {
-                            offset: 1, color: '#2FA3EF' // 100% 处的颜色
-                        }],
-                        global: false // 缺省为 false
-                    } 
-                };
-                const dataHot = {
-                    value: this.info.room_tempera.hot,
-                    name: '>24℃',
-                    color: {
-                        type: 'linear',
-                        x: 0,
-                        y: 0,
-                        x2: 0,
-                        y2: 1,
-                        colorStops: [{
-                            offset: 0, color: '#FF9186' // 0% 处的颜色
-                        }, {
-                            offset: 1, color: '#FF716A' // 100% 处的颜色
-                        }],
-                        global: false // 缺省为 false
-                    } 
-                };
-                const pie = pieCharts(this.$refs['myChart'], dataNormal, dataCool, dataHot);
+            drawPie(online, total) {
+                pieCharts2(this.$refs['myChart'], {
+                    value: online
+                }, {
+                    value: total
+                });
             }
 
         },
         mounted() {
-             this.getInfo();
-            //console.log('this.building', this.buildingID);
+            this.getInfo();
+            console.log('nihao');
+            console.log(this.typeOfID);
+            console.log(this.ID);
         },
     }
 

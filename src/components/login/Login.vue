@@ -65,6 +65,7 @@ export default {
                     this.btnTxt = '登陆中...'
                     this.disable = true;
                     const res = await this.$http.post('user/login', this.user);
+                    console.log(res)
                     this.$message({
                         message: '登录成功',
                         type: 'success',
@@ -77,9 +78,11 @@ export default {
                         localStorage.setItem('remember', false);
                         localStorage.removeItem('userInfo');
                     }
-                    const { result: { fullname, user_id } } = res;
+                    const { result: { fullname, user_id ,address } } = res;
                     sessionStorage.setItem('userInfo', JSON.stringify(Object.assign({ fullname, user_id }, this.user)));
+                    localStorage.setItem('address', JSON.stringify(address));
                     this.$router.push({ path: '/main/firstPage' });
+                    console.log(localStorage.getItem('address') )
                 }
             });
         },
