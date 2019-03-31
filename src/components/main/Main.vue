@@ -18,7 +18,7 @@
                     <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="config">配置告警</el-dropdown-item>
-                        <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item>
+                        <!-- <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item> -->
                         <el-dropdown-item command="password">修改密码</el-dropdown-item>
                         <el-dropdown-item command="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
@@ -261,11 +261,11 @@ export default {
 
 <style lang="scss">
     .warn-box{
-        background:rgba(255,113,106,0.88);
-        padding: 5px 10px 10px;
-        color: #fff;
-        transform: translate(20px,0);
-        width: auto;
+        background:rgba(255,113,106,0.88) !important;
+        padding: 5px 10px 10px !important;
+        color: #fff !important;
+        transform: translate(20px,0) !important;
+        width: auto !important;
         h4{
             color: #fff;
             font-size: 16px;

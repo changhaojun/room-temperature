@@ -281,6 +281,13 @@
     .el-pagination {
         padding: 0;
     }
+    .el-dialog__wrapper{
+        z-index:999999 !important;
+        background:rgba(0,0,0,0.5) !important ;
+        .el-dialog{
+            z-index:999999 !important;
+        }
+    }
 
     .el-pagination button,
     .el-pagination span:not([class*=suffix]) {
@@ -351,5 +358,8 @@
         padding: 0 !important;
         line-height: 60px !important;
         height:60px !important;
+    }
+    .v-modal{
+        z-index:-1 !important;
     }
 </style>

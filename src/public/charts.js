@@ -26,7 +26,7 @@ const axisLine = {
 }
 
 //chartType=1代表是首页的图表，chartType=0代表是统计分析的图表
-export const barCharts = (el, data, barColor, chartType) => {
+export const barCharts = (el, data, barColor, chartType, dataname) => {
     const barOption = {
         tooltip: {
             trigger: 'axis',
@@ -42,7 +42,7 @@ export const barCharts = (el, data, barColor, chartType) => {
         color: barColor[0],
         legend: {
             data: [{
-                name: chartType === 1 ? '告警住户' : '室温',
+                name: chartType === 1 ? '告警住户' : dataname,
                 icon: 'roundRect'
             }],
             right: 50,
@@ -81,7 +81,7 @@ export const barCharts = (el, data, barColor, chartType) => {
             splitLine
         },
         series: [{
-            //name: '室温',
+            name: chartType === 1 ? '告警住户' : dataname,
             type: 'bar',
             data: data.dataY,
             itemStyle: {

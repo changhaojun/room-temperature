@@ -105,7 +105,7 @@
                 const topbar = barCharts(this.$refs['high-top'], {
                     dataX,
                     dataY
-                }, ['#F5C51D', '#EFA31F'], 0);
+                }, ['#F5C51D', '#EFA31F'], 0, '温度(°C)');
             },
             async getLowTemperature() {
                 const {
@@ -131,7 +131,7 @@
                 const topbar = barCharts(this.$refs['low-top'], {
                     dataX,
                     dataY
-                }, ['#00F0FF', '#00A8FF'], 0);
+                }, ['#00F0FF', '#00A8FF'], 0, '温度(°C)');
             },
             async getTemperatureDistribution() {
                 let res = '';
@@ -166,7 +166,7 @@
                 const topbar = barCharts(this.$refs['distribution'], {
                     dataX,
                     dataY
-                }, ['#00F0FF', '#00A8FF'], 2);
+                }, ['#00F0FF', '#00A8FF'], 2, '户数');
             },
             async getAverage() {
                 let res = '';
