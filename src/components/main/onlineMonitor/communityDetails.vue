@@ -50,6 +50,7 @@ export default {
             indexActive: 1,
 
             columns: [
+
                 {
                     label: "时间",
                     prop: "data_time"
