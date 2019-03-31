@@ -110,7 +110,6 @@
         },
         methods: {
             searchUserList() {
-                console.log(this.searchUser);
                 this.tableData.total = 0;
                 this.tableData.datas = [];
                 this.conditions.page_number = 1;
@@ -123,7 +122,6 @@
             async getWeather() {
                 const res = await this.$http.get('weather/getWeather');
                 this.weather = res.result.temp;
-                console.log('getWeather',res.result.temp);
             },
             async getTableData() {
                 let res = '';
@@ -174,7 +172,6 @@
                 };
                 this.tableData.total = res.result.total;
                 this.tableData.datas = res.result.rows;
-                console.log('this.tableData', this.tableData);
 
             },
             select(item) {
@@ -184,7 +181,6 @@
         mounted() {
             this.getTableData();
             this.getWeather();
-            //console.log('this.building', this.buildingID);
         },
     }
 

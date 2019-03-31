@@ -58,14 +58,13 @@
             return {
                 ID: -1,
                 typeOfID: -1,
-                date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
+                date: [moment().subtract(2, 'days').format('YYYY-MM-DD'), moment().add(1, 'days').format('YYYY-MM-DD')],
             }
         },
         methods: {
             //itemType=0代表公司，itemType=1代表小区，itemType=2代表楼
             //typeOfID=-1代表是公司id，typeOfID=0代表是小区id，typeOfID=1代表是楼id
             getClickedItem(clickedItem) {
-                console.log(clickedItem);
                 this.ID = clickedItem.itemID;
                 this.typeOfID = clickedItem.itemType - 1;
                 if (this.typeOfID == -1) {
@@ -76,7 +75,6 @@
                 this.getAverage();
             },
             reload(params) {
-                console.log('params', params);
                 this.date[0] = params.startTime;
                 this.date[1] = params.endTime;
                 this.getAverage();
@@ -91,7 +89,6 @@
                         company_id: this.ID,
                     }
                 });
-                console.log(rows);
                 const dataX = [],
                     dataY = [];
                 for (const row of rows) {
@@ -117,7 +114,6 @@
                         company_id: this.ID,
                     }
                 });
-                console.log(rows);
                 const dataX = [],
                     dataY = [];
                 for (const row of rows) {
@@ -156,7 +152,6 @@
                 }
 
                 let rows = res.result.rows;
-                console.log(rows);
                 const dataX = [],
                     dataY = [];
                 for (let i = 0; i < rows.length; i++) {
@@ -170,6 +165,16 @@
             },
             async getAverage() {
                 let res = '';
+                const {
+                    result: {
+                        rows
+                    }
+                } = await this.$http('weather/getWeatherHistory', {
+                    data: {
+                        start_time: this.date[0],
+                        end_time: this.date[1]
+                    }
+                });
                 if (this.typeOfID == -1) {
                     res = await this.$http('historyData/getCompanyHistory', {
                         data: {
@@ -195,10 +200,21 @@
                         }
                     });
                 }
-
-                const dataX = res.result.data_time;
+                const dataX = res.result.data_time.map(item => {
+                    return moment(item).format('MM-DD HH') + 'h'
+                });
                 const dataY1 = res.result.data_value;
-                const dataY2 = res.result.data_value;
+                const dataY2 = [];
+                for(const row of rows) {
+                    const { temp } = row;
+                    dataY2.push(Number(temp.split('℃')[0]));
+                }
+
+                dataY2,dataY1
+                const num = dataY1.length-dataY2.length;
+                for(let i=0;i<num;i++){
+                    dataY2.unshift('')
+                }
                 const line = lineCharts(this.$refs['average-tem'], {
                     left: '5%',
                     right: '10%',
