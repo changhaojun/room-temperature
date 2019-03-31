@@ -115,7 +115,6 @@ export default {
         }
         .charts-content {
             height: 280px;
-            // margin-top: -18px;
         }
         .el-table th {
             height: 80px !important;
