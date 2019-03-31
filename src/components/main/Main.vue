@@ -18,7 +18,7 @@
                     <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="config">配置告警</el-dropdown-item>
-                        <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item>
+                        <!-- <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item> -->
                         <el-dropdown-item command="password">修改密码</el-dropdown-item>
                         <el-dropdown-item command="exit">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
