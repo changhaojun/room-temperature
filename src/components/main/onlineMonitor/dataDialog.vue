@@ -59,12 +59,15 @@ export default {
         // 获取历史数据
         async getHouseHistory() {
             this.datas = [];
+            const weatherList =  await this.getWeatherHistory();
             const {result} = await this.$http('historyData/getHouseHistory', {data: this.hsitoryParams});
                 result.data_time.forEach((element,index) => {
                     let data = {};
                     data.data_time = element;
                     data.data_value_temp = result.temp_value[index];
-                    data.data_value_outTemp = this.dataY2[index];
+                    if(weatherList[index]){
+                        data.data_value_outTemp = weatherList[index];
+                    }
                     data.data_value_hum = result.hum_value[index];
                     data.high = result.high_warn?Number(result.high_warn.split('>')[1]):'';
                     data.low =result.low_warn? Number(result.low_warn.split('<')[1]):'';
@@ -73,19 +76,21 @@ export default {
                 this.dataX = result.data_time;
                 this.dataY1 = result.temp_value;
                 this.dataY3 = result.hum_value;
-                console.log(this.dataY2)
-                const moreLine = moreLineCharts(this.$refs['temp'], this.grid, this.dataX, this.dataY1, this.dataY2, this.dataY3);
+               
+                const moreLine = moreLineCharts(this.$refs['temp'], this.grid, this.dataX, this.dataY1, weatherList, this.dataY3);
         },
         // 获取室外温度历史
         async getWeatherHistory() {
+            const weatherList = []
             const datas = {
                 start_time: this.hsitoryParams.start_time,
-                end_time: this.hsitoryParams.end_time
+                end_time:this.hsitoryParams.end_time
             }
             const { result: { rows, total } } = await this.$http('weather/getWeatherHistory', {data: datas});
             rows.forEach(row => {
-                this.dataY2.push(row.temp)
+                weatherList.push(row.temp.split('℃')[0])
             })
+            return weatherList
         },
         reload(params) {
             this.hsitoryParams.start_time = params.startTime;
@@ -106,13 +111,12 @@ export default {
         }
     },
     mounted() {
-        this.getWeatherHistory();
         this.getHouseHistory();
     },
     created() {
         this.hsitoryParams.house_id = this.conditionsHistory.house_id;
-        this.hsitoryParams.start_time = this.conditionsHistory.start_time;
-        this.hsitoryParams.end_time = this.conditionsHistory.end_time;
+        this.hsitoryParams.start_time = moment(this.conditionsHistory.start_time).add(1,'days').format('YYYY-MM-DD');
+        this.hsitoryParams.end_time = moment(this.conditionsHistory.end_time).add(1,'days').format('YYYY-MM-DD');      
     }
 }
 </script>
