@@ -28,7 +28,20 @@
                 columns: [{
                         label: "时间",
                         prop: "data_time"
-                    }, {
+                    },
+                    {
+                        label: "分公司名称",
+                        prop: "company_name"
+                    },
+                    {
+                        label: "小区名称",
+                        prop: "community_name"
+                    }, 
+                    {
+                        label: "楼名称",
+                        prop: "building_name"
+                    },
+                    {
                         label: "编号",
                         prop: "user_number"
                     },

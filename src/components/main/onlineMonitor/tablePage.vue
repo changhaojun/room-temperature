@@ -286,8 +286,8 @@
         color:rgba(0,168,255,1) !important;
     }
     .el-table .cell,.el-table td{
-        padding: 0;
-        line-height: 60px;
-        height:60px;
+        padding: 0 !important;
+        line-height: 60px !important;
+        height:60px !important;
     }
 </style>
