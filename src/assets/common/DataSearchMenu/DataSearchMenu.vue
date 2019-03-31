@@ -11,7 +11,7 @@
         <div class="menu-list">
             <el-scrollbar class="menu-scrollbar">
                 <transition-group>
-                    <div v-for="(company,index) in displayCompanyList" :key=company.company_name+index class="company">
+                    <div v-for="(company,index) in displayCompanyList" :key="company.company_name+index" class="company">
                         <div class="company-name"
                             :class="{clickedItem: clickedItem.itemType==0 && clickedItem.itemID==company.company_id}">
                             <i class="el-icon-caret-bottom" @click="expandItem(0,company.company_id)"
@@ -93,7 +93,6 @@
                 }
                 //this.displayCompanyList = this.companyList.filter(this.filterCompanyList);
                 //this.displayCompanyList[0].communities = this.displayCompanyList[0].communities.filter(this.filterCommunityList);
-                console.log(this.displayCompanyList);
                 this.expandedCompanyList.push(this.chosenCommunity.CompanyID);
                 this.expandedCommunityList.push(this.chosenCommunity.CommunityID);
                 this.clickedItem.itemType = 1;

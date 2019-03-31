@@ -57,5 +57,11 @@
             height: 100%;
         }
     }
+    *, :after, :before{
+        z-index:none !important;
+    }
 
+}
+*, :after, :before{
+    z-index:none !important;
 }
