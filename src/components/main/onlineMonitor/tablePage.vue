@@ -64,7 +64,7 @@
         </el-pagination>
 
         <!-- 弹窗 -->
-        <el-dialog :title="dialogData.title" :visible.sync="dialogData.dialogFormVisible"
+        <el-dialog :title="dialogData.title" :visible="dialogData.dialogFormVisible"
             :width="dialogData.dialogWidth" @close="Cancel">
             <div class="main-dialog">
                 <data-dialog :date='date' :conditionsHistory='conditionsHistory'></data-dialog>
