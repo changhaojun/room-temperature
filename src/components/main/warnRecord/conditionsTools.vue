@@ -78,7 +78,7 @@ export default {
                 this.currentParams.startTime =start.format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }else if(type === 2) {
-                start = moment().subtract(parseInt(moment().format('d'))-1, 'days');
+                start = moment().subtract('days', 7);
                 this.currentParams.startTime = start.format('YYYY-MM-DD');
                 this.currentParams.endTime = moment().format('YYYY-MM-DD');
             }else {

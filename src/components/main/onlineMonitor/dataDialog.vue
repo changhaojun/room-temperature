@@ -110,7 +110,7 @@ export default {
 
 <style lang="scss">
     .house {
-         *, :before, :after{
+         *, *:before, *:after{
             z-index: 0;
         }
         .charts-content {

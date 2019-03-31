@@ -236,3 +236,7 @@
   color: #464C5B;
   font-weight: bold;
 }
+
+*, *:before, *:after {
+  z-index: 0;
+}
