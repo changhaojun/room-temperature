@@ -9,8 +9,8 @@
             </div>
         </div>
         <div class="main-table-table">
-            <table-page :initData='tableData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1
-                @page-change='pageChange' :mapdialog="mapdialog" @select="select">
+            <table-page :initData='tableData' :columns='columns' :manager=true :pageNumber='conditions.page_number'
+                :type=3 @page-change='pageChange' :mapdialog="mapdialog" @select="select">
             </table-page>
         </div>
     </div>
@@ -26,6 +26,22 @@
                     datas: []
                 },
                 columns: [{
+                        label: "时间",
+                        prop: "data_time"
+                    },
+                    {
+                        label: "分公司名称",
+                        prop: "company_name"
+                    },
+                    {
+                        label: "小区名称",
+                        prop: "community_name"
+                    }, 
+                    {
+                        label: "楼名称",
+                        prop: "building_name"
+                    },
+                    {
                         label: "编号",
                         prop: "user_number"
                     },
@@ -65,10 +81,7 @@
                         label: "室内温度(℃)",
                         prop: "data_value"
                     },
-                    {
-                        label: "时间",
-                        prop: "data_time"
-                    }
+
                 ],
                 conditions: {
                     community_id: null,
@@ -124,7 +137,7 @@
                                 building_id: this.ID,
                                 user_number: this.searchUser,
                                 page_size: 10,
-                                page_number: 1,
+                                page_number: this.conditions.page_number,
                             }
 
                         });
@@ -135,12 +148,20 @@
                                 company_id: this.ID,
                                 user_number: this.searchUser,
                                 page_size: 10,
-                                page_number: 1,
+                                page_number: this.conditions.page_number,
                             }
 
                         });
                 }
-
+                let rows = res.result.rows;
+                for (const row of rows) {
+                    row.distance = row.distance === 1 ? '近' : row.distance === 2 ? '中' : row.distance === 3 ? '远' :
+                        '';
+                    row.position = row.position === 1 ? '顶' : row.position === 2 ? '底' : row.position === 3 ? '边' :
+                        '';
+                    row.csq_alarm = row.csq_alarm === 0 ? '正常' : row.csq_alarm === 1 ? '弱' : '';
+                    row.status = row.status === 0 ? '离线' : row.status === 1 ? '在线' : '';
+                };
                 this.tableData.total = res.result.total;
                 this.tableData.datas = res.result.rows;
                 console.log('this.tableData', this.tableData);
