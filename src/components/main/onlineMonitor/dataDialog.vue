@@ -68,8 +68,8 @@ export default {
                     data.data_value_temp = result.temp_value[index];
                     data.data_value_outTemp = result.temp_value[index];
                     data.data_value_hum = result.hum_value[index];
-                    data.high = Number(result.high_warn.split('>')[1]);
-                    data.low = Number(result.low_warn.split('<')[1]);
+                    data.high = result.high_warn?Number(result.high_warn.split('>')[1]):'';
+                    data.low =result.low_warn? Number(result.low_warn.split('<')[1]):'';
                     this.datas.push(data);
                 });
                 this.dataX = result.data_time;

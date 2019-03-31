@@ -32,7 +32,7 @@
            <!-- <el-scrollbar style="height:100%"> -->
                <div class="communityBox" v-if="!dialogParams.tempHistory">
                     <div class="main-top">
-                        <data-search-top  :ID="dialogParams.community_id" :typeOfID="0"></data-search-top>
+                        <data-search-top  :ID="dialogParams.community_id" :typeOfID="0" :typeOfComponent='0'></data-search-top>
                     </div>
                     <div style="box-shadow:0px 0px 10px 0px rgba(0, 0, 0, 0.22);margin:0 10px;margin-top:30px;margin-bottom:20px;">
                         <data-search-table :ID="dialogParams.community_id" :typeOfID="0" @select="select" :mapdialog="dialogParams.mapdialog"></data-search-table>
@@ -75,9 +75,8 @@
                 communityData:[],
                 companyData:[],
                 events: {
-                    init: (o) => {
-                        
-                   this.event = o ;
+                    init: (o) => { 
+                        this.event = o ;
                     },
                     'moveend': () => {
                     },
@@ -214,7 +213,7 @@
                 }
                 this.markers = markers
                 this.copyMarkers = markers;
-                this.communityCount = markers.length;
+                this.communityCount = data.length;
             },
             dialogShow(event){
                 const community_id =  event.target.accessKey;
