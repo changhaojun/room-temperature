@@ -14,7 +14,24 @@
                 </div>
             </div>
             <div>
-                <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box>
+                <el-select
+                v-model="searchData.inputText"
+                filterable
+                remote
+                placeholder='搜索小区'
+                :remote-method="remoteMethod"
+                popper-class="search-box"
+                @change='onSearchResult'
+                @blur='blur'
+                >
+                <el-option
+                  v-for="item in searchData.searchResult"
+                  :key="item.community_id"
+                  :label="item.community_name"
+                  :value="item.location">
+                </el-option>
+              </el-select>
+                <!-- <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
             </div>
         </div>
        <el-amap vid="amap-demo" ref="map" class="amap-demo" id="container" :center="center" :zooms="zooms" :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973" :events="events">
@@ -67,23 +84,23 @@
                 activeIndex:-1,
                 allActive:true,
                 search:'',
-                zoom: 5,
-                zooms:[5,30],
-                center: [108.939621,34.343147], 
+                zoom: 9,
+                zooms:[9,30],
+                center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],  
                 markers:[], 
                 event:null,
                 communityData:[],
                 companyData:[],
+                initlocation:"",
                 events: {
                     init: (o) => { 
                         this.event = o ;
                     },
-                    'moveend': () => {
-                    },
+                   
                     mousewheel:()=>{
                         const zoom =this.event.getZoom()
                         this.zoom = zoom;
-                        if(zoom<=9){
+                        if(zoom<=12){
                            this.analysisData()
                            this.companyDistribute();
                         }else{
@@ -94,10 +111,6 @@
                     }
                 },
                 communityCount:0,
-                searchOption: {
-                    city: '中国',
-                    citylimit: true
-                },
                 copyMarkers:[],
                 tempSelect:[],
                 dialogParams:{
@@ -113,7 +126,12 @@
                         end_time: moment().format('YYYY-MM-DD')
                     }
                 },
-                
+                searchData:{
+                    placeholder:"搜索小区",
+                    searchResult:[],
+                    total:-1 ,
+                    inputText:""
+                },
             };
         },
         methods:{
@@ -138,7 +156,7 @@
             selectAll(){
                 this.allActive = true;
                 this.activeIndex = -1;
-                if(this.zoom<=9){
+                if(this.zoom<=12){
                     this.getCompany();
                 }else{
                     this.getAllCommunity();
@@ -150,30 +168,18 @@
                 this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)}) 
             },
             //搜索小区
-            onSearchResult(pois) {
-                let latSum = 0;
-                let lngSum = 0;
-                if (pois.length > 0) {
-                    pois.forEach(poi => {
-                    let {lng, lat} = poi;
-                    lngSum += lng;
-                    latSum += lat;
-                    });
-                    let center = {
-                    lng: lngSum / pois.length,
-                    lat: latSum / pois.length
-                    };
-                    this.center = [center.lng, center.lat];
-                    this.zoom =13;
-                    this.analysisData();
-                    this.getcommunityDistribute();
-                }
+            onSearchResult(data) {
+                this.zoom = 14;
+                this.center = [Number(data.split(",")[0]),Number(data.split(",")[1])]
+                this.analysisData();
+                 this.getcommunityDistribute();  
             },
             // 获取分公司列表
             async getCompany(){
                 const {result:{rows}} = await this.$http(`company/getCompany`,{data:{map:1}})
                 this.companyData = rows; 
                 this.analysisData();
+                this.getAllCommunity();
             },  
             //获取全部小区
             async getAllCommunity(){
@@ -181,19 +187,20 @@
                 this.communityData = rows;
                 this.analysisData();
             },
+           
             //分析小区数据 1:低温 2：常温 3：高温
             analysisData(){
                 const markers =[];
                 const location = [];
                 let dom = '';
                 let data ='';
-                if(this.zoom<=9){
+                if(this.zoom<=12){
                     data = this.companyData;
                 }else{
                     data = this.communityData;
                 }
                 for(let i=0;i<data.length;i++){
-                    if(this.zoom<=9){
+                    if(this.zoom<=12){
                         // console.log(data)
                         dom = `<div class="marker-box"  @click="clickCompanyCenter($event)">
                                         <div class="circle-box"  align="${data[i].location}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
@@ -226,12 +233,11 @@
             clickCompanyCenter(event){
                 const company_location = event.target.align;
                 _this.center = [Number(company_location.split(",")[0]),Number(company_location.split(",")[1])];
-                _this.zoom =12;
+                _this.zoom =14;
                 _this.analysisData();
                 _this.getcommunityDistribute();
             },
             select(id){
-                console.log(id)
                 this.dialogParams.tempHistory = true;
                 this.dialogParams.conditionsHistory.house_id = id;
             },
@@ -240,12 +246,23 @@
             },
             allCommunity(){
                 this.dialogParams.tempHistory = false;
+            },
+            blur(){
+                this.searchData.inputText ='';
+            },
+            remoteMethod(query){
+                if(query !==''){
+                    this.searchData.searchResult = this.communityData.filter((item)=>{return item.community_name.includes(query)}) 
+                }else{
+                    this.searchData.searchResult=[]
+                }
             }
         },
         created(){
            if(!window.AMap && !window.AMapUI){
                 this.initMap()
            }
+           this.center=[JSON.parse(localStorage.getItem('address')).split(",")[0],JSON.parse(localStorage.getItem('address')).split(",")[1]] 
         },
         mounted(){
             this.getCompany()
