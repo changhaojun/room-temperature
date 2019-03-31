@@ -186,8 +186,6 @@
         watch: {
             ID: {
                 handler() {
-                    console.log(this.ID);
-                    console.log(this.typeOfID);
                     this.getInfo();
 
                 }
@@ -198,7 +196,6 @@
                 let res = '';
 
                 if (this.typeOfID == -1) {
-                    console.log('公司');
                     res = await this.$http.get(
                         'company/getCompanyInfo', {
                             data: {
@@ -215,7 +212,6 @@
                             }
                         });
                 } else if (this.typeOfID == 0) {
-                    console.log('小区');
                     res = await this.$http.get(
                         'community/getCommunityInfo', {
                             data: {
@@ -231,7 +227,6 @@
                             }
                         });
                 } else if (this.typeOfID == 1) {
-                    console.log('楼');
                     res = await this.$http.get(
                         'building/getBuildingInfo', {
                             data: {
@@ -249,9 +244,6 @@
                 }
 
                 this.info = res.result;
-                console.log('aaaaa');
-                console.log(this.info.online_count);
-                console.log(this.info.monitor_house_count);
                 this.drawPie(this.info.online_count, this.info.monitor_house_count);
 
 
@@ -267,9 +259,6 @@
         },
         mounted() {
             this.getInfo();
-            console.log('nihao');
-            console.log(this.typeOfID);
-            console.log(this.ID);
         },
     }
 

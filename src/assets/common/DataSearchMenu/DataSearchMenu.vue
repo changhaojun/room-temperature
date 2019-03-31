@@ -180,7 +180,6 @@
                 this.clickedItem.itemType = 0;
                 this.clickedItem.itemID = this.companyList[0].company_id;
                 this.clickItem(0, this.clickedItem.itemID, -1, -1);
-                console.log(this.companyList);
             }
         },
         mounted() {

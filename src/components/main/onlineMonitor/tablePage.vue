@@ -152,11 +152,11 @@
                     type: 1
                 },
 
-                date: [moment().subtract(3, 'days'), moment()],
+                date: [moment().subtract(2, 'days'), moment()],
                 conditionsHistory: {
                     house_id: null,
-                    start_time: moment(moment().subtract(3, 'days')).format('YYYY-MM-DD'),
-                    end_time: moment().format('YYYY-MM-DD')
+                    start_time: moment(moment().subtract(2, 'days')).format('YYYY-MM-DD'),
+                    end_time: moment().add(1,'day').format('YYYY-MM-DD')
                 }
             }
         },
@@ -171,7 +171,6 @@
             },
             houseTemp(houseId) {
                 if (this.mapdialog) {
-                    console.log(houseId)
                     this.$emit("select", houseId)
                 } else {
                     this.dialogData.title = '温度变化历史';

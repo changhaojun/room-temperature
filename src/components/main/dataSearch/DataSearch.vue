@@ -34,7 +34,6 @@
         methods: {
             //itemType=0代表公司，itemType=1代表小区，itemType=2代表楼
             getClickedItem(clickedItem) {
-                console.log('clickedItem', clickedItem);
                 this.ID = clickedItem.itemID;
                 this.typeOfID = clickedItem.itemType - 1;
             }

@@ -73,15 +73,18 @@
                     },
                     {
                         label: "湿度(%)",
-                        prop: "data_value"
+                        prop: "data_value",
+                        width: 100
                     },
                     {
                         label: "室外温度(℃)",
-                        prop: "weather"
+                        prop: "weather",
+                        width: 100
                     },
                     {
                         label: "室内温度(℃)",
-                        prop: "data_value"
+                        prop: "data_value",
+                        width: 100
                     },
 
                 ],
@@ -110,7 +113,6 @@
         },
         methods: {
             searchUserList() {
-                console.log(this.searchUser);
                 this.tableData.total = 0;
                 this.tableData.datas = [];
                 this.conditions.page_number = 1;
@@ -123,7 +125,6 @@
             async getWeather() {
                 const res = await this.$http.get('weather/getWeather');
                 this.weather = res.result.temp;
-                console.log('getWeather',res.result.temp);
             },
             async getTableData() {
                 let res = '';
@@ -169,12 +170,11 @@
                         '';
                     row.csq_alarm = row.csq_alarm === 0 ? '正常' : row.csq_alarm === 1 ? '弱' : '';
                     row.status = row.status === 0 ? '离线' : row.status === 1 ? '在线' : '';
-                    
+
                     row.weather = Number(this.weather.split('℃')[0]);
                 };
                 this.tableData.total = res.result.total;
                 this.tableData.datas = res.result.rows;
-                console.log('this.tableData', this.tableData);
 
             },
             select(item) {
@@ -184,7 +184,6 @@
         mounted() {
             this.getTableData();
             this.getWeather();
-            //console.log('this.building', this.buildingID);
         },
     }
 
