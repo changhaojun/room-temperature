@@ -14,7 +14,67 @@
                 </el-table-column>
             </div>
             <div v-if='type === 2'>
-                <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
+                <div v-for="item in columns" :key="item.index">
+                    <el-table-column v-if="item.prop === 'data_time'" :prop='item.prop' :label='item.label' min-width="180">
+                        <template slot-scope="scope">
+                            <div v-if="item.prop === 'data_value'"
+                                :class="scope.row.alarm_type === '高温告警' ? 'warnHigh' : scope.row.alarm_type === '低温告警' ? 'warnLow' : ''"
+                                style='cursor: pointer;' @click="houseTemp(scope.row.house_id)">
+                                {{scope.row[item.prop]}}
+                            </div>
+                            <div v-else-if="item.prop === 'alarm_type' && scope.row.alarm_type === '信号告警' ">
+                                <span class="iconfont iconwuxinhao"
+                                    style="font-size: 20px; color:rgba(255,113,106,1); margin-right: 8px; margin-left: -28px;"></span>
+                                {{scope.row[item.prop]}}
+                            </div>
+                            <div v-else-if="item.prop === 'alarm_type' && scope.row.alarm_type === '低电告警' ">
+                                <span class="iconfont icondianchi--"
+                                    style="font-size: 12px; color:rgba(255,113,106,1); margin-right: 8px; margin-left: -28px;"></span>
+                                {{scope.row[item.prop]}}
+                            </div>
+                            <div v-else-if="item.prop === 'read_state' && scope.row.read_state === '未读'">
+                                <el-tooltip class="item" effect="dark" content="标记为已读" placement="top">
+                                    <div style='cursor: pointer; height: auto;' @click="upDateWarn(scope.row)">
+                                        <span class="iconfont iconyuandianzhong"
+                                            style="font-size: 16px; color:rgba(255,113,106,1); margin-top: 5px; margin-right: 2px; margin-left: -22px;"></span>
+                                        {{scope.row[item.prop]}}
+                                    </div>
+                                </el-tooltip>
+                            </div>
+                            <div v-else>{{scope.row[item.prop]}}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-else :prop='item.prop' :label='item.label'>
+                        <template slot-scope="scope">
+                            <div v-if="item.prop === 'data_value'"
+                                :class="scope.row.alarm_type === '高温告警' ? 'warnHigh' : scope.row.alarm_type === '低温告警' ? 'warnLow' : ''"
+                                style='cursor: pointer;' @click="houseTemp(scope.row.house_id)">
+                                {{scope.row[item.prop]}}
+                            </div>
+                            <div v-else-if="item.prop === 'alarm_type' && scope.row.alarm_type === '信号告警' ">
+                                <span class="iconfont iconwuxinhao"
+                                    style="font-size: 20px; color:rgba(255,113,106,1); margin-right: 8px; margin-left: -28px;"></span>
+                                {{scope.row[item.prop]}}
+                            </div>
+                            <div v-else-if="item.prop === 'alarm_type' && scope.row.alarm_type === '低电告警' ">
+                                <span class="iconfont icondianchi--"
+                                    style="font-size: 12px; color:rgba(255,113,106,1); margin-right: 8px; margin-left: -28px;"></span>
+                                {{scope.row[item.prop]}}
+                            </div>
+                            <div v-else-if="item.prop === 'read_state' && scope.row.read_state === '未读'">
+                                <el-tooltip class="item" effect="dark" content="标记为已读" placement="top">
+                                    <div style='cursor: pointer; height: auto;' @click="upDateWarn(scope.row)">
+                                        <span class="iconfont iconyuandianzhong"
+                                            style="font-size: 16px; color:rgba(255,113,106,1); margin-top: 5px; margin-right: 2px; margin-left: -22px;"></span>
+                                        {{scope.row[item.prop]}}
+                                    </div>
+                                </el-tooltip>
+                            </div>
+                            <div v-else>{{scope.row[item.prop]}}</div>
+                        </template>
+                    </el-table-column>
+                </div>
+                <!-- <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index">
                     <template slot-scope="scope">
                         <div v-if="item.prop === 'data_value'"
                             :class="scope.row.alarm_type === '高温告警' ? 'warnHigh' : scope.row.alarm_type === '低温告警' ? 'warnLow' : ''"
@@ -42,7 +102,7 @@
                         </div>
                         <div v-else>{{scope.row[item.prop]}}</div>
                     </template>
-                </el-table-column>
+                </el-table-column> -->
             </div>
             <div v-if='type === 3'>
                 <el-table-column :prop='item.prop' :label='item.label' v-for="item in columns" :key="item.index" :width="item.width">
@@ -94,7 +154,7 @@
                 dialogData: {
                     title: "",
                     dialogFormVisible: false,
-                    dialogWidth: '80%',
+                    dialogWidth: '70%',
                     type: 1
                 },
 
@@ -117,7 +177,6 @@
             },
             houseTemp(houseId) {
                 if (this.mapdialog) {
-                    console.log(houseId)
                     this.$emit("select", houseId)
                 } else {
                     this.dialogData.title = '温度变化历史';
@@ -271,7 +330,7 @@
 
     .main-dialog {
 
-        height: 600px;
+        height: 500px;
         overflow: auto;
         padding-right: 20px;
 

@@ -55,6 +55,10 @@ export default {
                     prop: "data_time"
                 },
                 {
+                    label: "楼名称",
+                    prop: "building_name"
+                },
+                {
                     label: "编号",
                     prop: "user_number"
                 },

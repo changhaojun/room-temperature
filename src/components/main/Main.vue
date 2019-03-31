@@ -261,11 +261,11 @@ export default {
 
 <style lang="scss">
     .warn-box{
-        background:rgba(255,113,106,0.88);
-        padding: 5px 10px 10px;
-        color: #fff;
-        transform: translate(20px,0);
-        width: auto;
+        background:rgba(255,113,106,0.88) !important;
+        padding: 5px 10px 10px !important;
+        color: #fff !important;
+        transform: translate(20px,0) !important;
+        width: auto !important;
         h4{
             color: #fff;
             font-size: 16px;

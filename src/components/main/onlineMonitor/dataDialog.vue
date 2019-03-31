@@ -64,7 +64,7 @@ export default {
                     let data = {};
                     data.data_time = element;
                     data.data_value_temp = result.temp_value[index];
-                    data.data_value_outTemp = [];
+                    data.data_value_outTemp = this.dataY2[index];
                     data.data_value_hum = result.hum_value[index];
                     data.high = result.high_warn?Number(result.high_warn.split('>')[1]):'';
                     data.low =result.low_warn? Number(result.low_warn.split('<')[1]):'';
@@ -82,8 +82,10 @@ export default {
                 start_time: this.hsitoryParams.start_time,
                 end_time: this.hsitoryParams.end_time
             }
-            const { result: { rows, total } } = await this.$http('getWeatherHistory', {data: datas});
-            this.dataY2 = rows;
+            const { result: { rows, total } } = await this.$http('weather/getWeatherHistory', {data: datas});
+            rows.forEach(row => {
+                this.dataY2.push(row.temp)
+            })
         },
         reload(params) {
             this.hsitoryParams.start_time = params.startTime;

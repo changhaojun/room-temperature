@@ -22,12 +22,12 @@
             </div>
             <div class="main-table">
                 <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;" @row-click='details'>
-                    <el-table-column prop="company_name" label="公司名称" width="180">
+                    <el-table-column prop="company_name" label="公司名称">
                         <template slot-scope="scope">
-                            <div style="text-align: left; padding: 0px 12px !important;">{{scope.row.community_name}}</div>
+                            <div style="text-align: left; padding: 0px 12px !important;">{{scope.row.company_name}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="community_name" label="小区名称" width="180">
+                    <el-table-column prop="community_name" label="小区名称">
                         <template slot-scope="scope">
                             <div style="text-align: left; padding: 0px 12px !important;">{{scope.row.community_name}}</div>
                         </template>
