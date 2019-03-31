@@ -100,11 +100,16 @@ export const barCharts = (el, data, barColor, chartType) => {
         };
         barOption.series[0].name = '告警住户';
     } else if (chartType == 0) {
+        barOption.yAxis.axisLabel = {
+            formatter: '{value} °C'
+        };
+        barOption.series[0].name = '户数';
+    } else if (chartType == 2) {
         barOption.xAxis.axisLabel = {
             formatter: '{value} °C'
         };
         barOption.series[0].name = '户数';
-    }
+    } 
 
     const bar = echarts.init(el);
     bar.setOption(barOption);

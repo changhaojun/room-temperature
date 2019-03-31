@@ -30,8 +30,20 @@
                         prop: "user_number"
                     },
                     {
-                        label: "户主名称",
-                        prop: "user_house_id"
+                        label: "住户名称",
+                        prop: "username"
+                    },
+                    {
+                        label: "设备SN",
+                        prop: "device_sn"
+                    },
+                    {
+                        label: "信号",
+                        prop: "csq_alarm"
+                    },
+                    {
+                        label: "状态",
+                        prop: "status"
                     },
                     {
                         label: "位置",
@@ -40,6 +52,10 @@
                     {
                         label: "分段",
                         prop: "distance"
+                    },
+                    {
+                        label: "湿度(%)",
+                        prop: "data_value"
                     },
                     {
                         label: "室外温度(℃)",
@@ -63,7 +79,8 @@
                 searchUser: ''
             }
         },
-        props: ['ID', 'typeOfID','mapdialog'],
+        //typeOfID=-1代表是公司id，typeOfID=0代表是小区id，typeOfID=1代表是楼id
+        props: ['ID', 'typeOfID', 'mapdialog'],
         watch: {
             ID: {
                 handler() {
@@ -89,6 +106,7 @@
             },
             async getTableData() {
                 let res = '';
+                //typeOfID=-1代表是公司id，typeOfID=0代表是小区id，typeOfID=1代表是楼id
                 if (this.typeOfID == 0) {
                     res = await this.$http.get(
                         'community/getHouse', {
@@ -99,7 +117,7 @@
                                 page_number: this.conditions.page_number,
                             }
                         });
-                } else {
+                } else if (this.typeOfID == 1) {
                     res = await this.$http.get(
                         'building/getHouse', {
                             data: {
@@ -107,7 +125,18 @@
                                 user_number: this.searchUser,
                                 page_size: 10,
                                 page_number: 1,
-                            } 
+                            }
+
+                        });
+                } else if (this.typeOfID == -1) {
+                    res = await this.$http.get(
+                        'company/getHouse', {
+                            data: {
+                                company_id: this.ID,
+                                user_number: this.searchUser,
+                                page_size: 10,
+                                page_number: 1,
+                            }
 
                         });
                 }
@@ -117,12 +146,12 @@
                 console.log('this.tableData', this.tableData);
 
             },
-            select(item){
-               this.$emit("select",item)
+            select(item) {
+                this.$emit("select", item)
             }
         },
         mounted() {
-             this.getTableData();
+            this.getTableData();
             //console.log('this.building', this.buildingID);
         },
     }

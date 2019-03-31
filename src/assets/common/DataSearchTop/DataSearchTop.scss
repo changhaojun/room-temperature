@@ -36,6 +36,23 @@
             .main-chart-datas-top-monitoredHouseholds {
                 float: right;
             }
+
+            .main-chart-datas-top-type11,
+            .main-chart-datas-top-type12,
+            .main-chart-datas-top-type13 {
+                width: 31%;
+                height: 87px;
+                float: left;
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.22);
+                border-radius: 6px;
+            }
+
+            .main-chart-datas-top-type12,
+            .main-chart-datas-top-type13{
+                margin-left: 15px;
+                margin-left: 3.5%;
+            }
         }
 
         .main-chart-datas-bottem {
@@ -58,8 +75,10 @@
         }
 
         .card {
-            width: 140px;
+            width: 100%;
             height: 100%;
+            display: flex;
+            justify-content: center;
 
             .card-left {
                 float: left;
@@ -68,10 +87,6 @@
 
                 .iconfont {
                     font-size: 24px;
-                }
-
-                i.iconfont.green {
-                    color: #1EC2B4
                 }
 
                 i.iconfont.orange {
@@ -88,6 +103,10 @@
 
                 i.iconfont.blue {
                     color: #33ABF1;
+                }
+
+                i.iconfont.green {
+                    color: #1EC2B4;
                 }
 
             }
@@ -134,86 +153,43 @@
         width: 34%;
         height: 100%;
         float: right;
+        position: relative;
+
+        >.device-count {
+            left: calc(50% - 50px);
+            top: calc(50% - 20px);
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            z-index: 0;
+            position: absolute;
+
+            >dl {
+                width: 100px;
+                height: 40px;
+                color: #727272;
+
+                >dt {
+                    font-size: 22px;
+                    text-align: center;
+                }
+
+                >dd {
+                    font-size: 15px;
+                    text-align: center;
+                }
+            }
+        }
+
+        >.device-chart {
+            width: 100%;
+            height: 100%;
+            //position: absolute;
+            z-index: 1;
+        }
 
         canvas {
-            width: 100% !important;
-        }
-
-        .pie-left,
-        .pie-center,
-        .pie-right {
-            float: left;
-            height: 100%;
-        }
-
-        .pie-left,
-        .pie-right {
-            width: 80px;
-        }
-
-        .pie-center {
-            width: calc(100% - 210px);
-            display: flex;
-            justify-content: center;
-        }
-
-        .pie-tips-normal,
-        .pie-tips-cool,
-        .pie-tips-hot {
             width: 100%;
-            height: 50px;
-
-            .pie-tips-top-icon {
-                width: 18px;
-                height: 8px;
-                border-radius: 4px;
-                float: left;
-                margin-top: 6.5px;
-                margin-right: 4px;
-            }
-
-            .pie-tips-top-desc {
-                color: #727272;
-                font-size: 14px;
-                opacity: 0.8;
-            }
-        }
-
-        .pie-tips-normal {
-            margin-top: 15px;
-            .pie-tips-top-icon{
-                background-color: #FBC25E;
-            }
-        }
-
-        .pie-tips-cool {
-            margin-top: 15px;
-            margin-right: 15px;
-            .pie-tips-top-icon{
-                background-color: #2FA3EF;
-            }
-        }
-
-        .pie-tips-hot {
-            margin-top: 65px;
-            margin-right: 15px;
-            .pie-tips-top-icon{
-                background-color: #FF9186;
-            }
-        }
-
-        .pie-tips-top {
-            width: 100%;
-            height: 20px;
-        }
-
-        .pie-tips-bottem {
-            width: 100%;
-            height: 30px;
-            font-size: 18px;
-            color: #283C56;
-            opacity: 0.8;
-            margin-left: 2px;
         }
     }
 }
