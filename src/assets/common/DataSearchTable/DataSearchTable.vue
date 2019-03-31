@@ -73,15 +73,18 @@
                     },
                     {
                         label: "湿度(%)",
-                        prop: "data_value"
+                        prop: "data_value",
+                        width: 100
                     },
                     {
                         label: "室外温度(℃)",
-                        prop: "weather"
+                        prop: "weather",
+                        width: 100
                     },
                     {
                         label: "室内温度(℃)",
-                        prop: "data_value"
+                        prop: "data_value",
+                        width: 100
                     },
 
                 ],
@@ -167,7 +170,7 @@
                         '';
                     row.csq_alarm = row.csq_alarm === 0 ? '正常' : row.csq_alarm === 1 ? '弱' : '';
                     row.status = row.status === 0 ? '离线' : row.status === 1 ? '在线' : '';
-                    
+
                     row.weather = Number(this.weather.split('℃')[0]);
                 };
                 this.tableData.total = res.result.total;
