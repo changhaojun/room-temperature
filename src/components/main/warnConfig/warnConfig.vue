@@ -148,12 +148,16 @@ export default {
         }
     },
     mounted() {
-        this.page.page_size = Math.floor((this.$refs['config_tabel'].offsetHeight - 45) / 60);
-        window.addEventListener('resize', () =>{
+        if(this.$refs['config_tabel']!==undefined) {
             this.page.page_size = Math.floor((this.$refs['config_tabel'].offsetHeight - 45) / 60);
             this.getConfigList();
+        }
+         window.addEventListener('resize', () =>{
+            if(this.$refs['config_tabel']!==undefined) {
+                this.page.page_size = Math.floor((this.$refs['config_tabel'].offsetHeight - 45) / 60);
+                this.getConfigList();
+            }
         })
-        this.getConfigList();
     }
 }
 </script>

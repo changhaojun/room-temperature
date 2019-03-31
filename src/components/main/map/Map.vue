@@ -1,6 +1,6 @@
 <template>
     <div class="amap-page-container">
-        
+
         <div class="header">
             <!-- <el-button round  @click="selectAll()">全部</el-button> -->
             <mu-button round :class="[!allActive?'normal':'active']"  @click="selectAll()">全部</mu-button>
@@ -62,7 +62,7 @@
                        <div style="margin-top:10px;">
                            <data-dialog :date='dialogParams.date' :conditionsHistory='dialogParams.conditionsHistory'></data-dialog>
                        </div>
-                       
+
                    </div>
                </div>
            <!-- </el-scrollbar> -->
@@ -86,17 +86,17 @@
                 search:'',
                 zoom: 9,
                 zooms:[9,30],
-                center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],  
-                markers:[], 
+                center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],
+                markers:[],
                 event:null,
                 communityData:[],
                 companyData:[],
                 initlocation:"",
                 events: {
-                    init: (o) => { 
+                    init: (o) => {
                         this.event = o ;
                     },
-                   
+
                     mousewheel:()=>{
                         const zoom =this.event.getZoom()
                         this.zoom = zoom;
@@ -106,7 +106,7 @@
                         }else{
                             this.analysisData();
                            this.getcommunityDistribute();
-                            
+
                         }
                     }
                 },
@@ -144,12 +144,12 @@
                 });
             },
             async getcommunityDistribute(){
-            
+
                 const {result} = await this.$http('community/communityDistribute');
                 this.tempSelect =[{name:'cool',value:result.cool},{name:'normal',value:result.normal},{name:'hot',value:result.hot}]
             },
             async companyDistribute(){
-           
+
                 const {result} = await this.$http("company/companyDistribute");
                  this.tempSelect =[{name:'cool',value:result.cool},{name:'normal',value:result.normal},{name:'hot',value:result.hot}]
             },
@@ -160,34 +160,34 @@
                     this.getCompany();
                 }else{
                     this.getAllCommunity();
-                }  
+                }
             },
             selectTemp(index){
                 this.allActive = false;
                 this.activeIndex = index;
-                this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)}) 
+                this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)})
             },
             //搜索小区
             onSearchResult(data) {
                 this.zoom = 14;
                 this.center = [Number(data.split(",")[0]),Number(data.split(",")[1])]
                 this.analysisData();
-                 this.getcommunityDistribute();  
+                 this.getcommunityDistribute();
             },
             // 获取分公司列表
             async getCompany(){
                 const {result:{rows}} = await this.$http(`company/getCompany`,{data:{map:1}})
-                this.companyData = rows; 
+                this.companyData = rows;
                 this.analysisData();
                 this.getAllCommunity();
-            },  
+            },
             //获取全部小区
             async getAllCommunity(){
                 const {result:{rows,total}} = await this.$http(`community/getCommunity`,{data:{map:1}})
                 this.communityData = rows;
                 this.analysisData();
             },
-           
+
             //分析小区数据 1:低温 2：常温 3：高温
             analysisData(){
                 const markers =[];
@@ -216,7 +216,7 @@
                         center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
                         template: dom,
                         status:data[i].data_value<16?1:data[i].data_value>25?3:2
-                    }); 
+                    });
                 }
                 this.markers = markers
                 this.copyMarkers = markers;
@@ -228,7 +228,7 @@
                 _this.dialogParams.dialogVisible = true;
                 _this.dialogParams.title = community_name;
                 _this.dialogParams.community_id = community_id;
-           
+
             },
             clickCompanyCenter(event){
                 const company_location = event.target.align;
@@ -252,7 +252,7 @@
             },
             remoteMethod(query){
                 if(query !==''){
-                    this.searchData.searchResult = this.communityData.filter((item)=>{return item.community_name.includes(query)}) 
+                    this.searchData.searchResult = this.communityData.filter((item)=>{return item.community_name.includes(query)})
                 }else{
                     this.searchData.searchResult=[]
                 }
@@ -262,12 +262,12 @@
            if(!window.AMap && !window.AMapUI){
                 this.initMap()
            }
-           this.center=[JSON.parse(localStorage.getItem('address')).split(",")[0],JSON.parse(localStorage.getItem('address')).split(",")[1]] 
+           this.center=[localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]]
         },
         mounted(){
             this.getCompany()
-            this.getAllCommunity();  
-            this.companyDistribute();      
+            this.getAllCommunity();
+            this.companyDistribute();
         },
          beforeCreate(){
             _this = this;
