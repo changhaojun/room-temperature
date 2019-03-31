@@ -145,6 +145,9 @@ export default {
         this.conditions.community_id = Number(this.$route.query.community_id);
         this.communityName = this.$route.query.community_name;
         this.temp = this.$route.query.temp;
+    },
+    destroyed(){
+        document.querySelector('nav').querySelectorAll('a')[2].classList.remove('active-router');
     }
 }
 </script>
