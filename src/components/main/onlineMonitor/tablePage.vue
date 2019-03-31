@@ -173,7 +173,9 @@
         font-family: MicrosoftYaHei;
         font-weight: 400;
     }
-
+    *, :after, :before{
+        z-index:none;
+    }
     .el-table th>.cell {
         color: rgba(118, 118, 118, 1);
     }
