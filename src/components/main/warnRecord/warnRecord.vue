@@ -62,7 +62,7 @@ export default {
                 },
                 {
                     label: "室外温度(℃)",
-                    prop: "weather.temp"
+                    prop: "weather"
                 },
                 {
                     label: "室内温度(℃)",
@@ -95,7 +95,7 @@ export default {
             const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
             const weather = await this.getWeather();
             for (const row of rows) {
-                row.weather = weather;
+                row.weather = weather.temp;
                 row.read_state  = row.read_state === 0 ? '未读' : row.read_state === 1 ? '已读' : '';
                 row.config_type = row.config_type === 1 ? '系统告警' : row.config_type === 2 ? '用户告警' : '';
                 row.alarm_type = row.alarm_type === 1 ? '高温告警' : row.alarm_type === 2 ? '低温告警' :  row.alarm_type === 3 ? '低电告警' : row.alarm_type === 4 ? '信号告警' : '';

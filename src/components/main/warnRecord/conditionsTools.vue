@@ -133,6 +133,9 @@ export default {
         }
         .tool-buttons {
             margin-left: 40px;
+            .mu-raised-button {
+                font-size: 16px;
+            }
             button {
                 width:87px;
                 height:29px;

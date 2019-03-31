@@ -271,11 +271,13 @@ export default {
         this.getPageSize();
         this.getCommunityTable();
         this.autoRefresh();
+        document.querySelector('nav').querySelectorAll('a')[2].classList.add('active-router');
     },
     destroyed(){
         if(this.timer) { //如果定时器在运行则关闭
             clearInterval(this.timer); 
         }
+        document.querySelector('nav').querySelectorAll('a')[2].classList.remove('active-router');
     }
 }
 </script>

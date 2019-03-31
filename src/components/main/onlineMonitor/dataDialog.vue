@@ -76,8 +76,8 @@ export default {
                 console.log(this.datas)
                 this.dataX = result.data_time;
                 this.dataY1 = result.temp_value;
-                // this.dataY2 = [];
                 this.dataY3 = result.hum_value;
+                console.log(this.dataY2)
                 const moreLine = moreLineCharts(this.$refs['temp'], this.grid, this.dataX, this.dataY1, this.dataY2, this.dataY3);
         },
         // 获取室外温度历史
