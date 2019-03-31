@@ -46,7 +46,6 @@ export default {
         // 获取历史数据
         async getHouseHistory() {
             this.datas = [];
-            console.log(this.conditionsHistory);
             const {result} = await this.$http('historyData/getHouseHistory', {data: this.conditionsHistory});
             result.data_time.forEach((element,index) => {
                 let data = {};
