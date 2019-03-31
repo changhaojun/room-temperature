@@ -58,7 +58,7 @@
             return {
                 ID: -1,
                 typeOfID: -1,
-                date: [moment().subtract(2, 'days').format('YYYY-MM-DD'), moment().add(1, 'days').format('YYYY-MM-DD')],
+                date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
             }
         },
         methods: {
@@ -164,40 +164,33 @@
                 }, ['#00F0FF', '#00A8FF'], 2, '户数');
             },
             async getAverage() {
+
+                const senDate = {
+                    start_time: moment(this.date[0]).add(1,'day').format('YYYY-MM-DD'),
+                    end_time:  moment(this.date[1]).add(1,'day').format('YYYY-MM-DD')
+                }
                 let res = '';
                 const {
                     result: {
                         rows
                     }
                 } = await this.$http('weather/getWeatherHistory', {
-                    data: {
-                        start_time: this.date[0],
-                        end_time: this.date[1]
-                    }
+                    data: senDate
                 });
                 if (this.typeOfID == -1) {
+                    senDate.company_id = this.ID
                     res = await this.$http('historyData/getCompanyHistory', {
-                        data: {
-                            company_id: this.ID,
-                            start_time: this.date[0],
-                            end_time: this.date[1]
-                        }
+                        data: senDate
                     });
                 } else if (this.typeOfID == 0) {
+                    senDate.community_id = this.ID
                     res = await this.$http('historyData/getCommunityHistory', {
-                        data: {
-                            community_id: this.ID,
-                            start_time: this.date[0],
-                            end_time: this.date[1]
-                        }
+                        data: senDate
                     });
                 } else if (this.typeOfID == 1) {
+                    senDate.building_id = this.ID
                     res = await this.$http('historyData/getBuildingHistory', {
-                        data: {
-                            building_id: this.ID,
-                            start_time: this.date[0],
-                            end_time: this.date[1]
-                        }
+                        data: senDate
                     });
                 }
                 const dataX = res.result.data_time.map(item => {
