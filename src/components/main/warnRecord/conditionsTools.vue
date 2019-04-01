@@ -10,7 +10,7 @@
                 </el-date-picker>
             </div>
             <div class="tool-buttons">
-                <mu-button color="" class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
+                <mu-button color="" class="warn" :class="indexActive == index+1 ? 'activeBtn': ''"
                     @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
             </div>
         </div>
@@ -69,7 +69,7 @@ export default {
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
                 this.sendParams();
-            } 
+            }
         },
         clickBtn(type) {
             let start = null;
@@ -135,6 +135,9 @@ export default {
             }
             .el-date-editor .el-range__close-icon {
                 display: none;
+            }
+            .el-picker-panel__body{
+                z-index: 1000
             }
         }
         .tool-buttons {

@@ -275,10 +275,10 @@
         padding: 0;
     }
     .el-dialog__wrapper{
-        z-index:999999 !important;
+        z-index:1000 !important;
         background:rgba(0,0,0,0.5) !important ;
         .el-dialog{
-            z-index:999999 !important;
+            z-index:1000 !important;
         }
     }
 
