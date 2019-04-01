@@ -6,16 +6,16 @@
             </h3>
             <nav>
                 <router-link class="router-nav" to="/main/firstPage" active-class="active-router" exact>首页</router-link>
-                <router-link class="router-nav" to="/main/dataSearch" active-class="active-router">查询数据</router-link>
                 <router-link class="router-nav" to="/main/onlineMonitor" active-class="active-router">在线监测</router-link>
                 <router-link class="router-nav" to="/main/roomMap" active-class="active-router">室温地图</router-link>
+                <router-link class="router-nav" to="/main/dataSearch" active-class="active-router">查询数据</router-link>
                 <router-link class="router-nav" to="/main/warnRecord" active-class="active-router">告警记录</router-link>
                 <router-link class="router-nav" to="/main/analysis" active-class="active-router">统计分析</router-link>
             </nav>
 
             <div id="user-menu">
                 <el-dropdown placement="top-start" @command="handleCommand">
-                    <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
+                    <div class="user-config"><i class="iconfont iconuserbg"></i><span>{{username}}</span></div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="config">配置告警</el-dropdown-item>
                         <!-- <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item> -->
@@ -127,7 +127,8 @@ export default {
             client: null,
             changeConfigShow:false,
             company_list:[],
-            selectCompany:''
+            selectCompany:'',
+            username: JSON.parse(sessionStorage.getItem('userInfo')).fullname
         }
     },
     methods: {
@@ -261,11 +262,11 @@ export default {
 
 <style lang="scss">
     .warn-box{
-        background:rgba(255,113,106,0.88);
-        padding: 5px 10px 10px;
-        color: #fff;
-        transform: translate(20px,0);
-        width: auto;
+        background:rgba(255,113,106,0.88) !important;
+        padding: 5px 10px 10px !important;
+        color: #fff !important;
+        transform: translate(20px,0) !important;
+        width: auto !important;
         h4{
             color: #fff;
             font-size: 16px;
@@ -281,7 +282,8 @@ export default {
     }
     ul.el-dropdown-menu{
         padding: 5px 0;
-        transform: translateY(-10px) !important;
+        // transform: translateY(-10px) !important;
+        // margin-top: -10px important;
         li{
             color: #727272 !important;
             &:hover{

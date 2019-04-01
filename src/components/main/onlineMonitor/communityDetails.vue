@@ -6,7 +6,7 @@
         <div class="montior-main">
             <div class="main-tool">
                 <div class="tool-buttons">
-                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
+                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''"
                         @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
                 </div>
                 <div style="display: flex; align-items: center;">
@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="main-table">
-                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1 
+                <table-page :initData='initData' :columns='columns' :manager=true :pageNumber='conditions.page_number' :type=1
                     @page-change='pageChange'>
                 </table-page>
             </div>
@@ -53,6 +53,10 @@ export default {
                 {
                     label: "时间",
                     prop: "data_time"
+                },
+                {
+                    label: "楼名称",
+                    prop: "building_name"
                 },
                 {
                     label: "编号",
@@ -95,7 +99,6 @@ export default {
             if(this.conditions.warn === null) {
                 delete this.conditions.warn;
             }
-            console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('community/getHouse', {data: this.conditions});
             for (const row of rows) {
                 row.temp = this.temp;
@@ -104,7 +107,6 @@ export default {
             }
             this.initData.datas = rows;
             this.initData.total = total;
-            console.log(this.initData);
         },
         //换页
         pageChange(current) {
@@ -115,7 +117,7 @@ export default {
             if (ev.type === 'click' || ev.key === 'Enter') {
                 this.conditions.page_number = 1;
                 this.getHouseList();
-            } 
+            }
         },
         clickBtn(type) {
             this.indexActive = type;
@@ -138,8 +140,7 @@ export default {
     mounted() {
         this.getPageSize();
         this.getHouseList();
-        console.log(document.querySelector('nav').querySelectorAll('a')[2])
-        document.querySelector('nav').querySelectorAll('a')[2].classList.add('active-router');
+        document.querySelector('nav').querySelectorAll('a')[1].classList.add('active-router');
     },
     created() {
         this.conditions.community_id = Number(this.$route.query.community_id);
@@ -147,7 +148,7 @@ export default {
         this.temp = this.$route.query.temp;
     },
     destroyed(){
-        document.querySelector('nav').querySelectorAll('a')[2].classList.remove('active-router');
+        document.querySelector('nav').querySelectorAll('a')[1].classList.remove('active-router');
     }
 }
 </script>

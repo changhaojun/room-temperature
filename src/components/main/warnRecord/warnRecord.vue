@@ -24,8 +24,8 @@ export default {
 
             conditions: {
                 type: 6,
-                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD'),
-                end_time: moment().format('YYYY-MM-DD'),
+                start_time: moment(moment().subtract(2,'days')).format('YYYY-MM-DD'),
+                end_time: moment().add(1,"day").format('YYYY-MM-DD'),
                 key: '',
                 page_size: 6,
                 page_number: 1,
@@ -50,6 +50,10 @@ export default {
                     prop: "community_name"
                 },
                 {
+                    label: "楼名称",
+                    prop: "building_name"
+                },
+                {
                     label: "住户",
                     prop: "user_number"
                 },
@@ -59,7 +63,7 @@ export default {
                 },
                 {
                     label: "室外温度(℃)",
-                    prop: ""
+                    prop: "weather"
                 },
                 {
                     label: "室内温度(℃)",
@@ -91,7 +95,9 @@ export default {
             }
             // console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
+            const weather = await this.getWeather();
             for (const row of rows) {
+                row.weather = weather.temp;
                 row.read_state  = row.read_state === 0 ? '未读' : row.read_state === 1 ? '已读' : '';
                 row.config_type = row.config_type === 1 ? '系统告警' : row.config_type === 2 ? '用户告警' : '';
                 row.alarm_type = row.alarm_type === 1 ? '高温告警' : row.alarm_type === 2 ? '低温告警' :  row.alarm_type === 3 ? '低电告警' : row.alarm_type === 4 ? '信号告警' : '';
@@ -130,6 +136,11 @@ export default {
             this.conditions.config_type = params.configType === '全部' ? null : params.configType === '用户' ? 2 : 1;
             this.conditions.page_number = 1;
             this.getWarnList();
+        },
+        async getWeather() {
+            const {result} = await this.$http('weather/getWeather');
+            console.log(result)
+            return result;
         },
         getPageSize() {
             const rowHeight = 60;

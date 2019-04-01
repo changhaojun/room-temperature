@@ -6,7 +6,7 @@
         <div class="montior-main">
             <div class="main-tool">
                 <div class="tool-buttons">
-                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
+                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''"
                         @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
                 </div>
                 <div style="display: flex; align-items: center;">
@@ -22,12 +22,12 @@
             </div>
             <div class="main-table">
                 <el-table :data="initData.datas" style="width: 100%; margin-bottom: 24px;" @row-click='details'>
-                    <el-table-column prop="company_name" label="公司名称" width="180">
+                    <el-table-column prop="company_name" label="公司名称">
                         <template slot-scope="scope">
-                            <div style="text-align: left; padding: 0px 12px !important;">{{scope.row.community_name}}</div>
+                            <div style="text-align: left; padding: 0px 12px !important;">{{scope.row.company_name}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="community_name" label="小区名称" width="180">
+                    <el-table-column prop="community_name" label="小区名称">
                         <template slot-scope="scope">
                             <div style="text-align: left; padding: 0px 12px !important;">{{scope.row.community_name}}</div>
                         </template>
@@ -107,14 +107,14 @@
                 <el-pagination v-if="initData.datas.length > 0"
                     layout="prev, pager, next, jumper"
                     @current-change='pageChange'
-                    prev-click='pageChange' 
+                    prev-click='pageChange'
                     next-click='pageChange'
                     :current-page.sync="page_number"
                     :total="initData.total"
                     :page-size="page_size">
                 </el-pagination>
             </div>
-        </div>       
+        </div>
     </div>
 </template>
 
@@ -125,6 +125,7 @@ export default {
     data() {
         return {
             loading:true,
+
             communityName: '' ,
             page_size: 0,
             page_number: 1,
@@ -155,7 +156,6 @@ export default {
             this.initData.allDatas = rows;
             this.initData.allTotal = total;
             this.initData.total = total;
-            console.log(this.initData);
             this.pageChange(1);
             this.loading = false;
         },
@@ -180,7 +180,7 @@ export default {
                 }
                 this.initData.datas = this.initData.warnData.slice((current-1)*this.page_size, end);
             }
-            
+
         },
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
@@ -195,7 +195,7 @@ export default {
                                 datas.push(data);
                             }
                         });
-                        this.initData.total = datas.length; 
+                        this.initData.total = datas.length;
                         this.initData.datas = datas;
                     }
                 }else {
@@ -207,11 +207,11 @@ export default {
                                 datas.push(data);
                             }
                         });
-                        this.initData.total = datas.length; 
+                        this.initData.total = datas.length;
                         this.initData.datas = datas;
                     }
                 }
-            } 
+            }
         },
         clickBtn(type) {
             this.indexActive = type;
@@ -228,7 +228,7 @@ export default {
                 });
                 this.initData.warnData = datas;
                 this.initData.warnTotal = datas.length;
-                this.initData.total = datas.length; 
+                this.initData.total = datas.length;
                 this.pageChange(1)
             }
         },
@@ -249,11 +249,10 @@ export default {
             const block = document.querySelector('.montior-main').offsetHeight;
             const rowCount = Math.floor((block - 228) / rowHeight);
             this.page_size = rowCount;
-            console.log(this.page_size);
         },
         autoRefresh() {
             this.timer = setInterval(() => {
-                this.getCommunityTable();    
+                this.getCommunityTable();
             },1800000);
         },
         changeRefresh() {
@@ -265,7 +264,6 @@ export default {
         },
         async getWeather() {
             const {result} = await this.$http('weather/getWeather');
-            console.log(result)
             return result;
         }
     },
@@ -273,11 +271,13 @@ export default {
         this.getPageSize();
         this.getCommunityTable();
         this.autoRefresh();
+        document.querySelector('nav').querySelectorAll('a')[1].classList.add('active-router');
     },
     destroyed(){
         if(this.timer) { //如果定时器在运行则关闭
-            clearInterval(this.timer); 
+            clearInterval(this.timer);
         }
+        document.querySelector('nav').querySelectorAll('a')[1].classList.remove('active-router');
     }
 }
 </script>

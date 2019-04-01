@@ -91,7 +91,13 @@ export default {
             this.sendParams();
         },
         sendParams() {
-            this.$emit('current-change', this.currentParams);
+            const {endTime,startTime} = this.currentParams;
+            const dataObj = {
+                startTime:moment(startTime).add(1,'day').format('YYYY-MM-DD'),
+                endTime:moment(endTime).add(1,'day').format('YYYY-MM-DD'),
+            }
+            console.log(dataObj)
+            this.$emit('current-change', dataObj);
         },
         // 改变组
         changeGroup() {
@@ -133,6 +139,9 @@ export default {
         }
         .tool-buttons {
             margin-left: 40px;
+            .mu-raised-button {
+                font-size: 16px;
+            }
             button {
                 width:87px;
                 height:29px;
