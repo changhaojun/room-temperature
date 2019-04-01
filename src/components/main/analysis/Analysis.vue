@@ -1,5 +1,5 @@
 <template>
-    <div class="analysis" v-loading.fullscreen.lock="loading.topLoading || loading.menuLoading">
+    <div class="analysis" v-loading="loading.topLoading || loading.menuLoading">
         <div class="menu">
             <data-search-menu @clickedItem="getClickedItem" @menuLoadingCompleted="componentLoading(2)">
             </data-search-menu>
@@ -7,9 +7,11 @@
         <div class="main">
             <el-scrollbar>
                 <div class="main-data">
-                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=1 v-if="typeOfID==-1" @topLoadingCompleted="componentLoading(1)">
+                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=1 v-if="typeOfID==-1"
+                        @topLoadingCompleted="componentLoading(1)">
                     </data-search-top>
-                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=2 v-else @topLoadingCompleted="componentLoading(1)"></data-search-top>
+                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=2 v-else
+                        @topLoadingCompleted="componentLoading(1)"></data-search-top>
                 </div>
                 <div class="main-temperature" v-if="typeOfID==-1">
                     <div class="high-temperature">
@@ -180,8 +182,8 @@
             async getAverage() {
 
                 const senDate = {
-                    start_time: moment(this.date[0]).add(1,'day').format('YYYY-MM-DD'),
-                    end_time:  moment(this.date[1]).add(1,'day').format('YYYY-MM-DD')
+                    start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
+                    end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
                 }
                 let res = '';
                 const {
@@ -207,20 +209,21 @@
                         data: senDate
                     });
                 }
-                const dataX = res.result.data_time.map(item => {
-                    return moment(item).format('MM-DD HH') + 'h'
+                let dataX = res.result.data_time.map(item => {
+                    return moment(item).format('MM-DD HH')
                 });
                 const dataY1 = res.result.data_value;
                 const dataY2 = [];
-                for(const row of rows) {
-                    const { temp } = row;
-                    dataY2.push(Number(temp.split('℃')[0]));
+                for (let i = 0; i < dataX.length; i++) {
+                    dataY2.push(null);
                 }
-
-                dataY2,dataY1
-                const num = dataY1.length-dataY2.length;
-                for(let i=0;i<num;i++){
-                    dataY2.unshift('')
+                let index = -1;
+                for (const row of rows) {
+                    index = dataX.indexOf(moment(row.data_time).format('MM-DD HH'));
+                    dataY2[index] = Number(row.temp.split('℃')[0]);
+                }
+                for (let j = 0; j < dataX.length; j++) {
+                    dataX[j] = dataX[j] + 'h';
                 }
                 const line = lineCharts(this.$refs['average-tem'], {
                     left: '5%',

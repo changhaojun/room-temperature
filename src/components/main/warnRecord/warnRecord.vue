@@ -1,5 +1,5 @@
 <template>
-    <div class="warn-record" v-loading.fullscreen.lock="loading">
+    <div class="warn-record" v-loading="loading">
         <div class="record-main">
             <div class="main-tool">
                 <conditions-tools :date='date' :group=true :manager=true @current-change='reload' @group-change='group'></conditions-tools>

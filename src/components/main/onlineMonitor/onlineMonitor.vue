@@ -1,5 +1,5 @@
 <template>
-    <div class="online-monitor" v-loading.fullscreen.lock="loading">
+    <div class="online-monitor" v-loading="loading">
         <div class="montior-title">
             <span>所有小区</span>
         </div>

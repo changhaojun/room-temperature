@@ -1,5 +1,5 @@
 <template>
-    <div class="data-search" v-loading.fullscreen.lock="loading.topLoading || loading.menuLoading || loading.tableLoading">
+    <div class="data-search" v-loading="loading.topLoading || loading.menuLoading || loading.tableLoading">
         <div class="menu">
             <data-search-menu @clickedItem="getClickedItem" @menuLoadingCompleted="componentLoading(2)"></data-search-menu>
         </div>
