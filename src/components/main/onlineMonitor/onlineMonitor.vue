@@ -154,7 +154,6 @@ export default {
             this.initData.allDatas = rows;
             this.initData.allTotal = total;
             this.initData.total = total;
-            console.log(this.initData);
             this.pageChange(1);
         },
         //换页
@@ -247,7 +246,6 @@ export default {
             const block = document.querySelector('.montior-main').offsetHeight;
             const rowCount = Math.floor((block - 228) / rowHeight);
             this.page_size = rowCount;
-            console.log(this.page_size);
         },
         autoRefresh() {
             this.timer = setInterval(() => {
@@ -263,7 +261,6 @@ export default {
         },
         async getWeather() {
             const {result} = await this.$http('weather/getWeather');
-            console.log(result)
             return result;
         }
     },
