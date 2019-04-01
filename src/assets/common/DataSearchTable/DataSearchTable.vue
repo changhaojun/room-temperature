@@ -175,14 +175,14 @@
                 };
                 this.tableData.total = res.result.total;
                 this.tableData.datas = res.result.rows;
-
+                this.$emit('tableLoadingCompleted');
             },
             select(item) {
                 this.$emit("select", item)
             }
         },
         mounted() {
-            this.getTableData();
+            
             this.getWeather();
         },
     }

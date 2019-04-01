@@ -194,7 +194,6 @@
         methods: {
             async getInfo() {
                 let res = '';
-
                 if (this.typeOfID == -1) {
                     res = await this.$http.get(
                         'company/getCompanyInfo', {
@@ -254,11 +253,12 @@
                 }, {
                     value: total
                 });
+                this.$emit('topLoadingCompleted');
             }
 
         },
         mounted() {
-            this.getInfo();
+            
         },
     }
 
