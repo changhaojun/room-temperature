@@ -215,7 +215,7 @@
                 const dataY1 = res.result.data_value;
                 const dataY2 = [];
                 for (let i = 0; i < dataX.length; i++) {
-                    dataY2.push(null);
+                    dataY2.push(0);
                 }
                 let index = -1;
                 for (const row of rows) {
