@@ -6,8 +6,11 @@
 </template>
 
 <script>
+
 export default {
-  name: 'App'
+    name: 'App',
+    mounted() {
+    }
 }
 </script>
 
@@ -22,5 +25,9 @@ export default {
   /* margin-top: 60px; */
   width: 100%;
   height: 100%;
+
+  *, :after, :before{
+        z-index:none !important;
+    }
 }
 </style>

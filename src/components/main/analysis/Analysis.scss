@@ -1,0 +1,123 @@
+.analysis {
+    height: 100%;
+
+    .main {
+        float: left;
+        width: calc(100% - 240px);
+        height: 100%;
+
+        .el-scrollbar {
+            height: 100%;
+
+            .el-scrollbar__wrap {
+                overflow-x: hidden;
+            }
+        }
+
+        .main-temperature {
+            width: 100%;
+            height: 256px;
+            margin-top: 32px;
+
+            .high-temperature,
+            .low-temperature {
+                height: 100%;
+                width: 45%;
+                background: rgba(255, 255, 255, 1);
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.22);
+                border-radius: 6px;
+                .chart{
+                    width: 100%;
+                    height: 215px;
+                    margin-top: 10px;
+                }
+            }
+
+            .high-temperature{
+                float: left;
+                margin-left: 40px;
+            }
+
+            .low-temperature {
+                float: right;
+                margin-right: 40px;
+            }
+        }
+
+        .main-top {
+            height: 36px;
+            margin-top: 31px;
+            margin-left: 41px;
+
+            .main-top-title {
+                width: 90px;
+                float: left;
+                font-size: 18px;
+                font-family: SourceHanSansCN-Bold;
+                font-weight: bold;
+                color: #464C5B;
+                margin-top: 6px;
+
+                .tool-search {
+                    display: none
+                }
+            }
+
+            .main-top-tools {
+                float: left;
+            }
+        }
+
+        .main-data {
+            height: 195px;
+            margin-top: 33px;
+            margin-left: 39px;
+            margin-right: 41px;
+        }
+
+        .main-histogram {
+            height: 256px;
+            margin-top: 39px;
+
+
+            .chart {
+                height: 215px;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+        .main-histogram,
+        .main-linechart {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.22);
+            border-radius: 6px;
+            margin-left: 40px;
+            margin-right: 41px;
+        }
+
+        h4 {
+            width: 60%;
+            height: 30px;
+            line-height: 50px;
+            margin-left: 40px;
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(70, 76, 91, 1);
+        }
+
+        .main-linechart {
+            height: 300px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+
+            .chart {
+                height: 260px;
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+
+
+    }
+}
