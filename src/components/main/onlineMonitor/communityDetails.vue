@@ -37,6 +37,8 @@ export default {
                 community_id: null,
                 user_number: null,
                 warn: null,
+                distance:null,
+                position:null,
                 page_size: 6,
                 page_number: 1
             },
@@ -146,6 +148,8 @@ export default {
         this.conditions.community_id = Number(this.$route.query.community_id);
         this.communityName = this.$route.query.community_name;
         this.temp = this.$route.query.temp;
+        this.conditions.distance = this.$route.query.distance
+        this.conditions.position = this.$route.query.position
     },
     destroyed(){
         document.querySelector('nav').querySelectorAll('a')[1].classList.remove('active-router');

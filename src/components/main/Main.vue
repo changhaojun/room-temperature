@@ -201,7 +201,7 @@ export default {
                 showClose: false,
                 position:'bottom-right',
                 message: `
-                    <h4>${community_name}<span>${unit_number}单元${building_name}</span></h4>
+                    <h4>${community_name}<span>${building_name}${unit_number}单元</span></h4>
                     <p>${moment(data_time).format('YYYY-MM-DD HH:mm')}</p>
                     <p>${warn_name}<span style="margin-left:10px;font-size:20px">${data_value ? data_value : ''}</span></p>
                 `,
