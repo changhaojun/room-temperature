@@ -58,8 +58,8 @@
     export default {
         data() {
             return {
-                ID: -1,
-                typeOfID: -1,
+                ID: '',
+                typeOfID: '',
                 date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
                 loading: {
                     topLoading: true,
