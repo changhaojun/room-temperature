@@ -77,7 +77,7 @@ export default {
                     label: "时间",
                     prop: "data_time"
                 }
-            ]   
+            ]
         }
     },
     methods: {
@@ -104,7 +104,6 @@ export default {
             }
             this.initData.datas = rows;
             this.initData.total = total;
-            console.log(this.initData);
             this.loading = false;
         },
         //换页
@@ -117,7 +116,7 @@ export default {
             // console.log(params.data);
             const res = await this.$http.put('warn/upDateWarn', params.data);
             this.$message({
-                message: '阅读状态修改成功', 
+                message: '阅读状态修改成功',
                 type: 'success'
             })
             this.getWarnList();
@@ -139,7 +138,6 @@ export default {
         },
         async getWeather() {
             const {result} = await this.$http('weather/getWeather');
-            console.log(result)
             return result;
         },
         getPageSize() {
