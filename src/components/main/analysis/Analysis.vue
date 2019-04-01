@@ -1,15 +1,15 @@
 <template>
-    <div class="analysis">
+    <div class="analysis" v-loading.fullscreen.lock="loading.topLoading || loading.menuLoading">
         <div class="menu">
-            <data-search-menu @clickedItem="getClickedItem">
+            <data-search-menu @clickedItem="getClickedItem" @menuLoadingCompleted="componentLoading(2)">
             </data-search-menu>
         </div>
         <div class="main">
             <el-scrollbar>
                 <div class="main-data">
-                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=1 v-if="typeOfID==-1">
+                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=1 v-if="typeOfID==-1" @topLoadingCompleted="componentLoading(1)">
                     </data-search-top>
-                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=2 v-else></data-search-top>
+                    <data-search-top :ID="ID" :typeOfID="typeOfID" :typeOfComponent=2 v-else @topLoadingCompleted="componentLoading(1)"></data-search-top>
                 </div>
                 <div class="main-temperature" v-if="typeOfID==-1">
                     <div class="high-temperature">
@@ -59,9 +59,23 @@
                 ID: -1,
                 typeOfID: -1,
                 date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
+                loading: {
+                    topLoading: true,
+                    menuLoading: true,
+                },
             }
         },
         methods: {
+            //topLoading:type=1,
+            //menuLoading:type=2,
+            //chartLoading:type=3,
+            componentLoading(type) {
+                if (type == 1) {
+                    this.loading.topLoading = false;
+                } else if (type == 2) {
+                    this.loading.menuLoading = false;
+                }
+            },
             //itemType=0代表公司，itemType=1代表小区，itemType=2代表楼
             //typeOfID=-1代表是公司id，typeOfID=0代表是小区id，typeOfID=1代表是楼id
             getClickedItem(clickedItem) {

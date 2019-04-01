@@ -1,5 +1,5 @@
 <template>
-    <div class="online-monitor">
+    <div class="online-monitor" v-loading.fullscreen.lock="loading">
         <div class="montior-title">
             <span>所有小区</span>
         </div>
@@ -124,7 +124,7 @@ export default {
     components: {CommunityDetails},
     data() {
         return {
-            
+            loading:true,
             communityName: '' ,
             page_size: 0,
             page_number: 1,
@@ -146,6 +146,7 @@ export default {
     methods: {
         // 获取小区数据报表
         async getCommunityTable() {
+            this.loading = true;
             const { result: { rows, total } } = await this.$http('community/getCommunityTable');
             const weather = await this.getWeather();
             rows.forEach(row => {
@@ -156,6 +157,7 @@ export default {
             this.initData.total = total;
             console.log(this.initData);
             this.pageChange(1);
+            this.loading = false;
         },
         //换页
         pageChange(current) {

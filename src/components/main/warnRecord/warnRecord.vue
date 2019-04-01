@@ -1,5 +1,5 @@
 <template>
-    <div class="warn-record">
+    <div class="warn-record" v-loading.fullscreen.lock="loading">
         <div class="record-main">
             <div class="main-tool">
                 <conditions-tools :date='date' :group=true :manager=true @current-change='reload' @group-change='group'></conditions-tools>
@@ -19,6 +19,7 @@ export default {
     components: {ConditionsTools, TablePage},
     data() {
         return {
+            loading:true,
             date: [moment().subtract(3,'days'), moment()],
 
             conditions: {
@@ -78,6 +79,7 @@ export default {
     methods: {
         // 获取告警列表
         async getWarnList() {
+            this.loading = true;
             if(!this.conditions.key) {
                 delete this.conditions.key;
             }
@@ -97,6 +99,7 @@ export default {
             this.initData.datas = rows;
             this.initData.total = total;
             console.log(this.initData);
+            this.loading = false;
         },
         //换页
         pageChange(current) {
