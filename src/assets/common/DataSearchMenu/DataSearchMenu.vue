@@ -99,12 +99,6 @@
                 this.clickedItem.itemID = this.chosenCommunity.CommunityID;
                 this.$emit('clickedItem', this.clickedItem);
             },
-            /*filterCompanyList(company) {
-                return company.company_id == this.chosenCommunity.CompanyID;
-            },
-            filterCommunityList(community) {
-                return community.community_id == this.chosenCommunity.CommunityID;
-            },*/
             clickItem(itemType, itemID, parentCompanyID, parentCommunityID) {
                 //itemType=0代表公司，itemType=1代表小区，itemType=2代表楼
                 //如果点击公司，则parentCompanyID=-1，parentCommunityID=-1
@@ -180,6 +174,7 @@
                 this.clickedItem.itemType = 0;
                 this.clickedItem.itemID = this.companyList[0].company_id;
                 this.clickItem(0, this.clickedItem.itemID, -1, -1);
+                this.$emit('menuLoadingCompleted');
             }
         },
         mounted() {
