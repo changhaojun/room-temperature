@@ -249,7 +249,7 @@ export default {
             const temp = row.weather.temp;
             const buildQuery = {
                 community_id: row.community_id,
-                ommunity_name: row.community_name,
+                community_name: row.community_name,
                 temp: temp
             }
             const otherQuery = {}
