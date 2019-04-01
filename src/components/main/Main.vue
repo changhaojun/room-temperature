@@ -128,6 +128,7 @@ export default {
             changeConfigShow:false,
             company_list:[],
             selectCompany:'',
+            warnDataList:[],
             username: JSON.parse(sessionStorage.getItem('userInfo')).fullname
         }
     },
@@ -164,14 +165,15 @@ export default {
         },
 
         mqttConnect() {
-            this.client = new myMqtt(mqttOptions, 'roomWarn', this.warningData);
+            this.client = new myMqtt(mqttOptions, 'roomWarn', data=>{
+                this.warnDataList.push(data)
+            });
         },
 
         async suerChange() {
 
         },
-
-        warningData(data) {
+        sendWarn(data){
             const {community_name, data_time, building_name, alarm_type, data_value, unit_number } = JSON.parse(data);
             let warn_name = '';
             switch (alarm_type) {
@@ -196,8 +198,8 @@ export default {
             this.$notify({
                 customClass: 'warn-box',
                 dangerouslyUseHTMLString: true,
-                offset: 700,
                 showClose: false,
+                position:'bottom-right',
                 message: `
                     <h4>${community_name}<span>${unit_number}单元${building_name}</span></h4>
                     <p>${moment(data_time).format('YYYY-MM-DD HH:mm')}</p>
@@ -214,6 +216,14 @@ export default {
     },
     mounted() {
         this.mqttConnect();
+        const time = Math.round(Math.random() * (5 - 1) + 1 ) *1000
+            setInterval(() => {
+                if(this.warnDataList.length>0){
+                    const warn = this.warnDataList[0];
+                    this.warnDataList.shift()
+                    this.sendWarn(warn)
+                }
+        }, time);
     },
     children: [
         {
