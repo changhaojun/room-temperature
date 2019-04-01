@@ -182,7 +182,9 @@
             }
         },
         mounted() {
-            
+            if (this.ID) {
+                this.getTableData();
+            }
             this.getWeather();
         },
     }

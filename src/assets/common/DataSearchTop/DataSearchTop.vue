@@ -73,19 +73,19 @@
                     </div>
                 </div>
                 <div class="main-chart-datas-top-households" v-if="typeOfComponent==2">
-                        <div class="card">
-                            <div class="card-left">
-                                <i slot="suffix" class="iconfont iconfangzi222 green" style="font-size:32px;"></i>
+                    <div class="card">
+                        <div class="card-left">
+                            <i slot="suffix" class="iconfont iconfangzi222 green" style="font-size:32px;"></i>
+                        </div>
+                        <div class="card-right">
+                            <div class="card-right-top">
+                                <div class="card-right-top-left">{{info.house_count}}</div>
+                                <div class="card-right-top-right">户</div>
                             </div>
-                            <div class="card-right">
-                                <div class="card-right-top">
-                                    <div class="card-right-top-left">{{info.house_count}}</div>
-                                    <div class="card-right-top-right">户</div>
-                                </div>
-                                <div class="card-right-bottem">住户数量</div>
-                            </div>
+                            <div class="card-right-bottem">住户数量</div>
                         </div>
                     </div>
+                </div>
                 <div class="main-chart-datas-top-monitoredHouseholds" v-if="typeOfComponent==2">
                     <div class="card">
                         <div class="card-left">
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                
+
 
             </div>
             <div class="main-chart-datas-bottem">
@@ -187,7 +187,6 @@
             ID: {
                 handler() {
                     this.getInfo();
-
                 }
             }
         },
@@ -258,7 +257,9 @@
 
         },
         mounted() {
-            
+            if(this.ID){
+                this.getInfo();
+            }
         },
     }
 
