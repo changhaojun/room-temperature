@@ -83,8 +83,8 @@ export default {
             const {result: {rows}} = await this.$http('weather/getWeatherHistory');
             const dataX = data_time.map(item => {
                 return moment(item).format('MM-DD HH') + 'h'
-            });
-            const dataY1 = data_value;
+            }).reverse();
+            const dataY1 = data_value.reverse();
 
             const dataY2 = [];
             for(const row of rows) {
