@@ -6,7 +6,7 @@
         <div class="montior-main">
             <div class="main-tool">
                 <div class="tool-buttons">
-                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''" 
+                    <mu-button class="warn" :class="indexActive == index+1 ? 'activeBtn': ''"
                         @click="clickBtn(index+1)" v-for="(btn,index) in btns" :key="index">{{btn}}</mu-button>
                 </div>
                 <div style="display: flex; align-items: center;">
@@ -107,14 +107,14 @@
                 <el-pagination v-if="initData.datas.length > 0"
                     layout="prev, pager, next, jumper"
                     @current-change='pageChange'
-                    prev-click='pageChange' 
+                    prev-click='pageChange'
                     next-click='pageChange'
                     :current-page.sync="page_number"
                     :total="initData.total"
                     :page-size="page_size">
                 </el-pagination>
             </div>
-        </div>       
+        </div>
     </div>
 </template>
 
@@ -124,7 +124,7 @@ export default {
     components: {CommunityDetails},
     data() {
         return {
-            
+
             communityName: '' ,
             page_size: 0,
             page_number: 1,
@@ -178,7 +178,7 @@ export default {
                 }
                 this.initData.datas = this.initData.warnData.slice((current-1)*this.page_size, end);
             }
-            
+
         },
         search(ev) {
             if (ev.type === 'click' || ev.key === 'Enter') {
@@ -193,7 +193,7 @@ export default {
                                 datas.push(data);
                             }
                         });
-                        this.initData.total = datas.length; 
+                        this.initData.total = datas.length;
                         this.initData.datas = datas;
                     }
                 }else {
@@ -205,11 +205,11 @@ export default {
                                 datas.push(data);
                             }
                         });
-                        this.initData.total = datas.length; 
+                        this.initData.total = datas.length;
                         this.initData.datas = datas;
                     }
                 }
-            } 
+            }
         },
         clickBtn(type) {
             this.indexActive = type;
@@ -226,7 +226,7 @@ export default {
                 });
                 this.initData.warnData = datas;
                 this.initData.warnTotal = datas.length;
-                this.initData.total = datas.length; 
+                this.initData.total = datas.length;
                 this.pageChange(1)
             }
         },
@@ -251,7 +251,7 @@ export default {
         },
         autoRefresh() {
             this.timer = setInterval(() => {
-                this.getCommunityTable();    
+                this.getCommunityTable();
             },1800000);
         },
         changeRefresh() {
@@ -271,13 +271,13 @@ export default {
         this.getPageSize();
         this.getCommunityTable();
         this.autoRefresh();
-        document.querySelector('nav').querySelectorAll('a')[2].classList.add('active-router');
+        document.querySelector('nav').querySelectorAll('a')[1].classList.add('active-router');
     },
     destroyed(){
         if(this.timer) { //如果定时器在运行则关闭
-            clearInterval(this.timer); 
+            clearInterval(this.timer);
         }
-        document.querySelector('nav').querySelectorAll('a')[2].classList.remove('active-router');
+        document.querySelector('nav').querySelectorAll('a')[1].classList.remove('active-router');
     }
 }
 </script>
