@@ -72,7 +72,7 @@
                     <el-table-column label="中段 ( 温度℃ )">
                         <el-table-column prop="middle.top.data_value" label="顶" >
                             <template slot-scope="scope">
-                                <div style="cursor: pointer;" :class="scope.row.middle.top.status === 1 ? 'warnHigh' : scope.row.middle.top.status === 2 ? 'warnLow' : ''"@click="details(scope.row,'2-1')">
+                                <div style="cursor: pointer;" :class="scope.row.middle.top.status === 1 ? 'warnHigh' : scope.row.middle.top.status === 2 ? 'warnLow' : ''" @click="details(scope.row,'2-1')">
                                     {{scope.row.middle.top.data_value}}
                                 </div>
                             </template>
