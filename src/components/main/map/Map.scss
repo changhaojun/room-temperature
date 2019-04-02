@@ -3,7 +3,7 @@
     height:100%;
     .marker-box{
         height:22px;
-        width:150px;
+        // width:130px;
         // background: #222;
         display:flex;
         >.circle-box{
@@ -28,7 +28,8 @@
             line-height: 18px;
             // color:#fff;
             color:#666;
-            background: #fff
+            background: #fff;
+            white-space:nowrap
         
         }
 
@@ -74,16 +75,24 @@
         >.temp-select{
             display: flex;
             width:85%;
+            height:100%;
+            line-height:70px;
             justify-content: center;
             .user-bar{
                 display: inline-block;
-                width:50%;
+                width:60%;
                 height: 8px;
-                margin: 30px 20px;
+                margin: 30px 20px 0px 20px;
                 border-radius: 4px;
                 // overflow: hidden;
-                background: #a0a0a0;
-               
+                position: relative;
+                background:linear-gradient(90deg,rgba(51,171,241,1),rgba(255,165,9,1),rgba(255,113,106,1));
+               >.iconfont{
+                //    height:20px;
+                //    display: inline-block;
+                //    position: absolute;
+                //    top:0;
+               }
                 &.online-bar{
                     div.bar{
                       height: 8px;

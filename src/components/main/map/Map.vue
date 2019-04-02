@@ -6,11 +6,24 @@
             <mu-button round :class="[!allActive?'normal':'active']"  @click="selectAll()">全部</mu-button>
             <div class="temp-select">
                 <span class="label">温度区间选择</span>
-                 <!-- <div class="user-bar unonline-bar"></div>  -->
-                <div class="user-bar online-bar">
-                    <div class="bar" :class="[activeIndex===index?'clickBar':'']" v-for="(item,index) in tempSelect" :key="index+'m'" :style="{width:item.value/communityCount*100+ '%',background:item.name==='cool'?'#33ABF1':item.name==='normal'?'#FFA509':'#FF716A'}" @click="selectTemp(index)">
-                        <span v-if="item.value">{{item.value}}</span>
-                    </div>
+                <div style="display:inline-block;width:80%;height:100%">
+                    <div class="user-bar unonline-bar">
+                        <span class="iconfont iconzhijiao-triangle1" draggable="true" @dragover="dragover"></span>
+                        <span class="iconfont iconzhijiao-triangle" draggable="true" @dragover="dragover"></span>
+                    </div> 
+                    <!-- <div class="user-bar online-bar">
+                        <div class="bar" :class="[activeIndex===index?'clickBar':'']" v-for="(item,index) in tempSelect" :key="index+'m'" :style="{width:item.value/communityCount*100+ '%',background:item.name==='cool'?'#33ABF1':item.name==='normal'?'#FFA509':'#FF716A'}" @click="selectTemp(index)">
+                            <span v-if="item.value">{{item.value}}</span>
+                        </div>
+                    </div> -->
+                    <!-- <div class="block" style="width:50%;">
+                        <el-slider
+                        v-model="tempArr"
+                        range
+                        :show-tooltip="false"
+                    >
+                        </el-slider>
+                    </div> -->
                 </div>
             </div>
             <div>
@@ -83,8 +96,9 @@
             return {
                 activeIndex:-1,
                 allActive:true,
+                tempArr:[0,6],
                 search:'',
-                zoom: 12,
+                zoom: 11,
                 zooms:[9,30],
                 center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],
                 markers:[],
@@ -134,6 +148,9 @@
             };
         },
         methods:{
+            dragover (event) {
+                event.preventDefault()
+            },
             initMap(){
                 VueAMap .initAMapApiLoader({
                     // 高德key
