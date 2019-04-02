@@ -65,6 +65,7 @@
                     topLoading: true,
                     menuLoading: true,
                 },
+                first: false,
             }
         },
         methods: {
@@ -180,11 +181,19 @@
                 }, ['#00F0FF', '#00A8FF'], 2, '户数');
             },
             async getAverage() {
-
-                const senDate = {
-                    start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
-                    end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
+                let senDate = {};
+                if (this.first) {
+                    senDate = {
+                        start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
+                        end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
+                    }
+                } else {
+                    senDate = {
+                        start_time: this.date[0],
+                        end_time: this.date[1]
+                    }
                 }
+
                 let res = '';
                 const {
                     result: {
@@ -232,13 +241,17 @@
                     top: '15%',
                     containLabel: true
                 }, dataX, dataY1, dataY2);
+                this.first = false;
             },
         },
         components: {
             DataSearchTop,
             DataSearchMenu,
             ConditionsTools
-        }
+        },
+        mounted() {
+            this.first = true;
+        },
     }
 
 </script>
