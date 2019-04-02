@@ -14,6 +14,13 @@ import echarts from 'echarts';
 Vue.prototype.$echarts = echarts
 import VueAMap  from 'vue-amap';
 
+import UserRecord from 'userrecord';
+const $record = new UserRecord(7);
+
+// import getUserIP from './public/address'
+// getUserIP(ip => {
+//     console.log(ip)
+// })
 
 Vue.use(Button);
 Vue.use(Select);
@@ -43,6 +50,16 @@ router.beforeEach((to, from, next) => {
         if(!sessionStorage.getItem('userInfo')) {
             router.replace('/');
         }else {
+
+            const userId = JSON.parse(sessionStorage.getItem('userInfo')).user_id,
+                ip = returnCitySN.cip,
+                page = to.name;
+            $record.track({
+                userId,
+                ip,
+                type:1,
+                page
+            })
             next();
         }
     }
