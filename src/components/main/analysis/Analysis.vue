@@ -60,7 +60,7 @@
             return {
                 ID: '',
                 typeOfID: '',
-                date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
+                date: [moment().subtract(2, 'days').format('YYYY-MM-DD'), moment().add(1, 'days').format('YYYY-MM-DD')],
                 loading: {
                     topLoading: true,
                     menuLoading: true,
@@ -182,8 +182,10 @@
             async getAverage() {
 
                 const senDate = {
-                    start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
-                    end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
+                    //start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
+                    //end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
+                    start_time: this.date[0],
+                    end_time: this.date[1]
                 }
                 let res = '';
                 const {
