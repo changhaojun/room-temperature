@@ -21,7 +21,7 @@
     export default {
         components: {
             DataSearchTop: () => import('@common/DataSearchTop/DataSearchTop'),
-            DataSearchMenu: () => import('@common/DataSearchMenu/DataSearchMenu'),
+            DataSearchMenu: () => import('@common/DataSearchMenu/DataMenu'),
             DataSearchTable: () => import('@common/DataSearchTable/DataSearchTable')
         },
         data() {
