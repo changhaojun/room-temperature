@@ -89,11 +89,15 @@ export default {
             this.clickedItem.itemType = type;
             this.clickedItem.itemID = id;
             if(type ===1){
+                this.parentCommunityId = 0;
                 this.parentCompanyId = parentId;
             }
             if(type ===2){
                 this.parentCompanyId = company_id
                 this.parentCommunityId = parentId
+            }
+            if(type ===0){
+                this.parentCompanyId = 0
             }
             this.$emit('clickedItem', this.clickedItem);
         },
