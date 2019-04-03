@@ -2,16 +2,36 @@
     <div class="amap-page-container">
 
         <div class="header">
-            <!-- <el-button round  @click="selectAll()">全部</el-button> -->
             <mu-button round :class="[!allActive?'normal':'active']"  @click="selectAll()">全部</mu-button>
             <div class="temp-select">
                 <span class="label">温度区间选择</span>
-                 <!-- <div class="user-bar unonline-bar"></div>  -->
-                <div class="user-bar online-bar">
-                    <div class="bar" :class="[activeIndex===index?'clickBar':'']" v-for="(item,index) in tempSelect" :key="index+'m'" :style="{width:item.value/communityCount*100+ '%',background:item.name==='cool'?'#33ABF1':item.name==='normal'?'#FFA509':'#FF716A'}" @click="selectTemp(index)">
-                        <span v-if="item.value">{{item.value}}</span>
+                  <!-- <div class="user-bar unonline-bar">  
+                    </div> 
+                    <div class="bar" style="position:relative;width:500px" id="rang">
+                        <span class="iconfont iconzhijiao-triangle1" ref="iconzhijiao-triangle1" style="position:absolute;left:-10px;"  @mousedown="ondragstart"  @keydown.up.prevent="onDragEnd">{{data.low}}</span>
+                        <span class="iconfont iconzhijiao-triangle" ref="iconzhijiao-triangle"  style="position:absolute;left:2px;" @mousedown="ondragstart" >{{data.high}}</span>
+                    </div> -->
+                    <!-- <div class="user-bar online-bar">
+                        <div class="bar" :class="[activeIndex===index?'clickBar':'']" v-for="(item,index) in tempSelect" :key="index+'m'" :style="{width:item.value/communityCount*100+ '%',background:item.name==='cool'?'#33ABF1':item.name==='normal'?'#FFA509':'#FF716A'}" @click="selectTemp(index)">
+                            <span v-if="item.value">{{item.value}}</span>
+                        </div>
+                    </div> -->
+                <!-- <div style="display:inline-block;width:60%;height:100%;display:flex;align-items: center;margin-left:20px;" >
+                  
+                    <div class="block" style="width:60%;">
+                        <el-slider
+                            v-model="tempArr"
+                            range
+                            :max="30"
+                            :show-tooltip="true"
+                            @change="tempChange"
+                        >
+                        </el-slider>
+                        
                     </div>
-                </div>
+                    <span style="margin-left:10px;">当前选择的温度区间：{{tempArr[0]}}℃ ~ {{tempArr[1]}}℃</span>
+                </div> -->
+                <slider :tempArr="tempArr" :max="30" :width="60" @tempChange="tempChange"></slider>
             </div>
             <div>
                 <el-select
@@ -31,13 +51,10 @@
                   :value="item.location">
                 </el-option>
               </el-select>
-                <!-- <el-amap-search-box class="search-box" :search-option="searchOption" :on-search-result="onSearchResult"></el-amap-search-box> -->
             </div>
         </div>
        <el-amap vid="amap-demo" ref="map" class="amap-demo" id="container" :center="center" :zooms="zooms" :zoom="zoom" map-style="amap://styles/3b77fc3578a70a921c30f4ecd84f2973" :events="events">
            <el-amap-marker v-for="(marker,index) in markers" :key="index+'a'"  :position="marker.center" :template="marker.template"></el-amap-marker>
-            <!-- <el-amap-circle-marker v-for="(marker,index) in markers" :key="index+'a'" :center="marker.center" :radius="marker.radius" :stroke-weight="marker.strokeWeight" :fill-color="marker.fillColor" :fill-opacity="marker.fillOpacity" :stroke-color="marker.strokeColor" :events="marker.events" :z-index='9999' :content="marker.index"></el-amap-circle-marker>
-            <el-amap-text v-for="(marker,index) in markers" :key="index+'b'" :text="marker.text" :position="marker.center" :events="marker.events" :z-index='100' :offset="[42,0]"></el-amap-text> -->
        </el-amap>
        <el-dialog
             :title="dialogParams.title"
@@ -77,14 +94,26 @@
         components:{
             DataSearchTop: ()=> import ('../../../assets/common/DataSearchTop/DataSearchTop.vue'),
             DataSearchTable :()=> import ('../../../assets/common/DataSearchTable/DataSearchTable.vue'),
-            DataDialog :()=> import ('./../onlineMonitor/dataDialog.vue')
+            DataDialog :()=> import ('./../onlineMonitor/dataDialog.vue'),
+            slider :()=> import ('../../../assets/common/Slider/Slider.vue')
         },
         data() {
             return {
+                // currentParentClientX:0,
+                // currentParentRightClientX:0,
+                // initLeftbarLeft:-10,
+                // initRightbarLeft:2,
+                // data:{
+                //     low:10,
+                //     high:10,
+                //     tempSection:[10,40]
+                // },
+                // clientX:"",
                 activeIndex:-1,
                 allActive:true,
+                tempArr:[0,30],
                 search:'',
-                zoom: 12,
+                zoom: 11,
                 zooms:[9,30],
                 center: [localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]],
                 markers:[],
@@ -99,14 +128,7 @@
                     mousewheel:()=>{
                         const zoom =this.event.getZoom()
                         this.zoom = zoom;
-                        if(zoom<=13){
-                           this.analysisData()
-                           this.companyDistribute();
-                        }else{
-                            this.analysisData();
-                           this.getcommunityDistribute();
-
-                        }
+                        this.analysisData()
                     }
                 },
                 communityCount:0,
@@ -134,6 +156,42 @@
             };
         },
         methods:{
+        //    ondragstart(event){
+        //         const {left,right}=event.currentTarget.parentElement.getBoundingClientRect();
+        //         this.currentParentLeftClientX = parseInt(left);
+        //         this.currentParentRightClientX = right;
+        //         this.currentdom=event.target.className;
+        //         window.addEventListener('mousemove', this.onDragging);
+        //         window.addEventListener('mouseup', this.onDragEnd);
+        //    },
+        //    onDragging(event){
+        //     //    console.log(event.clientX,this.currentParentLeftClientX)
+        //         if(this.currentdom.includes('iconzhijiao-triangle1')){
+        //             if(event.clientX  > this.currentParentLeftClientX-10 && event.clientX < this.currentParentRightClientX-10){
+        //                  if( Number(this.$refs['iconzhijiao-triangle1'].style.left.split("px")[0])+13+'px'===this.$refs['iconzhijiao-triangle'].style.left){
+        //                     this.$refs['iconzhijiao-triangle1'].style.left=  Number(this.$refs['iconzhijiao-triangle1'].style.left.split("px")[0])+'px';
+        //                 }
+        //                 this.$refs['iconzhijiao-triangle1'].style.left=(event.clientX-this.currentParentLeftClientX-5)+'px';
+                       
+        //                 this.data.low =parseInt(Number(this.data.tempSection[0])+ (((event.clientX+29)-this.currentParentLeftClientX)/500)*20)
+        //                 console.log(Number(this.$refs['iconzhijiao-triangle1'].style.left.split("px")[0])+10+'px',this.$refs['iconzhijiao-triangle'].style.left)
+                       
+        //             }
+        //         }else{
+        //              if(event.clientX  > this.currentParentLeftClientX+2 && event.clientX < this.currentParentRightClientX){
+        //                 this.$refs['iconzhijiao-triangle'].style.left=(event.clientX-this.currentParentLeftClientX-5)+'px';
+        //                 this.data.high =parseInt(Number(this.data.tempSection[0])+ (((event.clientX+19)-this.currentParentLeftClientX)/500)*20)
+        //                 if(this.data.low===this.data.high){
+        //                   return;
+        //                 }
+        //              }
+        //         }
+                
+        //    },
+        //    onDragEnd(){
+        //         window.removeEventListener('mouseup', this.onDragEnd);
+        //         window.removeEventListener('mousemove', this.onDragging);
+        //    },
             initMap(){
                 VueAMap .initAMapApiLoader({
                     // 高德key
@@ -160,18 +218,19 @@
                 }else{
                     this.getAllCommunity();
                 }
+                this.tempArr = [0,30] 
             },
-            selectTemp(index){
+            tempChange(value){
+                this.tempArr=value;
                 this.allActive = false;
-                this.activeIndex = index;
-                this.markers =  this.copyMarkers.filter((item)=>{return item.status===(index+1)})
+                this.analysisData()
             },
             //搜索小区
             onSearchResult(data) {
                 this.zoom = 14;
                 this.center = [Number(data.split(",")[0]),Number(data.split(",")[1])]
                 this.analysisData();
-                 this.getcommunityDistribute();
+                //  this.getcommunityDistribute();
             },
             // 获取分公司列表
             async getCompany(){
@@ -190,35 +249,30 @@
             //分析小区数据 1:低温 2：常温 3：高温
             analysisData(){
                 const markers =[];
-                const location = [];
                 let dom = '';
                 let data ='';
-                if(this.zoom<=13){
-                    data = this.companyData;
-                }else{
-                    data = this.communityData;
-                }
+                let accessKey='';
+                let align='';
+                data = this.zoom<13? this.companyData.filter((item)=>{return (item.data_value>this.tempArr[0]&&item.data_value<this.tempArr[1])}):this.communityData.filter((item)=>{return (item.data_value>this.tempArr[0]&&item.data_value<this.tempArr[1])});
                 for(let i=0;i<data.length;i++){
-                    if(this.zoom<=13){
-                        // console.log(data)
-                        dom = `<div class="marker-box"  @click="clickCompanyCenter($event)">
-                                        <div class="circle-box"  align="${data[i].location}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
-                                        <div class="marker-text" align="${data[i].location}">${data[i].company_name}</div>
-                                </div>`
+                    if(this.zoom<13){
+                        accessKey = data[i].location ;
+                        align = data[i].company_name;
                     }else{
-                        dom = `<div class="marker-box"  @click="dialogShow($event)">
-                                        <div class="circle-box"  accessKey="${data[i].community_id}" align="${data[i].community_name}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
-                                        <div class="marker-text" accessKey="${data[i].community_id}" align="${data[i].community_name}">${data[i].community_name}</div>
-                                </div>`
+                        accessKey = data[i].community_id ;
+                        align = data[i].community_name;
                     }
+                    dom = `<div class="marker-box"  @click="dialogShow($event)">
+                            <div class="circle-box"  accessKey="${accessKey}" align="${align}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
+                            <div class="marker-text" accessKey="${accessKey}" align="${align}">${align}</div>
+                    </div>`
                     markers.push({
                         center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
                         template: dom,
-                        status:data[i].data_value<16?1:data[i].data_value>25?3:2
+                        data_value:data[i].data_value,
                     });
                 }
-                this.markers = markers
-                this.copyMarkers = markers;
+                this.markers = markers;
                 this.communityCount = data.length;
             },
             dialogShow(event){
@@ -230,11 +284,11 @@
 
             },
             clickCompanyCenter(event){
-                const company_location = event.target.align;
+                const company_location = event.target.accessKey;
                 _this.center = [Number(company_location.split(",")[0]),Number(company_location.split(",")[1])];
                 _this.zoom =14;
                 _this.analysisData();
-                _this.getcommunityDistribute();
+                // _this.getcommunityDistribute();
             },
             select(id){
                 this.dialogParams.tempHistory = true;
@@ -262,11 +316,12 @@
                 this.initMap()
            }
            this.center=[localStorage.getItem('address').split(",")[0],localStorage.getItem('address').split(",")[1]] 
+           
         },
         mounted(){
             this.getCompany()
             this.getAllCommunity();
-            this.companyDistribute();
+            // this.companyDistribute();
         },
          beforeCreate(){
             _this = this;
