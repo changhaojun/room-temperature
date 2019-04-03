@@ -61,6 +61,10 @@ export default {
             this.datas = [];
             const weatherList =  await this.getWeatherHistory();
             const {result} = await this.$http('historyData/getHouseHistory', {data: this.hsitoryParams});
+                    const num = result.data_time.length - weatherList.length;
+                    for(let i=0;i<num;i++){
+                        weatherList.unshift('')
+                    }
                 result.data_time.forEach((element,index) => {
                     let data = {};
                     data.data_time = element;
