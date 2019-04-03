@@ -96,7 +96,6 @@ export default {
                 startTime:moment(startTime).add(1,'day').format('YYYY-MM-DD'),
                 endTime:moment(endTime).add(1,'day').format('YYYY-MM-DD'),
             }
-            console.log(dataObj)
             this.$emit('current-change', dataObj);
         },
         // 改变组

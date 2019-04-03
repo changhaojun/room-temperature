@@ -111,11 +111,9 @@ export default {
             this.$emit('clickedItem', this.clickedItem);
         },
         clickCommunity(){
-            console.log(this.searchKey);
             for(let i=0;i<this.companyList.length;i++){
                 for(let j=0;j<this.companyList[i].community.length;j++){
                     if(this.companyList[i].community[j].community_id===this.searchKey){
-                        console.log(this.companyList[i].community[j])
                         this.companyList[i].unfold = true;
                         this.clickItem(1,this.companyList[i].community[j].community_id,this.companyList[i].company_id);
                     }
