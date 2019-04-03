@@ -255,17 +255,18 @@
                 let align='';
                 data = this.zoom<13? this.companyData.filter((item)=>{return (item.data_value>this.tempArr[0]&&item.data_value<this.tempArr[1])}):this.communityData.filter((item)=>{return (item.data_value>this.tempArr[0]&&item.data_value<this.tempArr[1])});
                 for(let i=0;i<data.length;i++){
-                    if(this.zoom<13){
-                        accessKey = data[i].location ;
-                        align = data[i].company_name;
+                    if(this.zoom<13){     
+                        dom = `<div class="marker-box"  @click="clickCompanyCenter($event)">
+                                        <div class="circle-box"  accessKey="${data[i].location}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
+                                        <div class="marker-text" accessKey="${data[i].location}">${data[i].company_name}</div>
+                                </div>`
                     }else{
-                        accessKey = data[i].community_id ;
-                        align = data[i].community_name;
+                        dom = `<div class="marker-box"  @click="dialogShow($event)">
+                                <div class="circle-box"  accessKey="${data[i].community_id }" align="${data[i].community_name}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
+                                <div class="marker-text" accessKey="${data[i].community_id }" align="${data[i].community_name}">${data[i].community_name}</div>
+                        </div>`
                     }
-                    dom = `<div class="marker-box"  @click="dialogShow($event)">
-                            <div class="circle-box"  accessKey="${accessKey}" align="${align}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
-                            <div class="marker-text" accessKey="${accessKey}" align="${align}">${align}</div>
-                    </div>`
+                   
                     markers.push({
                         center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
                         template: dom,
