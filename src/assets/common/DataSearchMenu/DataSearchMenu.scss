@@ -87,9 +87,11 @@
                 font-family: SourceHanSansCN-Regular;
                 font-weight: bold;
                 color: rgba(114, 114, 114, 1);
+                width: calc(100% - 20px);
 
                 span.company-span {
                     line-height: 44px;
+                    cursor: pointer;
                 }
 
                 span.company-span.parentCompany,
@@ -120,7 +122,10 @@
                             height: 40px;
 
                             span.building-span {
-                                margin-left: 20px;
+                                width: 100%;
+                                height: 100%;
+                                display: block;
+                                padding-left: 20px;
                             }
                         }
                     }

@@ -48,7 +48,7 @@
 
 <script>
     import DataSearchTop from '../../../assets/common/DataSearchTop/DataSearchTop.vue';
-    import DataSearchMenu from '../../../assets/common/DataSearchMenu/DataSearchMenu.vue';
+    import DataSearchMenu from '../../../assets/common/DataSearchMenu/DataMenu.vue';
     import ConditionsTools from '../warnRecord/conditionsTools.vue';
     import moment from 'moment';
     import {
@@ -62,8 +62,8 @@
                 typeOfID: '',
                 date: [moment().subtract(3, 'days').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')],
                 loading: {
-                    topLoading: true,
-                    menuLoading: true,
+                    topLoading: false,
+                    menuLoading: false,
                 },
                 first: false,
             }
