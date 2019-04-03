@@ -9,7 +9,7 @@
         </div>
           <div class="menu-list">
               <el-scrollbar class="menu-scrollbar">
-                  <transition-group>
+
                       <div v-for="(company,index) in companyList" :key="index" class="company">
                           <div class="company-name" :class="{clickedItem: clickedItem.itemType==0 && clickedItem.itemID==company.company_id}">
                             <span :class="company.unfold?'el-icon-caret-bottom':'el-icon-caret-right'" @click="company.unfold = !company.unfold"></span>
@@ -17,6 +17,7 @@
                                 {{company.company_name}}
                             </span>
                         </div>
+                        <el-collapse-transition>
                          <div class="communityList" v-if="company.unfold">
                             <div class="community" v-for="(community,communityIndex) in company.community" :key="communityIndex">
                                  <div class="community-name"
@@ -26,6 +27,7 @@
                                             {{community.community_name}}
                                     </span>
                                  </div>
+                                 <el-collapse-transition>
                                 <div class="buildingList" v-if="community.unfold">
                                     <div class="building" v-for="(building,buildingIndex) in community.buildingList" :key="buildingIndex" :class="{clickedItem: clickedItem.itemType==2 && clickedItem.itemID==building.building_id}" :loading="true">
                                         <span class="building-span" @click="clickItem(2,building.building_id,community.community_id,company.company_id)" >
@@ -33,10 +35,12 @@
                                         </span>
                                     </div>
                                 </div>
+                                 </el-collapse-transition>
                             </div>
                         </div>
+                        </el-collapse-transition>
                       </div>
-                  </transition-group>
+
               </el-scrollbar>
           </div>
     </div>
@@ -72,18 +76,23 @@ export default {
            this.$emit('menuLoadingCompleted');
         },
         async unfoldCommunity(index,communityIndex,community){
-            community.unfold = !community.unfold;
             const community_id = community.community_id
-            const buildingList = await this.getBuilding(community_id)
+            const buildingList = await this.getBuilding(community,community_id)
+            community.unfold = !community.unfold;
             this.$set(community,'buildingList',buildingList)
+            this.$forceUpdate();
         },
-        async getBuilding(community_id){
-            const res= await this.$http.get('building/getBuilding', {
-                data: {
-                    community_id: community_id
-                }
-            });
-            return res.result.rows;
+        async getBuilding(community,community_id){
+            if(!community.unfold){
+                const res= await this.$http.get('building/getBuilding', {
+                    data: {
+                        community_id: community_id
+                    }
+                });
+                return res.result.rows;
+            }
+            return []
+            
         },
         clickItem(type,id,parentId,company_id){
             this.clickedItem.itemType = type;
