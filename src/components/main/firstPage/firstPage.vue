@@ -91,6 +91,10 @@ export default {
                 const { temp } = row;
                 dataY2.push(Number(temp.split('℃')[0]));
             }
+            const num =dataY1.length-dataY2.length
+            for(let i=0;i<num;i++){
+                dataY2.unshift('')
+            }
             const line = lineCharts(this.$refs['average-tem'],{
                 left: '5%',
                 right: '10%',
