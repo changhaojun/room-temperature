@@ -31,7 +31,7 @@
                         <dl>
                             <dt><i style="color:#FF716A;font-size:30px" class="iconfont icongaojing"></i></dt>
                             <dd class="block-name">
-                                <p><span>{{companyInfo.community_count}}</span><span>个</span></p>
+                                <p><span>{{companyInfo.alarm_count}}</span><span>个</span></p>
                                 <p>告警用户数</p>
                             </dd>
                         </dl>

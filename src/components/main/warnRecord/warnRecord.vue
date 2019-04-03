@@ -1,5 +1,5 @@
 <template>
-    <div class="warn-record">
+    <div class="warn-record" v-loading="loading">
         <div class="record-main">
             <div class="main-tool">
                 <conditions-tools :date='date' :group=true :manager=true @current-change='reload' @group-change='group'></conditions-tools>
@@ -19,6 +19,7 @@ export default {
     components: {ConditionsTools, TablePage},
     data() {
         return {
+            loading:true,
             date: [moment().subtract(3,'days'), moment()],
 
             conditions: {
@@ -62,7 +63,7 @@ export default {
                 },
                 {
                     label: "室外温度(℃)",
-                    prop: "weather.temp"
+                    prop: "weather"
                 },
                 {
                     label: "室内温度(℃)",
@@ -76,12 +77,13 @@ export default {
                     label: "时间",
                     prop: "data_time"
                 }
-            ]   
+            ]
         }
     },
     methods: {
         // 获取告警列表
         async getWarnList() {
+            this.loading = true;
             if(!this.conditions.key) {
                 delete this.conditions.key;
             }
@@ -95,14 +97,14 @@ export default {
             const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
             const weather = await this.getWeather();
             for (const row of rows) {
-                row.weather = weather;
+                row.weather = weather.temp;
                 row.read_state  = row.read_state === 0 ? '未读' : row.read_state === 1 ? '已读' : '';
                 row.config_type = row.config_type === 1 ? '系统告警' : row.config_type === 2 ? '用户告警' : '';
                 row.alarm_type = row.alarm_type === 1 ? '高温告警' : row.alarm_type === 2 ? '低温告警' :  row.alarm_type === 3 ? '低电告警' : row.alarm_type === 4 ? '信号告警' : '';
             }
             this.initData.datas = rows;
             this.initData.total = total;
-            console.log(this.initData);
+            this.loading = false;
         },
         //换页
         pageChange(current) {
@@ -114,7 +116,7 @@ export default {
             // console.log(params.data);
             const res = await this.$http.put('warn/upDateWarn', params.data);
             this.$message({
-                message: '阅读状态修改成功', 
+                message: '阅读状态修改成功',
                 type: 'success'
             })
             this.getWarnList();
@@ -136,7 +138,6 @@ export default {
         },
         async getWeather() {
             const {result} = await this.$http('weather/getWeather');
-            console.log(result)
             return result;
         },
         getPageSize() {

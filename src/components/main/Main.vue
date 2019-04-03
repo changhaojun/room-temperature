@@ -6,16 +6,16 @@
             </h3>
             <nav>
                 <router-link class="router-nav" to="/main/firstPage" active-class="active-router" exact>首页</router-link>
-                <router-link class="router-nav" to="/main/dataSearch" active-class="active-router">查询数据</router-link>
                 <router-link class="router-nav" to="/main/onlineMonitor" active-class="active-router">在线监测</router-link>
                 <router-link class="router-nav" to="/main/roomMap" active-class="active-router">室温地图</router-link>
+                <router-link class="router-nav" to="/main/dataSearch" active-class="active-router">查询数据</router-link>
                 <router-link class="router-nav" to="/main/warnRecord" active-class="active-router">告警记录</router-link>
                 <router-link class="router-nav" to="/main/analysis" active-class="active-router">统计分析</router-link>
             </nav>
 
             <div id="user-menu">
                 <el-dropdown placement="top-start" @command="handleCommand">
-                    <div class="user-config"><i class="iconfont iconshezhi-shixin"></i><span>设置</span></div>
+                    <div class="user-config"><i class="iconfont iconuserbg"></i><span>{{username}}</span></div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item command="config">配置告警</el-dropdown-item>
                         <!-- <el-dropdown-item command="uploadfiles">上传文件</el-dropdown-item> -->
@@ -127,7 +127,9 @@ export default {
             client: null,
             changeConfigShow:false,
             company_list:[],
-            selectCompany:''
+            selectCompany:'',
+            warnDataList:[],
+            username: JSON.parse(sessionStorage.getItem('userInfo')).fullname
         }
     },
     methods: {
@@ -163,14 +165,15 @@ export default {
         },
 
         mqttConnect() {
-            this.client = new myMqtt(mqttOptions, 'roomWarn', this.warningData);
+            this.client = new myMqtt(mqttOptions, 'roomWarn', data=>{
+                this.warnDataList.push(data)
+            });
         },
 
         async suerChange() {
 
         },
-
-        warningData(data) {
+        sendWarn(data){
             const {community_name, data_time, building_name, alarm_type, data_value, unit_number } = JSON.parse(data);
             let warn_name = '';
             switch (alarm_type) {
@@ -195,10 +198,10 @@ export default {
             this.$notify({
                 customClass: 'warn-box',
                 dangerouslyUseHTMLString: true,
-                offset: 700,
                 showClose: false,
+                position:'bottom-right',
                 message: `
-                    <h4>${community_name}<span>${unit_number}单元${building_name}</span></h4>
+                    <h4>${community_name}<span>${building_name}${unit_number}单元</span></h4>
                     <p>${moment(data_time).format('YYYY-MM-DD HH:mm')}</p>
                     <p>${warn_name}<span style="margin-left:10px;font-size:20px">${data_value ? data_value : ''}</span></p>
                 `,
@@ -213,6 +216,14 @@ export default {
     },
     mounted() {
         this.mqttConnect();
+        const time = Math.round(Math.random() * (5 - 1) + 1 ) *1000
+            setInterval(() => {
+                if(this.warnDataList.length>0){
+                    const warn = this.warnDataList[0];
+                    this.warnDataList.shift()
+                    this.sendWarn(warn)
+                }
+        }, time);
     },
     children: [
         {
@@ -281,7 +292,8 @@ export default {
     }
     ul.el-dropdown-menu{
         padding: 5px 0;
-        transform: translateY(-10px) !important;
+        // transform: translateY(-10px) !important;
+        // margin-top: -10px important;
         li{
             color: #727272 !important;
             &:hover{
