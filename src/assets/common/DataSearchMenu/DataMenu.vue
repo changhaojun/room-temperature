@@ -1,7 +1,7 @@
 <template>
     <div class="data-search-menu">
         <div class="menu-search">
-            <el-select v-model="searchKey" filterable placeholder="搜索" @change="clickCommunity">
+            <el-select v-model="searchKey" filterable placeholder="搜索小区名称" @change="clickCommunity">
                 <el-option v-for="community in communityList" :key="community.community_id"
                     :label="community.community_name" :value="community.community_id">
                 </el-option>

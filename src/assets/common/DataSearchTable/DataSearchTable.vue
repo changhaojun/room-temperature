@@ -3,7 +3,7 @@
         <div class="main-table-title">
             <div class="title">住户列表</div>
             <div class="title-search">
-                <el-input placeholder="搜索" v-model="searchUser" @keyup.enter.native="searchUserList">
+                <el-input placeholder="搜索房间号" v-model="searchUser" @keyup.enter.native="searchUserList">
                     <i slot="suffix" class="iconfont iconsousuo" @click="searchUserList"></i>
                 </el-input>
             </div>
@@ -73,7 +73,7 @@
                     },
                     {
                         label: "湿度(%)",
-                        prop: "data_value",
+                        prop: "humi_data",
                         width: 100
                     },
                     {
