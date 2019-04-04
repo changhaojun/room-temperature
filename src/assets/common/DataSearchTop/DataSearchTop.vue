@@ -38,7 +38,7 @@
                         <div class="card-right">
                             <div class="card-right-top">
                                 <div class="card-right-top-left">{{info.community_count}}</div>
-                                <div class="card-right-top-right">户</div>
+                                <div class="card-right-top-right">个</div>
                             </div>
                             <div class="card-right-bottem">小区数量</div>
                         </div>
