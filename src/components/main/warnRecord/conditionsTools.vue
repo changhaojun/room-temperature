@@ -172,16 +172,16 @@ export default {
                 font-size: 14px;
             }
             .el-radio-button__inner {
-                border: none;
+                border: none !important;
                 &:hover {
                     color: #ffa509;
                 }
             }
             .el-radio-button__orig-radio:checked+.el-radio-button__inner {
                 color: #ffa509;
-                background-color: transparent;
-                border-color: transparent;
-                box-shadow: -1px 0 0 0 transparent;
+                background-color: transparent !important;
+                border-color: transparent !important;
+                box-shadow: -1px 0 0 0 transparent !important;
             }
         }
         .tool-search {
