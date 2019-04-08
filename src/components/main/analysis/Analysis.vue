@@ -32,7 +32,7 @@
                 <div class="main-top">
                     <div class="main-top-title">选择日期</div>
                     <div class="main-top-tools">
-                        <conditions-tools :date='date' :manager=false @current-change='reload'></conditions-tools>
+                        <conditions-tools :date="date" :manager="false" @current-change="reload"></conditions-tools>
                     </div>
 
                 </div>
@@ -65,7 +65,6 @@
                     topLoading: false,
                     menuLoading: false,
                 },
-                first: false,
             }
         },
         methods: {
@@ -181,18 +180,10 @@
                 }, ['#00F0FF', '#00A8FF'], 2, '户数');
             },
             async getAverage() {
-                let senDate = {};
-                if (this.first) {
-                    senDate = {
-                        start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
-                        end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
-                    }
-                } else {
-                    senDate = {
-                        start_time: this.date[0],
-                        end_time: this.date[1]
-                    }
-                }
+                let senDate = {
+                    start_time: moment().subtract(3, 'days').format('YYYY-MM-DD HH'),
+                    end_time: moment().format('YYYY-MM-DD HH')
+                };
 
                 let res = '';
                 const {
@@ -241,7 +232,6 @@
                     top: '15%',
                     containLabel: true
                 }, dataX, dataY1, dataY2);
-                this.first = false;
             },
         },
         components: {
@@ -249,9 +239,7 @@
             DataSearchMenu,
             ConditionsTools
         },
-        mounted() {
-            this.first = true;
-        },
+        mounted() {},
     }
 
 </script>
