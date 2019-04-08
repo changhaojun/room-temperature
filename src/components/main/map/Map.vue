@@ -59,7 +59,7 @@
        <el-dialog
             :title="dialogParams.title"
             :visible.sync="dialogParams.dialogVisible"
-            width="60%"
+            width="100%"
             custom-class="message-box"
             @close="close"
             >
@@ -264,9 +264,8 @@
                         dom = `<div class="marker-box"  @click="dialogShow($event)">
                                 <div class="circle-box"  accessKey="${data[i].community_id }" align="${data[i].community_name}" style="background:${data[i].data_value<16?'rgba(51,171,241,1)':data[i].data_value>25?'rgba(255,113,106,1)':'rgba(255,165,9,1)'}">${Math.floor(data[i].data_value)}</div>
                                 <div class="marker-text" accessKey="${data[i].community_id }" align="${data[i].community_name}">${data[i].community_name}</div>
-                        </div>`
+                                </div>`
                     }
-                   
                     markers.push({
                         center: [Number(data[i].location.split(",")[0]),Number(data[i].location.split(",")[1])],
                         template: dom,
@@ -282,7 +281,6 @@
                 _this.dialogParams.dialogVisible = true;
                 _this.dialogParams.title = community_name;
                 _this.dialogParams.community_id = community_id;
-
             },
             clickCompanyCenter(event){
                 const company_location = event.target.accessKey;
@@ -324,7 +322,7 @@
             this.getAllCommunity();
             // this.companyDistribute();
         },
-         beforeCreate(){
+        beforeCreate(){
             _this = this;
         }
     };
