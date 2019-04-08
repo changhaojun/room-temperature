@@ -24,8 +24,8 @@ export default {
 
             conditions: {
                 type: 6,
-                start_time: moment(moment().subtract(2,'days')).format('YYYY-MM-DD'),
-                end_time: moment().add(1,"day").format('YYYY-MM-DD'),
+                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD HH'),
+                end_time: moment().format('YYYY-MM-DD HH'),
                 key: '',
                 page_size: 6,
                 page_number: 1,

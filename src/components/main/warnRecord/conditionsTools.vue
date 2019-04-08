@@ -75,18 +75,14 @@ export default {
             let start = null;
             if(type === 1) {
                 start = moment(moment().subtract(3,'days'));
-                this.currentParams.startTime =start.format('YYYY-MM-DD HH');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }else if(type === 2) {
                 start = moment().subtract('days', 7);
-                this.currentParams.startTime = start.format('YYYY-MM-DD HH');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }else {
                 // start = moment(moment().month(moment().month()).startOf('month').valueOf());
                 start = moment().subtract('days', 30);
-                this.currentParams.startTime = start.format('YYYY-MM-DD HH');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }
+            this.currentParams.startTime = start.format('YYYY-MM-DD HH');
+            this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             this.dateArray = [start, moment()];
             this.indexActive = type;
             this.sendParams();
