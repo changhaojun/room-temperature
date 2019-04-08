@@ -32,9 +32,15 @@
                     },
                     {
                         label: "分公司名称",
-                        prop: "company_name"
+                        prop: "company_name",
+                        width: 120
                     },
                     {
+                        label: "地址",
+                        prop: "address",
+                        //width: 250
+                    },
+                    /*{
                         label: "小区名称",
                         prop: "community_name"
                     },
@@ -45,10 +51,11 @@
                     {
                         label: "编号",
                         prop: "user_number"
-                    },
+                    },*/
                     {
                         label: "住户名称",
-                        prop: "username"
+                        prop: "username",
+                        width: 100
                     },
                     {
                         label: "设备SN",
@@ -57,19 +64,23 @@
                     },
                     {
                         label: "信号",
-                        prop: "csq_alarm"
+                        prop: "csq_alarm",
+                        width: 100
                     },
                     {
                         label: "状态",
-                        prop: "status"
+                        prop: "status",
+                        width: 100
                     },
                     {
                         label: "位置",
-                        prop: "position"
+                        prop: "position",
+                        width: 100
                     },
                     {
                         label: "分段",
-                        prop: "distance"
+                        prop: "distance",
+                        width: 100
                     },
                     {
                         label: "湿度(%)",
