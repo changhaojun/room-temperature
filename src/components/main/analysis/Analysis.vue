@@ -32,7 +32,7 @@
                 <div class="main-top">
                     <div class="main-top-title">选择日期</div>
                     <div class="main-top-tools">
-                        <conditions-tools :date='date' :manager=false @current-change='reload'></conditions-tools>
+                        <conditions-tools :date="date" :manager="false" @current-change="reload"></conditions-tools>
                     </div>
 
                 </div>
@@ -65,7 +65,7 @@
                     topLoading: false,
                     menuLoading: false,
                 },
-                first: false,
+                first: false
             }
         },
         methods: {
@@ -184,14 +184,14 @@
                 let senDate = {};
                 if (this.first) {
                     senDate = {
-                        start_time: moment(this.date[0]).add(1, 'day').format('YYYY-MM-DD'),
-                        end_time: moment(this.date[1]).add(1, 'day').format('YYYY-MM-DD')
-                    }
+                        start_time: moment().subtract(3, 'days').format('YYYY-MM-DD HH'),
+                        end_time: moment().format('YYYY-MM-DD HH')
+                    };
                 } else {
                     senDate = {
                         start_time: this.date[0],
                         end_time: this.date[1]
-                    }
+                    };
                 }
 
                 let res = '';

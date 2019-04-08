@@ -143,8 +143,8 @@
                     date: [moment().subtract(3,'days'), moment()],
                     conditionsHistory: {
                         house_id: null,
-                        start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD'),
-                        end_time: moment().format('YYYY-MM-DD')
+                        start_time: moment(moment().subtract(3, 'days')).format('YYYY-MM-DD HH'),
+                        end_time: moment().format('YYYY-MM-DD HH')
                     }
                 },
                 searchData:{
