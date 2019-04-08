@@ -11,7 +11,7 @@
                 </div>
                 <div style="display: flex; align-items: center;">
                     <div class="tool-search" @keydown="search($event)">
-                        <el-input v-model="conditions.user_number" placeholder="搜索"></el-input>
+                        <el-input v-model="conditions.user_number" placeholder="编号"></el-input>
                         <span class="iconfont iconsousuo icon" @click="search($event)"></span>
                     </div>
                 </div>

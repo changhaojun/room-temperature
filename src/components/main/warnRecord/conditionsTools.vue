@@ -47,7 +47,7 @@ export default {
                 endTime: '',
                 key: ''
             },
-            btns: ['72小时', '本周', '本月'],
+            btns: ['72小时', '近7天', '近30天'],
             indexActive: 1,
 
             radioRead: ['全部', '未读', '已读'],
@@ -62,7 +62,7 @@ export default {
         // 日期发生变化
         changeDate() {
             this.currentParams.startTime = moment(this.dateArray[0]).format('YYYY-MM-DD');
-            this.currentParams.endTime = moment(this.dateArray[1]).format('YYYY-MM-DD');
+            this.currentParams.endTime = moment(this.dateArray[1]).add(1, 'days').format('YYYY-MM-DD');
             this.sendParams();
             this.indexActive = 0;
         },
@@ -75,16 +75,17 @@ export default {
             let start = null;
             if(type === 1) {
                 start = moment(moment().subtract(3,'days'));
-                this.currentParams.startTime =start.format('YYYY-MM-DD');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD');
+                this.currentParams.startTime =start.format('YYYY-MM-DD HH');
+                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }else if(type === 2) {
                 start = moment().subtract('days', 7);
-                this.currentParams.startTime = start.format('YYYY-MM-DD');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD');
+                this.currentParams.startTime = start.format('YYYY-MM-DD HH');
+                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }else {
-                start = moment(moment().month(moment().month()).startOf('month').valueOf());
-                this.currentParams.startTime = start.format('YYYY-MM-DD');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD');
+                // start = moment(moment().month(moment().month()).startOf('month').valueOf());
+                start = moment().subtract('days', 30);
+                this.currentParams.startTime = start.format('YYYY-MM-DD HH');
+                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }
             this.dateArray = [start, moment()];
             this.indexActive = type;
@@ -92,12 +93,13 @@ export default {
         },
         sendParams() {
             const {endTime,startTime} = this.currentParams;
-            const dataObj = {
-                startTime:moment(startTime).add(1,'day').format('YYYY-MM-DD'),
-                endTime:moment(endTime).add(1,'day').format('YYYY-MM-DD'),
-            }
-            console.log(dataObj)
-            this.$emit('current-change', dataObj);
+            console.log(this.currentParams)
+            // const dataObj = {
+            //     startTime:moment(startTime).add(1,'day').format('YYYY-MM-DD'),
+            //     endTime:moment(endTime).add(1,'day').format('YYYY-MM-DD'),
+            // }
+            // console.log(dataObj)
+            this.$emit('current-change', this.currentParams);
         },
         // 改变组
         changeGroup() {

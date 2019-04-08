@@ -15,7 +15,7 @@
                         <el-switch v-model="refresh" active-color="#FFA509" inactive-color="#949494" :width="33" @change='changeRefresh'></el-switch>
                     </div>
                     <div class="tool-search" @keydown="search($event)">
-                        <el-input v-model="communityName" placeholder="搜索"></el-input>
+                        <el-input v-model="communityName" placeholder="小区名称"></el-input>
                         <span class="iconfont iconsousuo icon" @click="search($event)"></span>
                     </div>
                 </div>

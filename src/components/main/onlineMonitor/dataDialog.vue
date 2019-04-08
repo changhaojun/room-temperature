@@ -106,8 +106,8 @@ export default {
         conditionsHistory: {
             handler(newVal) {
                 this.hsitoryParams.house_id = this.conditionsHistory.house_id;
-                this.hsitoryParams.start_time = moment(this.date[0]).add(1,"days").format('YYYY-MM-DD');
-                this.hsitoryParams.end_time = moment(this.date[1]).add(1,"days").format('YYYY-MM-DD');
+                this.hsitoryParams.start_time = moment(this.date[0]).format('YYYY-MM-DD HH');
+                this.hsitoryParams.end_time = moment(this.date[1]).add(1,"days").format('YYYY-MM-DD HH');
                 this.toggle = !this.toggle; // 为使子组件监听有变化而改变默认日期和按钮状态
                 this.getHouseHistory();
             },
@@ -119,8 +119,8 @@ export default {
     },
     created() {
         this.hsitoryParams.house_id = this.conditionsHistory.house_id;
-        this.hsitoryParams.start_time = moment(this.conditionsHistory.start_time).add(1,'days').format('YYYY-MM-DD');
-        this.hsitoryParams.end_time = moment(this.conditionsHistory.end_time).add(1,'days').format('YYYY-MM-DD');      
+        this.hsitoryParams.start_time = moment(this.conditionsHistory.start_time).format('YYYY-MM-DD HH');
+        this.hsitoryParams.end_time = moment(this.conditionsHistory.end_time).add(1,'days').format('YYYY-MM-DD HH');      
     }
 }
 </script>
