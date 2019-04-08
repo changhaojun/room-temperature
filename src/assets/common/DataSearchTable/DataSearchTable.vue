@@ -58,6 +58,16 @@
                         width: 100
                     },
                     {
+                        label: "室内温度(℃)",
+                        prop: "data_value",
+                        width: 100
+                    },
+                    {
+                        label: "室外温度(℃)",
+                        prop: "weather",
+                        width: 100
+                    },
+                    {
                         label: "设备SN",
                         prop: "device_sn",
                         width: 150
@@ -87,16 +97,8 @@
                         prop: "humi_data",
                         width: 100
                     },
-                    {
-                        label: "室外温度(℃)",
-                        prop: "weather",
-                        width: 100
-                    },
-                    {
-                        label: "室内温度(℃)",
-                        prop: "data_value",
-                        width: 100
-                    },
+                    
+                    
 
                 ],
                 conditions: {
