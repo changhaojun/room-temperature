@@ -105,7 +105,7 @@
                             style='cursor: pointer;' @click="houseTemp(scope.row.user_house_id)">
                             {{scope.row[item.prop]}}
                         </div>
-                        <div v-else-if="item.prop === 'address'">{{scope.row.community_name}}-{{scope.row.unit_number}}单元-{{scope.row.building_name}}-{{scope.row.user_number}}</div>
+                        <div v-else-if="item.prop === 'address'">{{scope.row.community_name}}-{{scope.row.building_name}}-{{scope.row.unit_number}}单元-{{scope.row.user_number}}</div>
                         <div v-else-if="item.prop === 'status'" :class="{warnHigh: scope.row.status=='离线'}">{{scope.row[item.prop]}}</div>
                         <div v-else-if="item.prop === 'csq_alarm'" :class="{warnHigh: scope.row.csq_alarm=='弱'}">{{scope.row[item.prop]}}</div>
                         <div v-else>{{scope.row[item.prop]}}</div>
