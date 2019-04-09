@@ -241,12 +241,12 @@ export default {
         }
     }
     .el-select-dropdown__item.selected {
-        color:#606266;
-        font-weight: 400;
-        background:rgba(255,153,0,0.08);
+        color:#606266 !important;
+        font-weight: 400 !important;
+        background:rgba(228, 196, 148, 0.08) !important;
     }
     .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
-        background:rgba(255,153,0,0.04);
+        background:rgba(255,153,0,0.04) !important;
     }
 </style>
 
