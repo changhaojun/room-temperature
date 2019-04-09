@@ -3,8 +3,7 @@
         <el-table :data="initData.datas" border style="width: 100%; margin-bottom: 24px;" @row-click="selectColumn">
             <div v-if="type === 1">
                 <div v-for="item in columns" :key="item.index">
-                    <el-table-column v-if="item.prop === 'data_time'" :prop="item.prop" :label="item.label" min-width="180"></el-table-column>
-                    <el-table-column v-else :prop="item.prop" :label="item.label">
+                    <el-table-column :prop="item.prop" :label="item.label" :width="item.width">
                         <template slot-scope="scope">
                             <div v-if="item.prop === 'data_value'"
                                 :class="scope.row.data_alarm === 1? 'warnHigh' : scope.row.data_alarm === 2 ? 'warnLow' : ''"
@@ -12,7 +11,7 @@
                                 {{scope.row[item.prop]}}
                             </div>
                             <div v-else-if="item.prop === 'address'">
-                                {{scope.row.building_name}}-{{scope.row.user_number}}
+                                {{scope.row.building_name}}-{{scope.row.unit_number}}单元-{{scope.row.user_number}}
                             </div>
                             <div v-else>{{scope.row[item.prop]}}</div>
                         </template>
@@ -21,8 +20,7 @@
             </div>
             <div v-if="type === 2">
                 <div v-for="item in columns" :key="item.index">
-                    <el-table-column v-if="item.prop === 'data_time'" :prop="item['prop']" :label="item.label" min-width="180"></el-table-column>
-                    <el-table-column v-else :prop="item.prop" :label="item.label">
+                    <el-table-column :prop="item.prop" :label="item.label" :width="item.width">
                         <template slot-scope="scope">
                             <div v-if="item.prop === 'data_value'"
                                 :class="scope.row.alarm_type === '高温告警' ? 'warnHigh' : scope.row.alarm_type === '低温告警' ? 'warnLow' : ''"
@@ -49,7 +47,7 @@
                                 </el-tooltip>
                             </div>
                             <div v-else-if="item.prop === 'address'">
-                                {{scope.row.community_name}}-{{scope.row.building_name}}-{{scope.row.user_number}}
+                                {{scope.row.community_name}}-{{scope.row.unit_number}}单元-{{scope.row.building_name}}-{{scope.row.user_number}}
                             </div>
                             <div v-else>{{scope.row[item.prop]}}</div>
                         </template>
@@ -190,6 +188,7 @@
     }
     .el-table th>.cell {
         color: rgba(118, 118, 118, 1);
+        line-height: 60px !important;
     }
 
     .el-table td div {
@@ -312,7 +311,6 @@
     }
     .el-table .cell,.el-table td{
         padding: 0 !important;
-        line-height: 60px !important;
         height:60px !important;
     }
     .v-modal{
