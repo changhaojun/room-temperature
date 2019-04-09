@@ -177,6 +177,9 @@
     z-index:999999;
     border-radius:6px;
     height:100%;
+    *, :after, :before{
+        z-index:0
+    }
     .el-dialog__header{
         border-bottom: 1px solid rgb(233,234,236);
         padding:8px 20px 5px;

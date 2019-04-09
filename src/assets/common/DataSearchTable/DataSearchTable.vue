@@ -68,9 +68,9 @@
                         width: 100
                     },
                     {
-                        label: "设备SN",
-                        prop: "device_sn",
-                        width: 150
+                        label: "湿度(%)",
+                        prop: "humi_data",
+                        width: 100
                     },
                     {
                         label: "信号",
@@ -93,9 +93,9 @@
                         width: 100
                     },
                     {
-                        label: "湿度(%)",
-                        prop: "humi_data",
-                        width: 100
+                        label: "设备SN",
+                        prop: "device_sn",
+                        width: 150
                     },
                     
                     
