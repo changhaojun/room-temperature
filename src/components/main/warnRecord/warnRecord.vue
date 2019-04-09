@@ -30,7 +30,8 @@ export default {
                 page_size: 6,
                 page_number: 1,
                 read_state: null,
-                config_type: null
+                config_type: null,
+                alarm_type: []
             },
             initData: {
                 total: 0,
@@ -87,6 +88,9 @@ export default {
             if(this.conditions.config_type === null) {
                 delete this.conditions.config_type;
             }
+            if(this.conditions.alarm_type.length === 0) {
+                delete this.conditions.alarm_type;
+            }
             // console.log(this.conditions);
             const { result: { rows, total } } = await this.$http('warn/getWarn', {data: this.conditions});
             const weather = await this.getWeather();
@@ -124,9 +128,9 @@ export default {
             this.getWarnList();
         },
         group(params) {
-            // console.log(params);
-            this.conditions.read_state = params.readState === '全部' ? null : params.readState === '未读' ? 0 : 1;
-            this.conditions.config_type = params.configType === '全部' ? null : params.configType === '用户' ? 2 : 1;
+            this.conditions.read_state = params.readState === '状态 (全部)' ? null : params.readState === '未读' ? 0 : 1;
+            this.conditions.config_type = params.configType === '触发 (全部)' ? null : params.configType === '用户' ? 2 : 1;
+            this.conditions.alarm_type = params.alarmType === '告警 (全部)' ? '[]' : params.alarmType === '温度告警' ? '[1, 2]' : params.alarmType === '低电' ? '[3]' : '[4]';
             this.conditions.page_number = 1;
             this.getWarnList();
         },

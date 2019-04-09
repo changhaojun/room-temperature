@@ -16,14 +16,27 @@
         </div>
         <div style="display: flex; align-items: center;">
             <div v-if="group" class="tool-radio">
-                <div style="display: flex; align-items: center;">
-                    <el-radio-group v-model="groupParams.readState" @change='changeGroup'>
-                        <el-radio-button :label="item" v-for="item in radioRead" :key="item"></el-radio-button>
-                    </el-radio-group>
-                    <el-radio-group v-model="groupParams.configType" @change='changeGroup'>
-                        <el-radio-button :label="item" v-for="item in radioUser" :key="item"></el-radio-button>
-                    </el-radio-group>
-                </div>
+                <el-select v-model="groupParams.configType" @change="changeGroup">
+                    <el-option
+                        v-for="(item,index) in configType"
+                        :key="index"
+                        :value="item">
+                    </el-option>
+                </el-select>
+                <el-select v-model="groupParams.readState" @change="changeGroup">
+                    <el-option
+                        v-for="(item,index) in readState"
+                        :key="index"
+                        :value="item">
+                    </el-option>
+                </el-select>
+                <el-select v-model="groupParams.alarmType" @change="changeGroup">
+                    <el-option
+                        v-for="(item,index) in alarmType"
+                        :key="index"
+                        :value="item">
+                    </el-option>
+                </el-select>
             </div>
             <div v-if="manager" style="display: flex; align-items: center;" @keydown="search">
                 <div class="tool-search">
@@ -50,11 +63,13 @@ export default {
             btns: ['72小时', '近7天', '近30天'],
             indexActive: 1,
 
-            radioRead: ['全部', '未读', '已读'],
-            radioUser: ['全部', '用户', '系统'],
+            configType: ['触发 (全部)', '用户', '系统'],
+            readState: ['状态 (全部)', '未读', '已读'],
+            alarmType: ['告警 (全部)', '温度告警', '低电', '信号'],
             groupParams: {
-                readState: '全部',
-                configType: '全部'
+                configType: '触发 (全部)',
+                readState: '状态 (全部)',
+                alarmType: '告警 (全部)'
             }
         }
     },
@@ -78,7 +93,6 @@ export default {
             }else if(type === 2) {
                 start = moment().subtract('days', 7);
             }else {
-                // start = moment(moment().month(moment().month()).startOf('month').valueOf());
                 start = moment().subtract('days', 30);
             }
             this.currentParams.startTime = start.format('YYYY-MM-DD HH');
@@ -89,12 +103,6 @@ export default {
         },
         sendParams() {
             const {endTime,startTime} = this.currentParams;
-            console.log(this.currentParams)
-            // const dataObj = {
-            //     startTime:moment(startTime).add(1,'day').format('YYYY-MM-DD'),
-            //     endTime:moment(endTime).add(1,'day').format('YYYY-MM-DD'),
-            // }
-            // console.log(dataObj)
             this.$emit('current-change', this.currentParams);
         },
         // 改变组
@@ -139,7 +147,6 @@ export default {
             }
         }
         .tool-buttons {
-            margin-left: 40px;
             .mu-raised-button {
                 font-size: 16px;
             }
@@ -147,7 +154,7 @@ export default {
                 width:87px;
                 height:29px;
                 border-radius:15px;
-                margin-right: 32px;
+                margin-left: 20px;
                 font-family:SourceHanSansCN-Normal;
                 font-weight:400;
             }
@@ -163,26 +170,48 @@ export default {
             }
         }
         .tool-radio {
-            margin-right: 40px;
-            .el-radio-group {
-                margin-left: 20px;
-            }
-            .el-radio-button__inner {
-                padding: 0 4px;
-                font-size: 14px;
-            }
-            .el-radio-button__inner {
-                border: none !important;
-                &:hover {
-                    color: #ffa509;
+            font-family:SourceHanSansCN-Regular;
+            font-size:14px;
+            .el-select {
+                width: 118px;
+                margin-right: 20px;
+                .el-input__inner {
+                    border-radius:15px;
+                    height:30px;
+                    background:rgba(255,255,255,0);
+                    border:1px solid rgba(148, 148, 148, 1);
+                }
+                .el-input__icon {
+                    line-height: 30px;
+                }
+                .el-input.is-focus .el-input__inner {
+                    background:rgba(255,255,255,1);
+                    border:1px solid rgba(255, 153, 0, 1);
                 }
             }
-            .el-radio-button__orig-radio:checked+.el-radio-button__inner {
-                color: #ffa509;
-                background-color: transparent !important;
-                border-color: transparent !important;
-                box-shadow: -1px 0 0 0 transparent !important;
+            .el-select .el-input .el-select__caret {
+                color: rgba(110,110,110,1);
             }
+            
+            // .el-radio-group {
+            //     margin-left: 20px;
+            // }
+            // .el-radio-button__inner {
+            //     padding: 0 4px;
+            //     font-size: 14px;
+            // }
+            // .el-radio-button__inner {
+            //     border: none !important;
+            //     &:hover {
+            //         color: #ffa509;
+            //     }
+            // }
+            // .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+            //     color: #ffa509;
+            //     background-color: transparent !important;
+            //     border-color: transparent !important;
+            //     box-shadow: -1px 0 0 0 transparent !important;
+            // }
         }
         .tool-search {
             position: relative;
@@ -210,6 +239,14 @@ export default {
                 cursor: pointer;
             }
         }
+    }
+    .el-select-dropdown__item.selected {
+        color:#606266;
+        font-weight: 400;
+        background:rgba(255,153,0,0.08);
+    }
+    .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+        background:rgba(255,153,0,0.04);
     }
 </style>
 
