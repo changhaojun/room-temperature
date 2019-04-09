@@ -355,7 +355,6 @@
     .el-table .cell,.el-table td{
         padding: 0 !important;
         line-height: 60px !important;
-        height:60px !important;
     }
     .v-modal{
         z-index:-1 !important;
