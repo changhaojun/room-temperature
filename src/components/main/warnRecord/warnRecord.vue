@@ -45,17 +45,21 @@ export default {
                     label: "公司名称",
                     prop: "company_name"
                 },
+                // {
+                //     label: "小区名称",
+                //     prop: "community_name"
+                // },
+                // {
+                //     label: "楼名称",
+                //     prop: "building_name"
+                // },
+                // {
+                //     label: "住户",
+                //     prop: "user_number"
+                // },
                 {
-                    label: "小区名称",
-                    prop: "community_name"
-                },
-                {
-                    label: "楼名称",
-                    prop: "building_name"
-                },
-                {
-                    label: "住户",
-                    prop: "user_number"
+                    label: "地址",
+                    prop: "address"
                 },
                 {
                     label: "告警类型",
