@@ -47,7 +47,7 @@
                                 </el-tooltip>
                             </div>
                             <div v-else-if="item.prop === 'address'">
-                                {{scope.row.community_name}}-{{scope.row.unit_number}}单元-{{scope.row.building_name}}-{{scope.row.user_number}}
+                                {{scope.row.community_name}}-{{scope.row.building_name}}-{{scope.row.unit_number}}单元-{{scope.row.user_number}}
                             </div>
                             <div v-else>{{scope.row[item.prop]}}</div>
                         </template>
