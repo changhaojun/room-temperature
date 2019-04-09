@@ -75,18 +75,14 @@ export default {
             let start = null;
             if(type === 1) {
                 start = moment(moment().subtract(3,'days'));
-                this.currentParams.startTime =start.format('YYYY-MM-DD HH');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }else if(type === 2) {
                 start = moment().subtract('days', 7);
-                this.currentParams.startTime = start.format('YYYY-MM-DD HH');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }else {
                 // start = moment(moment().month(moment().month()).startOf('month').valueOf());
                 start = moment().subtract('days', 30);
-                this.currentParams.startTime = start.format('YYYY-MM-DD HH');
-                this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             }
+            this.currentParams.startTime = start.format('YYYY-MM-DD HH');
+            this.currentParams.endTime = moment().format('YYYY-MM-DD HH');
             this.dateArray = [start, moment()];
             this.indexActive = type;
             this.sendParams();
@@ -176,16 +172,16 @@ export default {
                 font-size: 14px;
             }
             .el-radio-button__inner {
-                border: none;
+                border: none !important;
                 &:hover {
                     color: #ffa509;
                 }
             }
             .el-radio-button__orig-radio:checked+.el-radio-button__inner {
                 color: #ffa509;
-                background-color: transparent;
-                border-color: transparent;
-                box-shadow: -1px 0 0 0 transparent;
+                background-color: transparent !important;
+                border-color: transparent !important;
+                box-shadow: -1px 0 0 0 transparent !important;
             }
         }
         .tool-search {

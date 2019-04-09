@@ -133,9 +133,6 @@
             .el-pagination button, .el-pagination span:not([class*=suffix]) {
                 min-width: 0;
             }
-            // .el-table tbody tr {
-            //     cursor: pointer;
-            // }
             .el-pagination__editor {
                 padding: 0 6px;
             }
@@ -149,6 +146,7 @@
             }
             .el-table th .cell {
                 height: 40px !important;
+                line-height: 40px !important;
             }
             
 

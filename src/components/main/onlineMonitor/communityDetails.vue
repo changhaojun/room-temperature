@@ -11,7 +11,7 @@
                 </div>
                 <div style="display: flex; align-items: center;">
                     <div class="tool-search" @keydown="search($event)">
-                        <el-input v-model="conditions.user_number" placeholder="编号"></el-input>
+                        <el-input v-model="conditions.user_number" placeholder="房间号"></el-input>
                         <span class="iconfont iconsousuo icon" @click="search($event)"></span>
                     </div>
                 </div>
@@ -54,15 +54,13 @@ export default {
             columns: [
                 {
                     label: "时间",
-                    prop: "data_time"
+                    prop: "data_time",
+                    width: 180
                 },
                 {
-                    label: "楼名称",
-                    prop: "building_name"
-                },
-                {
-                    label: "编号",
-                    prop: "user_number"
+                    label: "地址",
+                    prop: "address",
+                    width: 160
                 },
                 {
                     label: "户主名称",

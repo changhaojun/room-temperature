@@ -24,8 +24,8 @@ export default {
 
             conditions: {
                 type: 6,
-                start_time: moment(moment().subtract(2,'days')).format('YYYY-MM-DD'),
-                end_time: moment().add(1,"day").format('YYYY-MM-DD'),
+                start_time: moment(moment().subtract(3,'days')).format('YYYY-MM-DD HH'),
+                end_time: moment().format('YYYY-MM-DD HH'),
                 key: '',
                 page_size: 6,
                 page_number: 1,
@@ -46,16 +46,9 @@ export default {
                     prop: "company_name"
                 },
                 {
-                    label: "小区名称",
-                    prop: "community_name"
-                },
-                {
-                    label: "楼名称",
-                    prop: "building_name"
-                },
-                {
-                    label: "住户",
-                    prop: "user_number"
+                    label: "地址",
+                    prop: "address",
+                    width: 220
                 },
                 {
                     label: "告警类型",
@@ -75,7 +68,8 @@ export default {
                 },
                 {
                     label: "时间",
-                    prop: "data_time"
+                    prop: "data_time",
+                    width: 180
                 }
             ]
         }
