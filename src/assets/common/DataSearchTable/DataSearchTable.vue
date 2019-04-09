@@ -38,7 +38,7 @@
                     {
                         label: "地址",
                         prop: "address",
-                        //width: 250
+                        width: 250
                     },
                     /*{
                         label: "小区名称",
@@ -70,27 +70,27 @@
                     {
                         label: "湿度(%)",
                         prop: "humi_data",
-                        width: 100
+                        width: 70
                     },
                     {
                         label: "信号",
                         prop: "csq_alarm",
-                        width: 100
+                        width: 70
                     },
                     {
                         label: "状态",
                         prop: "status",
-                        width: 100
+                        width: 70
                     },
                     {
                         label: "位置",
                         prop: "position",
-                        width: 100
+                        width: 70
                     },
                     {
                         label: "分段",
                         prop: "distance",
-                        width: 100
+                        width: 70
                     },
                     {
                         label: "设备SN",

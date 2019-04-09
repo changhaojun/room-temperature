@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div v-if="type === 3">
-                <el-table-column :prop="item.prop" :label="item.label" v-for="item in columns" :key="item.index" :width="item.width">
+                <el-table-column :prop="item.prop" :label="item.label" v-for="item in columns" :key="item.index" :min-width="item.width">
                     <template slot-scope="scope">
                         <div v-if="item.prop === 'data_value'" :class="{warnHigh: scope.row.data_value>=25, warnLow: scope.row.data_value<=16 && scope.row.data_value>0}"
                             style='cursor: pointer;' @click="houseTemp(scope.row.user_house_id)">
@@ -193,6 +193,7 @@
 
     .el-table td div {
         color: rgba(70, 76, 91, 1);
+        line-height: 60px !important;
     }
 
     .el-table td,
@@ -311,7 +312,8 @@
     }
     .el-table .cell,.el-table td{
         padding: 0 !important;
-        height:60px !important;
+        line-height: 60px !important;
+        height: 60px !important;
     }
     .v-modal{
         z-index:-1 !important;
