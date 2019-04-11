@@ -1,11 +1,11 @@
 <template>
     <div class="user-login">
-        <div class="login-logo"></div>
+        <!-- <div class="login-logo"></div> -->
         <div class="login-main">
             <div class="form-contanier">
                 <h2>
                     <span>Hey!</span><br/>
-                    <i>欢迎来到</i><span style="color:#FFA509">大同热力室温监测</span><i>平台</i>
+                    <i>欢迎来到</i><span style="color:#FFA509">室温监测</span><i>平台</i>
                 </h2>
                 <mu-form ref="form" class="mu-demo-form" :model="user">
                     <mu-form-item label="账号" prop="username" :rules="usernameRules">
