@@ -88,7 +88,7 @@ export default {
             if(this.conditions.config_type === null) {
                 delete this.conditions.config_type;
             }
-            if(this.conditions.alarm_type.length === 0) {
+            if(this.conditions.alarm_type && this.conditions.alarm_type.length === 0) {
                 delete this.conditions.alarm_type;
             }
             // console.log(this.conditions);
