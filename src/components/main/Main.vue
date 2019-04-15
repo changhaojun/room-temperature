@@ -1,9 +1,9 @@
 <template>
     <div id="main_wrapper">
         <header>
-            <h3 class="logo">
+            <!-- <h3 class="logo">
 
-            </h3>
+            </h3> -->
             <nav>
                 <router-link class="router-nav" to="/main/firstPage" active-class="active-router" exact>首页</router-link>
                 <router-link class="router-nav" to="/main/onlineMonitor" active-class="active-router">在线监测</router-link>
